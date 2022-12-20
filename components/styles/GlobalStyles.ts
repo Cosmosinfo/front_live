@@ -86,7 +86,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body, div {
-    font-size: 13px;
+    font-size: 18px;
     font-family: 'Pretendard';
   }
 
