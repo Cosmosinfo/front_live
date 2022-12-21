@@ -2,7 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 const Main = () => {
-  return <Container></Container>;
+  return (
+    <Container>
+      <div>asd</div>
+      <section></section>
+      <section></section>
+      <section></section>
+      <section></section>
+    </Container>
+  );
 };
 
 const Container = styled.main`

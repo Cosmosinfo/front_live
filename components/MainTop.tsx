@@ -1,22 +1,22 @@
 import styled from "styled-components";
 import React from "react";
+import Link from "next/link";
 
 const MainTop = () => {
   return (
     <Header>
       <Logo>
-        <span>FullDive</span>
+        <Link href="/">FullDive</Link>
       </Logo>
       <Search>
         <SearchBar placeholder="검색어를 입력해주세요" />
         <RightBar>
           <div>
+            <img src="/images/more.svg" />
             <img src="/images/notification.svg" />
             <img src="/images/ranking.svg" />
-            <img src="/images/more.svg" />
           </div>
           <div>
-            <img src="/images/user.svg" />
             <LoginButton>로그인</LoginButton>
           </div>
         </RightBar>
@@ -26,7 +26,7 @@ const MainTop = () => {
 };
 
 const Header = styled.header`
-  height: 80px;
+  height: 100px;
   background-color: #181820;
   display: flex;
   color: #ffffff;
@@ -35,11 +35,9 @@ const Header = styled.header`
 
 const Logo = styled.div`
   min-width: 250px;
-  padding-left: 70px;
-  background: url("/images/logo.svg") no-repeat 15% 50%;
-  > span {
-    padding-left: 10px;
-  }
+  padding-left: 40px;
+  font-size: 1.5rem;
+  /* background: url("/images/logo.svg") no-repeat 15% 50%; */
 `;
 
 const Search = styled.div`
@@ -59,22 +57,27 @@ const SearchBar = styled.input`
   height: 48px;
   display: flex;
   align-items: center;
-  padding: 0 50px;
+  padding: 0 55px;
 `;
 
 const RightBar = styled.div`
   padding-right: 30px;
   display: flex;
   align-items: center;
+  > div {
+    > img {
+      margin-right: 20px;
+    }
+  }
 `;
 
 const LoginButton = styled.button`
-  height: 100%;
   width: 5rem;
   background: #202eae;
   border-radius: 100px;
   font-size: 1rem;
   margin-left: 10px;
+  padding: 10px;
 `;
 
 export default MainTop;
