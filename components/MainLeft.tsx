@@ -67,8 +67,8 @@ const MainLeft = () => {
 };
 
 const Nav = styled.nav`
-  width: 250px;
-  height: 100vh;
+  width: 20%;
+  max-width: 250px;
   background: #181820;
   padding: 30px;
   color: #878787;
@@ -79,10 +79,11 @@ const Nav = styled.nav`
 const NavInfo = styled.a<{ imgUrl: string; nowImgUrl: string; isHere: boolean }>`
   display: inline-block;
   min-height: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   background-position: 0 50%;
   background-size: contain;
   padding-left: 40px;
+  line-height: 40px;
   ${(props) =>
     props.isHere
       ? `
@@ -91,11 +92,11 @@ const NavInfo = styled.a<{ imgUrl: string; nowImgUrl: string; isHere: boolean }>
   `
       : `
       color: #8B8B8B;
-      background: url(${props.imgUrl}) no-repeat;
+      background: url(${props.imgUrl}) no-repeat left 50%;;
   `}
   :hover {
     color: #ffffff;
-    ${(props) => `background: url(${props.nowImgUrl}) no-repeat`}
+    ${(props) => `background: url(${props.nowImgUrl}) no-repeat left 50%;`}
   }
 `;
 
