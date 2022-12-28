@@ -16,9 +16,9 @@ const MainTop = () => {
             <img src="/images/notification.svg" />
             <img src="/images/ranking.svg" />
           </div>
-          <div>
+          <Link href="/login">
             <LoginButton>로그인</LoginButton>
-          </div>
+          </Link>
         </RightBar>
       </Search>
     </Header>
