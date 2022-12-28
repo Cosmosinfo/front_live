@@ -25,5 +25,5 @@ export default function App({ Component, pageProps }: AppProps) {
 
 const Wrap = styled.div`
   display: flex;
-  width: 100%;
+  min-width: 100%;
 `;

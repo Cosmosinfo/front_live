@@ -67,8 +67,7 @@ const MainLeft = () => {
 };
 
 const Nav = styled.nav`
-  width: 20%;
-  max-width: 250px;
+  min-width: 250px;
   background: #181820;
   padding: 30px;
   color: #878787;

@@ -2,11 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const Login = () => {
-  return <Main></Main>;
+  return <Container></Container>;
 };
 
-const Main = styled.main`
-  background: red;
+const Container = styled.main`
+  min-width: 80%;
+  height: 1000px;
+  background: #1e1e1e;
+  color: #ffffff;
 `;
 
 export default Login;
