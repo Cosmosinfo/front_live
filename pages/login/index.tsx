@@ -6,8 +6,8 @@ const Login = () => {
 };
 
 const Container = styled.main`
-  min-width: 80%;
-  height: 1000px;
+  width: calc(100vw - 250px);
+  height: 100vh;
   background: #1e1e1e;
   color: #ffffff;
 `;

@@ -69,7 +69,7 @@ const MainLeft = () => {
 const Nav = styled.nav`
   min-width: 250px;
   background: #181820;
-  padding: 30px;
+  padding: 10px 30px;
   color: #878787;
   display: flex;
   flex-direction: column;
