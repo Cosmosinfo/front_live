@@ -1,6 +1,7 @@
-import { all, call } from "redux-saga/effects";
-import watchSearch from "./SearchSaga";
+import { all } from "redux-saga/effects";
+import watchMainArtist from "./MainArtistSaga";
+import watchMainStage from "./MainStageSaga";
 
 export default function* rootSaga() {
-  yield all([call(watchSearch)]);
+  yield all([watchMainStage(), watchMainArtist()]);
 }

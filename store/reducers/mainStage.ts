@@ -8,29 +8,17 @@ const initialState = {
 
 export default (state = initialState, action: any) => {
   switch (action.type) {
-    case actions.SEARCH:
-      console.log(1, {
-        ...state,
-        payload: action.payload,
-      });
+    case actions.MAINSTAGE:
       return {
         ...state,
         payload: action.payload,
       };
-    case actions.SEARCH_SUCCESS:
-      console.log(2, {
-        ...state,
-        data: action.data,
-      });
+    case actions.MAINSTAGE_SUCCESS:
       return {
         ...state,
         data: action.data,
       };
-    case actions.SEARCH_FAIL:
-      console.log(3, {
-        ...state,
-        error: action.error,
-      });
+    case actions.MAINSTAGE_FAIL:
       return {
         ...state,
         error: action.error,

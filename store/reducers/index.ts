@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import search from "./search";
+import mainStage from "./mainStage";
+import mainArtist from "./mainArtist";
 
 const rootReducer = combineReducers({
-  search: search,
+  mainStage: mainStage,
+  mainArtist: mainArtist,
 });
 
 export default rootReducer;
