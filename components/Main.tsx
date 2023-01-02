@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 SwiperCore.use([Navigation, Pagination]);
+import { search } from "store/actions/search";
+import { RootState } from "store/reducers";
 
 const images = [
   {
@@ -110,7 +114,18 @@ const liveData = [
 ];
 
 const Main = () => {
-  SwiperCore.use([Navigation]);
+  const dispatch = useDispatch();
+  const searchData = useSelector((state: RootState) => state.search);
+
+  useEffect(() => {
+    searchEvent();
+  }, []);
+
+  const searchEvent = useCallback(() => {
+    dispatch(search({}));
+  }, []);
+
+  console.log("1111", searchData.data);
 
   return (
     <Container>
