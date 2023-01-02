@@ -11,7 +11,8 @@ const Login = () => {
               로그인<p>풀다이브에 오신것을 환영합니다.</p>
             </Title>
             <SocialLogin>
-              <button></button>
+              <SosicalLoginButton>구글 계정으로 로그인</SosicalLoginButton>
+              <SosicalLoginButton>구글 계정으로 로그인</SosicalLoginButton>
             </SocialLogin>
           </Top>
         </Form>
@@ -19,6 +20,14 @@ const Login = () => {
     </Container>
   );
 };
+
+const SosicalLoginButton = styled.button`
+  padding: 20px 40px 20px 70px;
+  margin-top: 36px;
+  background: url("/images/login/google.svg") no-repeat 35px 50% #202024;
+  border-radius: 100px;
+  font-size: 1rem;
+`;
 
 const SocialLogin = styled.div``;
 
