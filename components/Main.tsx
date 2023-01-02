@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 SwiperCore.use([Navigation, Pagination]);
+import { mainStage, mainArtist } from "store/actions/main";
+import { RootState } from "store/reducers";
 
 const images = [
   {
@@ -110,7 +114,20 @@ const liveData = [
 ];
 
 const Main = () => {
-  SwiperCore.use([Navigation]);
+  const dispatch = useDispatch();
+  const stageData = useSelector((state: RootState) => state.mainStage);
+  const mainArtistData = useSelector((state: RootState) => state.mainArtist);
+
+  useEffect(() => {
+    callMainStage();
+  }, []);
+
+  const callMainStage = useCallback(() => {
+    dispatch(mainStage({}));
+    dispatch(mainArtist({}));
+  }, []);
+
+  console.log(stageData.data.stageStartInfo);
 
   return (
     <Container>
@@ -160,30 +177,31 @@ const Main = () => {
           </a>
           <SwiperLayout>
             <Swiper className="liveStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-              {liveData.map((data, id) => (
-                <SwiperSlide key={id}>
-                  <Figure href={data.link} artist="none">
-                    <Live>
-                      <Dot />
-                      <p> Live</p>
-                    </Live>
-                    <ImageArea src={data.imgUrl} alt="live_stage" />
-                  </Figure>
-                  <StageContentBox>
-                    <div>
-                      <img src={data.imgUrl} />
+              {stageData.data.stageStartInfo &&
+                stageData.data.stageStartInfo.map((data: any, id: any) => (
+                  <SwiperSlide key={id}>
+                    <Figure href={data.stageStreamKey} artist="none">
+                      <Live>
+                        <Dot />
+                        <p> Live</p>
+                      </Live>
+                      <ImageArea src={data.stageThumbnailImage} alt="live_stage" />
+                    </Figure>
+                    <StageContentBox>
                       <div>
-                        <p>{data.title}</p>
-                        <span>{data.artist}</span>
+                        <img src={data.stageThumbnailImage} />
+                        <div>
+                          <p>{data.stageTitle}</p>
+                          <span>{data.artistId}</span>
+                        </div>
                       </div>
-                    </div>
-                    <Ticket>
-                      <img src={data.ticketImg} className="ticket" />
-                      {data.ticket}
-                    </Ticket>
-                  </StageContentBox>
-                </SwiperSlide>
-              ))}
+                      <Ticket>
+                        <img src={data.ticketImg} className="ticket" />
+                        {data.ticket}
+                      </Ticket>
+                    </StageContentBox>
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </SwiperLayout>
         </StageContainer>

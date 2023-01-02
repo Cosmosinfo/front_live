@@ -5,8 +5,9 @@ import styled from "styled-components";
 import { GlobalStyles } from "components/styles/GlobalStyles";
 import MainTop from "components/MainTop";
 import MainLeft from "components/MainLeft";
+import { wrapper } from "store";
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
@@ -21,9 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <GlobalStyles />
     </>
   );
-}
+};
 
 const Wrap = styled.div`
   display: flex;
   min-width: 100%;
 `;
+
+export default wrapper.withRedux(App);
