@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React, { useState, ChangeEvent } from "react";
 import styled, { css } from "styled-components";
 
@@ -12,9 +11,10 @@ const Login = () => {
     email: "",
     emailSite: "",
     password: "",
+    confirm_password: "",
   });
 
-  const { email, emailSite, password } = values;
+  const { email, emailSite, password, confirm_password } = values;
 
   const onChangeValues = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -65,32 +65,24 @@ const Login = () => {
               <Password name="password" type={passwordType.type} autoComplete="off" value={password} onChange={onChangeValues} />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            <LoginButton>접속하기</LoginButton>
-            <Bottom>
-              <p className="mssing_user">아이디 / 비밀번호 찾기</p>
-              <Link href="/signup">
-                <p>계정이 없으신가요?</p>
-              </Link>
-            </Bottom>
+            <p>비밀번호 확인</p>
+            <PasswordForm>
+              <Password
+                name="confirm_password"
+                type={passwordType.type}
+                autoComplete="off"
+                value={confirm_password}
+                onChange={onChangeValues}
+              />
+              <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
+            </PasswordForm>
+            <LoginButton>계정 만들기</LoginButton>
           </LoginForm>
         </Form>
       </Wrap>
     </Container>
   );
 };
-
-const Bottom = styled.div`
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-  color: #8692ff;
-  > p {
-    &.mssing_user {
-      color: #b7b7b7;
-    }
-  }
-`;
 
 const PasswordForm = styled.div`
   position: relative;
