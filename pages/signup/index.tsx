@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { signupEmailDuplicateCheck } from "store/actions/signup";
+// import { signupEmailDuplicateCheck } from "store/actions/signup";
 import styled, { css } from "styled-components";
 
 const Login = () => {
@@ -37,6 +37,7 @@ const Login = () => {
   };
 
   const signup = () => {
+    alert(email);
     dispatch(
       signupEmailDuplicateCheck({
         userEmail: email,
@@ -87,7 +88,9 @@ const Login = () => {
               />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            <LoginButton onClick={signup}>계정 만들기</LoginButton>
+            <LoginButton type="button" onClick={signup}>
+              계정 만들기
+            </LoginButton>
           </LoginForm>
         </Form>
       </Wrap>
