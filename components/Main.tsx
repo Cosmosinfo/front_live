@@ -114,10 +114,10 @@ const liveData = [
 
 const Main = () => {
   const stageData = useRecoilValue(getMainStageData);
-  // const artistData = useRecoilValue(getMainArtistData);
+  const newData = useRecoilValue(getMainArtistData);
 
-  console.log(stageData.streams);
-  // console.log(artistData);
+  console.log(stageData);
+  console.log(newData);
 
   return (
     <Container>
