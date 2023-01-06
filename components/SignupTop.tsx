@@ -3,52 +3,38 @@ import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
-const MainLeft = () => {
+const SignupTop = () => {
   const router = useRouter();
   const { pathname } = router;
 
   const menus = [
     {
       id: 1,
-      name: "홈",
-      imgUrl: "/images/house.svg",
-      nowImgUrl: "/images/house_white.svg",
-      pathname: "/",
+      name: "약관 동의",
+      imgUrl: "/images/signup/agreement_white.svg",
+      nowImgUrl: "/images/signup/agreement_white.svg",
+      pathname: "/signup/type/agreement",
     },
     {
       id: 2,
-      name: "스테이지",
-      imgUrl: "/images/stage.svg",
-      nowImgUrl: "/images/stage_white.svg",
-      pathname: "/stage",
+      name: "개인정보 입력",
+      imgUrl: "/images/signup/agreement_white.svg",
+      nowImgUrl: "/images/signup/agreement_white.svg",
+      pathname: "/signup/type/insert",
     },
     {
       id: 3,
-      name: "아티스트",
-      imgUrl: "/images/artist.svg",
-      nowImgUrl: "/images/artist_white.svg",
-      pathname: "/artist",
+      name: "좋아하는 장르",
+      imgUrl: "/images/signup/agreement_white.svg",
+      nowImgUrl: "/images/signup/agreement_white.svg",
+      pathname: "/signup/type/favorite_music",
     },
     {
       id: 4,
-      name: "스토어",
-      imgUrl: "/images/shop.svg",
-      nowImgUrl: "/images/shop_white.svg",
-      pathname: "/store",
-    },
-    {
-      id: 5,
-      name: "설정",
-      imgUrl: "/images/setting.svg",
-      nowImgUrl: "/images/setting_white.svg",
-      pathname: "/setting",
-    },
-    {
-      id: 6,
-      name: "도움말",
-      imgUrl: "/images/flag.svg",
-      nowImgUrl: "/images/flag_white.svg",
-      pathname: "/help",
+      name: "가입완료",
+      imgUrl: "/images/signup/agreement_white.svg",
+      nowImgUrl: "/images/signup/agreement_white.svg",
+      pathname: "/signup/type/complete",
     },
   ];
 
@@ -67,11 +53,9 @@ const MainLeft = () => {
 
 const Nav = styled.nav`
   min-width: 250px;
-  background: #181820;
   padding: 10px 30px;
   color: #878787;
   display: flex;
-  flex-direction: column;
 `;
 
 const NavInfo = styled.a<{ imgUrl: string; nowImgUrl: string; isHere: boolean }>`
@@ -98,4 +82,4 @@ const NavInfo = styled.a<{ imgUrl: string; nowImgUrl: string; isHere: boolean }>
   }
 `;
 
-export default MainLeft;
+export default SignupTop;
