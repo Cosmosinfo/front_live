@@ -18,7 +18,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         <MainTop />
         <Wrap>
           <MainLeft />
-          <Component {...pageProps} />
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Component {...pageProps} />
+          </React.Suspense>
         </Wrap>
         <GlobalStyles />
       </RecoilRoot>

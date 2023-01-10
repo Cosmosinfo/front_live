@@ -9,7 +9,7 @@ const index = () => {
   return (
     <Container>
       <Form>
-        <img />
+        <img src="/images/signup/complete.svg" width="100px" height="100px" />
         <div>가입 완료</div>
         <div className="welcome">
           <span>Welcome to </span>FullDive!
@@ -25,10 +25,6 @@ const Form = styled.div`
   margin: 30% auto;
   text-align: center;
   > img {
-    width: 100px;
-    height: 100px;
-    background: url("/images/signup/complete.svg") no-repeat;
-    border: 1px solid black;
     margin-bottom: 25px;
   }
   > div {

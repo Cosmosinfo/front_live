@@ -1,11 +1,20 @@
-import { selector } from "recoil";
+import { selector, atom } from "recoil";
 import axios from "axios";
+
+export const mainStageDateState = atom({
+  key: "mainStageDateState",
+  default: [],
+});
+
+export const mainArtistDateState = atom({
+  key: "mainArtistDateState",
+  default: [],
+});
 
 export const getMainStageData = selector({
   key: `getMainStageData`,
   get: async () => {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/main/mainInfo`);
-    console.log(response.data);
     return response.data;
   },
 });
