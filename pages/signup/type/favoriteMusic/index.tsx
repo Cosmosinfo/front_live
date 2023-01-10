@@ -100,6 +100,14 @@ const music = [
 ];
 
 const index = () => {
+  const moveToPreviousStep = () => {
+    location.href = "/signup/type/privateInfo";
+  };
+
+  const moveToNextStep = () => {
+    location.href = "/signup/type/signupComplete";
+  };
+
   return (
     <Container>
       <Form>
@@ -122,8 +130,12 @@ const index = () => {
           </MusicBox>
         </Main>
         <Bottom>
-          <button className="previous">이전</button>
-          <button className="next">다음</button>
+          <button className="previous" onClick={moveToPreviousStep}>
+            이전
+          </button>
+          <button className="next" onClick={moveToNextStep}>
+            다음
+          </button>
         </Bottom>
       </Form>
     </Container>
