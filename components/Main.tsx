@@ -113,11 +113,11 @@ const liveData = [
 ];
 
 const Main = () => {
-  const stageData = useRecoilValue(getMainStageData);
-  const newData = useRecoilValue(getMainArtistData);
+  // const stageData = useRecoilValue(getMainStageData);
+  // const newData = useRecoilValue(getMainArtistData);
 
-  console.log(stageData);
-  console.log(newData);
+  // console.log(stageData);
+  // console.log(newData);
 
   return (
     <Container>
@@ -378,6 +378,7 @@ const Section = styled.section`
 
 const Container = styled.main`
   min-width: 80%;
+
   background: #1e1e1e;
   color: #ffffff;
 `;

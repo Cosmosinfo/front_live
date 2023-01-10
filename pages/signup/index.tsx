@@ -252,7 +252,7 @@ const Wrap = styled.div`
 
 const Container = styled.main`
   width: calc(100vw - 250px);
-  height: 100vh;
+  height: 115vh;
   background: #1e1e1e;
   color: #ffffff;
   display: flex;

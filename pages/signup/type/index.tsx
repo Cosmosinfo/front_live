@@ -65,9 +65,6 @@ const Bottom = styled.div`
 `;
 
 const Form = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-around; */
   max-width: 520px;
   margin: 36px auto;
   text-align: center;
