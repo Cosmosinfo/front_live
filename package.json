@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "cross-env NODE_ENV=test next build",
-    "start": "cross-env NODE_ENV=test",
+    "test": "cross-env NODE_ENV=test",
+    "start": "cross-env NODE_ENV=production",
     "lint": "next lint"
   },
   "author": "Jihwan Jeon",
@@ -22,6 +23,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "recoil": "^0.7.6",
+    "recoil-persist": "^4.2.0",
     "styled-components": "^5.3.6",
     "swiper": "^8.4.5",
     "typescript": "4.9.4"

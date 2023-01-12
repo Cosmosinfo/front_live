@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import React from "react";
 import Link from "next/link";
+import { useRecoilValue } from "recoil";
+import { userState } from "../states/login";
 
 const MainTop = () => {
+  const user = useRecoilValue(userState);
+  console.log(user);
+
   return (
     <Header>
       <Logo>

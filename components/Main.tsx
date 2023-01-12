@@ -116,11 +116,7 @@ const Main = () => {
   const stageData = useRecoilValue(getMainStageData);
   const newData = useRecoilValue(getMainArtistData);
 
-  console.log(stageData);
   console.log(newData);
-
-  // console.log(stageData);
-  // console.log(newData);
 
   return (
     <Container>
