@@ -43,7 +43,7 @@ const Login = () => {
         fullEmail,
         password,
       });
-    } catch (e) {
+    } catch (e : any) {
       console.log(e.error);
     }
   };
