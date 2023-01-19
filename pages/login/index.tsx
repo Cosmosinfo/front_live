@@ -1,4 +1,3 @@
-import axios from "axios";
 import Link from "next/link";
 import React, { useState, ChangeEvent } from "react";
 import styled, { css } from "styled-components";
@@ -34,20 +33,6 @@ const Login = () => {
     });
   };
 
-  const fullEmail = email + "@" + emailSite;
-
-  const submit = async (e: any) => {
-    e.preventDefault();
-    try {
-      const data = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, {
-        fullEmail,
-        password,
-      });
-    } catch (e : any) {
-      console.log(e.error);
-    }
-  };
-
   return (
     <Container>
       <Wrap>
@@ -68,7 +53,7 @@ const Login = () => {
             </SocialLogin>
           </Top>
           <Or>또는</Or>
-          <LoginForm onSubmit={submit}>
+          <LoginForm>
             <p>이메일</p>
             <EmailForm>
               <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
@@ -275,7 +260,7 @@ const Wrap = styled.div`
 
 const Container = styled.main`
   width: calc(100vw - 250px);
-  height: 110vh;
+  height: 100%;
   background: #1e1e1e;
   color: #ffffff;
   display: flex;

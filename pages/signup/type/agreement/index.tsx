@@ -46,14 +46,6 @@ const data = [
 const index = () => {
   const [checkItems, setCheckItems] = useState([1, 2]);
 
-  const moveToPreviousStep = () => {
-    location.href = "/signup/type";
-  };
-
-  const moveToNextStep = () => {
-    location.href = "/signup/type/privateInfo";
-  };
-
   const handleSingleCheck = (checked: boolean, id: number) => {
     if (checked) {
       // 단일 선택 시 체크된 아이템을 배열에 추가
@@ -126,12 +118,8 @@ const index = () => {
           </StyledTable>
         </Main>
         <Bottom>
-          <button className="previous" onClick={moveToPreviousStep}>
-            이전
-          </button>
-          <button className="next" onClick={moveToNextStep}>
-            다음
-          </button>
+          <button className="previous">이전</button>
+          <button className="next">다음</button>
         </Bottom>
       </Form>
     </Container>
@@ -274,7 +262,7 @@ const Form = styled.div`
 const Container = styled.div`
   display: inline-block;
   width: calc(100vw - 250px);
-  height: 100vh;
+  height: 100%;
   background: #1e1e1e;
   color: #ffffff;
 `;

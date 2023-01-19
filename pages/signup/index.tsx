@@ -33,10 +33,6 @@ const Login = () => {
     });
   };
 
-  const moveToNextStep = () => {
-    location.href = "/signup/type";
-  };
-
   return (
     <Container>
       <Wrap>
@@ -80,9 +76,7 @@ const Login = () => {
               />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            <LoginButton type="button" onClick={moveToNextStep}>
-              계정 만들기
-            </LoginButton>
+            <LoginButton type="button">계정 만들기</LoginButton>
           </LoginForm>
         </Form>
       </Wrap>
@@ -258,7 +252,7 @@ const Wrap = styled.div`
 
 const Container = styled.main`
   width: calc(100vw - 250px);
-  height: 115vh;
+  height: 100%;
   background: #1e1e1e;
   color: #ffffff;
   display: flex;

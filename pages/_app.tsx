@@ -18,9 +18,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <MainTop />
         <Wrap>
           <MainLeft />
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <Component {...pageProps} />
-          </React.Suspense>
+          <Component {...pageProps} />
         </Wrap>
         <GlobalStyles />
       </RecoilRoot>
@@ -31,6 +29,8 @@ const App = ({ Component, pageProps }: AppProps) => {
 const Wrap = styled.div`
   display: flex;
   min-width: 100%;
+  height: 100%;
+  padding-top: 100px;
 `;
 
 export default App;

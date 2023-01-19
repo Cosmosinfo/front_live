@@ -1,13 +1,8 @@
 import styled from "styled-components";
 import React from "react";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { userState } from "../states/login";
 
 const MainTop = () => {
-  const user = useRecoilValue(userState);
-  console.log(user);
-
   return (
     <Header>
       <Logo>
@@ -31,11 +26,14 @@ const MainTop = () => {
 };
 
 const Header = styled.header`
+  position: fixed;
+  width: 100%;
   height: 100px;
   background-color: #181820;
   display: flex;
   color: #ffffff;
   align-items: center;
+  z-index: 999;
 `;
 
 const Logo = styled.div`

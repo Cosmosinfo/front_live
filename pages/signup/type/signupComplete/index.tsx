@@ -1,20 +1,17 @@
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
 const index = () => {
-  const moveToHome = () => {
-    location.href = "/";
-  };
-
   return (
     <Container>
       <Form>
         <img src="/images/signup/complete.svg" width="100px" height="100px" />
-        <div>가입 완료</div>
-        <div className="welcome">
-          <span>Welcome to </span>FullDive!
-        </div>
-        <button onClick={moveToHome}>메인으로 이동</button>
+        <div>가입완료</div>
+        <p>Welcome to FullDive!</p>
+        <Link href="/" legacyBehavior passHref>
+          <button>메인으로 이동</button>
+        </Link>
       </Form>
     </Container>
   );
@@ -22,34 +19,30 @@ const index = () => {
 
 const Form = styled.div`
   max-width: 250px;
-  margin: 30% auto;
+  margin: 20% auto;
   text-align: center;
-  > img {
-    margin-bottom: 25px;
-  }
   > div {
+    margin-top: 24px;
     font-size: 2.25rem;
-    &.welcome {
-      margin-top: 24px;
-      font-size: 1.25rem;
-      font-weight: 500;
-      > span {
-        font-weight: 300;
-      }
-    }
+  }
+  > p {
+    margin-top: 24px;
+    font-size: 1.25rem;
   }
   > button {
+    width: 100%;
     margin-top: 24px;
-    padding: 20px 76px;
-    background: #273dff;
+    padding: 20px 80px;
+    background-color: #273dff;
     border-radius: 200px;
+    font-size: 1rem;
   }
 `;
 
 const Container = styled.div`
   display: inline-block;
   width: calc(100vw - 250px);
-  height: 110vh;
+  height: 100%;
   background: #1e1e1e;
   color: #ffffff;
 `;

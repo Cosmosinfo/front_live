@@ -84,7 +84,10 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
-
+  body {
+    height: 100%;
+    background-color: #181820;
+  }
   body, div {
     font-size: 18px;
     font-family: 'Pretendard';

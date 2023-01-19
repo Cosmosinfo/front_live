@@ -31,14 +31,6 @@ const index = () => {
     setSelected(e.target.value);
   };
 
-  const moveToPreviousStep = () => {
-    location.href = "/signup/type/agreement";
-  };
-
-  const moveToNextStep = () => {
-    location.href = "/signup/type/favoriteMusic";
-  };
-
   return (
     <Container>
       <Form>
@@ -102,12 +94,8 @@ const index = () => {
           </InputForm>
         </Main>
         <Bottom>
-          <button className="previous" onClick={moveToPreviousStep}>
-            이전
-          </button>
-          <button className="next" onClick={moveToNextStep}>
-            다음
-          </button>
+          <button className="previous">이전</button>
+          <button className="next">다음</button>
         </Bottom>
       </Form>
     </Container>
@@ -224,7 +212,7 @@ const Form = styled.div`
 const Container = styled.div`
   display: inline-block;
   width: calc(100vw - 250px);
-  height: 110vh;
+  height: 100%;
   background: #1e1e1e;
   color: #ffffff;
 `;

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useRecoilValue } from "recoil";
 SwiperCore.use([Navigation, Pagination]);
-import { getMainStageData, getMainArtistData } from "../states/main";
 
 const images = [
   {
@@ -73,115 +70,146 @@ const artistData = [
   },
 ];
 
-// const liveData = [
-//   {
-//     stageId: 1,
-//     imgUrl: "/images/sample.png",
-//     title: "공연제목",
-//     artist: "공연 참여 아티스트",
-//     ticket: "1장",
-//     link: "/artist",
-//     ticketImg: "/images/ticket.svg",
-//   },
-//   {
-//     stageId: 2,
-//     imgUrl: "/images/sample.png",
-//     title: "공연제목",
-//     artist: "공연 참여 아티스트",
-//     ticket: "1장",
-//     link: "/artist",
-//     ticketImg: "/images/ticket.svg",
-//   },
-//   {
-//     stageId: 3,
-//     imgUrl: "/images/sample.png",
-//     title: "공연제목",
-//     artist: "공연 참여 아티스트",
-//     ticket: "1장",
-//     link: "/artist",
-//     ticketImg: "/images/ticket.svg",
-//   },
-//   {
-//     stageId: 4,
-//     imgUrl: "/images/sample.png",
-//     title: "공연제목",
-//     artist: "공연 참여 아티스트",
-//     ticket: "1장",
-//     link: "/artist",
-//     ticketImg: "/images/ticket.svg",
-//   },
-// ];
+const liveData = [
+  {
+    stageId: 1,
+    imgUrl: "/images/sample.png",
+    title: "공연제목",
+    artist: "공연 참여 아티스트",
+    ticket: "1장",
+    link: "/artist",
+    ticketImg: "/images/ticket.svg",
+  },
+  {
+    stageId: 2,
+    imgUrl: "/images/sample.png",
+    title: "공연제목",
+    artist: "공연 참여 아티스트",
+    ticket: "1장",
+    link: "/artist",
+    ticketImg: "/images/ticket.svg",
+  },
+  {
+    stageId: 3,
+    imgUrl: "/images/sample.png",
+    title: "공연제목",
+    artist: "공연 참여 아티스트",
+    ticket: "1장",
+    link: "/artist",
+    ticketImg: "/images/ticket.svg",
+  },
+  {
+    stageId: 4,
+    imgUrl: "/images/sample.png",
+    title: "공연제목",
+    artist: "공연 참여 아티스트",
+    ticket: "1장",
+    link: "/artist",
+    ticketImg: "/images/ticket.svg",
+  },
+];
 
 const Main = () => {
-  const stageData = useRecoilValue(getMainStageData);
-  const newData = useRecoilValue(getMainArtistData);
+  // const stageData = useRecoilValue(getMainStageData);
+  // const newData = useRecoilValue(getMainArtistData);
 
-  console.log(newData);
+  // console.log(stageData);
+  // console.log(newData);
 
   return (
     <Container>
-      <SwiperLayout>
-        <Swiper
-          className="banner-swiper"
-          slidesPerView={1}
-          pagination={{ clickable: true }}
-          loop={true}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-        >
-          {images.map((image, index) => (
-            <SwiperSlide key={index}>
-              <img src={image.imgUrl} alt="banner" width="100%" height={500} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </SwiperLayout>
-      <Section>
-        <a href="/artist">
-          <Title>새로운 아티스트</Title>
-        </a>
+      <React.Suspense fallback={<div>Loading...</div>}>
         <SwiperLayout>
-          <Swiper className="artist-swiper" slidesPerView={6} spaceBetween={24} loop={true}>
-            {artistData.map((artist, id) => (
-              <SwiperSlide key={id} className="swiper-slide">
-                <Figure href="/artist" artist="artist">
-                  <ImageArea src={artist.imgUrl} alt="artist" />
-                </Figure>
-                <ContentBox>
-                  <img src={artist.imgUrl} />
-                  <div>
-                    <p>{artist.name}</p>
-                    <span>{artist.category}</span>
-                  </div>
-                </ContentBox>
+          <Swiper
+            className="banner-swiper"
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            loop={true}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+          >
+            {images.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img src={image.imgUrl} alt="banner" width="100%" height={500} />
               </SwiperSlide>
             ))}
           </Swiper>
         </SwiperLayout>
-        <StageContainer>
-          <a href="/stage">
-            <Title>라이브 스테이지</Title>
+        <Section>
+          <a href="/artist">
+            <Title>새로운 아티스트</Title>
           </a>
           <SwiperLayout>
-            <Swiper className="liveStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-              {stageData &&
-                stageData.stageReadyInfo.map((data: any, id: any) => (
+            <Swiper className="artist-swiper" slidesPerView={6} spaceBetween={24} loop={true}>
+              {artistData.map((artist, id) => (
+                <SwiperSlide key={id} className="swiper-slide">
+                  <Figure href="/artist" artist="artist">
+                    <ImageArea src={artist.imgUrl} alt="artist" />
+                  </Figure>
+                  <ContentBox>
+                    <img src={artist.imgUrl} />
+                    <div>
+                      <p>{artist.name}</p>
+                      <span>{artist.category}</span>
+                    </div>
+                  </ContentBox>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </SwiperLayout>
+          <StageContainer>
+            <a href="/stage">
+              <Title>라이브 스테이지</Title>
+            </a>
+            <SwiperLayout>
+              <Swiper className="liveStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
+                {liveData &&
+                  liveData.map((data: any, id: any) => (
+                    <SwiperSlide key={id}>
+                      <Figure href={data.stageStreamKey} artist="none">
+                        <Live>
+                          <Dot />
+                          <p> Live</p>
+                        </Live>
+                        <ImageArea src={data.stageThumbnailImage} alt="live_stage" />
+                      </Figure>
+                      <StageContentBox>
+                        <div>
+                          <img src={data.stageThumbnailImage} />
+                          <div>
+                            <p>{data.stageTitle}</p>
+                            <span>{data.artistId}</span>
+                          </div>
+                        </div>
+                        <Ticket>
+                          <img src={data.ticketImg} className="ticket" />
+                          {data.ticket}
+                        </Ticket>
+                      </StageContentBox>
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+            </SwiperLayout>
+          </StageContainer>
+          <StageContainer>
+            <a href="/stage">
+              <Title>다가오는 스테이지</Title>
+            </a>
+            <SwiperLayout>
+              <Swiper className="upcomingStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
+                {liveData.map((data, id) => (
                   <SwiperSlide key={id}>
-                    <Figure href={data.stageStreamKey} artist="none">
-                      <Live>
-                        <Dot />
-                        <p> Live</p>
-                      </Live>
-                      <ImageArea src={data.stageThumbnailImage} alt="live_stage" />
+                    <Figure href={data.link} artist="none">
+                      <ImageArea src={data.imgUrl} alt="upcoming_stage" />
                     </Figure>
                     <StageContentBox>
                       <div>
-                        <img src={data.stageThumbnailImage} />
+                        <img src={data.imgUrl} />
                         <div>
-                          <p>{data.stageTitle}</p>
-                          <span>{data.stageArtistId}</span>
+                          <p>{data.title}</p>
+                          <span>{data.artist}</span>
                         </div>
                       </div>
                       <Ticket>
@@ -191,27 +219,26 @@ const Main = () => {
                     </StageContentBox>
                   </SwiperSlide>
                 ))}
-            </Swiper>
-          </SwiperLayout>
-        </StageContainer>
-        <StageContainer>
-          <a href="/stage">
-            <Title>다가오는 스테이지</Title>
-          </a>
-          <SwiperLayout>
-            <Swiper className="upcomingStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-              {stageData &&
-                stageData.stageStartInfo.map((data: any, id: number) => (
+              </Swiper>
+            </SwiperLayout>
+          </StageContainer>
+          <StageContainer>
+            <a href="/stage">
+              <Title>지난 스테이지</Title>
+            </a>
+            <SwiperLayout>
+              <Swiper className="goneStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
+                {liveData.map((data, id) => (
                   <SwiperSlide key={id}>
-                    <Figure href={data.stageStreamKey} artist="none">
-                      <ImageArea src={data.stageThumbnailImage} alt="upcoming_stage" />
+                    <Figure href={data.link} artist="none">
+                      <ImageArea src={data.imgUrl} alt="gone_stage" />
                     </Figure>
                     <StageContentBox>
                       <div>
-                        <img src={data.stageThumbnailImage} />
+                        <img src={data.imgUrl} />
                         <div>
-                          <p>{data.stageTitle}</p>
-                          <span>{data.stageArtistId}</span>
+                          <p>{data.title}</p>
+                          <span>{data.artist}</span>
                         </div>
                       </div>
                       <Ticket>
@@ -221,40 +248,11 @@ const Main = () => {
                     </StageContentBox>
                   </SwiperSlide>
                 ))}
-            </Swiper>
-          </SwiperLayout>
-        </StageContainer>
-        <StageContainer>
-          <a href="/stage">
-            <Title>지난 스테이지</Title>
-          </a>
-          <SwiperLayout>
-            <Swiper className="goneStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-              {stageData &&
-                stageData.stageExitInfo.map((data: any, id: number) => (
-                  <SwiperSlide key={id}>
-                    <Figure href={data.stageStreamKey} artist="none">
-                      <ImageArea src={data.stageThumbnailImage} alt="gone_stage" />
-                    </Figure>
-                    <StageContentBox>
-                      <div>
-                        <img src={data.stageThumbnailImage} />
-                        <div>
-                          <p>{data.stageTitle}</p>
-                          <span>{data.stageArtistId}</span>
-                        </div>
-                      </div>
-                      <Ticket>
-                        <img src={data.ticketImg} className="ticket" />
-                        {data.ticket}
-                      </Ticket>
-                    </StageContentBox>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
-          </SwiperLayout>
-        </StageContainer>
-      </Section>
+              </Swiper>
+            </SwiperLayout>
+          </StageContainer>
+        </Section>
+      </React.Suspense>
     </Container>
   );
 };
