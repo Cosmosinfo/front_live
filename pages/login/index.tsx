@@ -1,9 +1,15 @@
 import axios from "axios";
 import Link from "next/link";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styled, { css } from "styled-components";
+import { gapi } from 'gapi-script'
+
+
+import GoogleLogin from 'react-google-login';
 
 const Login = () => {
+
+  
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -48,6 +54,40 @@ const Login = () => {
     }
   };
 
+  // const [userObj, setUserObj]=React.useState({
+  //   email:"",
+  //   name:""
+  // })
+  // //로그인 성공시 res처리
+  // const onLoginSuccess=(res:any)=>{
+  //   setUserObj({...userObj,
+  //     email:res.profileObj.email,
+  //     name:res.profileObj.name
+  //   })
+    
+  // }
+  // const onFailure = (res: any) => {
+  //   console.log(res);
+    
+  // }
+
+  const GoogleAPI = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
+
+  const onSuccess = (res: any) => {
+    console.log("Login SUCCESS! Current user : ", res.profileObj);
+
+
+  }
+
+  
+  const onFailure = (res: any) => {
+    console.log("Login faile! Current res : ", res);
+
+  }
+
+  
+  
+
   return (
     <Container>
       <Wrap>
@@ -58,6 +98,14 @@ const Login = () => {
             </Title>
             <SocialLogin>
               <div>
+              {/* <GoogleLogin
+                  clientId={GoogleAPI}
+                  responseType={"id_token"}
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'}
+                  isSignedIn={true}
+            /> */}
                 <SosicalLoginButton social="google">구글 계정으로 로그인</SosicalLoginButton>
                 <SosicalLoginButton social="line">라인 계정으로 로그인</SosicalLoginButton>
               </div>
@@ -282,3 +330,4 @@ const Container = styled.main`
 `;
 
 export default Login;
+
