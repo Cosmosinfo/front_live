@@ -1,5 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import flv from "flv.js";
+import axios from "axios";
+import queryString from "query-string";
+import ShareModal from "../../components/modal/ShareModal";
+import DeclarationModal from "components/modal/DeclarationModal";
 
 const artistData = [
   {
@@ -83,140 +88,238 @@ const shopping_item = [
   },
 ];
 
-const index = () => {
-  return (
-    <Container>
-      <Left>
-        <VideoContainer>
-          <video width="100%" />
-        </VideoContainer>
-        <Title>
-          <div>
-            <p>지킬 앤 하이드</p>
-            <span>
-              실시간 시청자 수 <span>00명</span>
-            </span>
-          </div>
-          <ButtonWrap>
-            <button>공유</button>
-            <button>신고</button>
-          </ButtonWrap>
-        </Title>
-        <ContentBox>
-          <img src="/images/artist.svg" />
-          <div>공연 기획자</div>
-        </ContentBox>
-        <Description>
-          <div className="date">
-            <div>공연 날짜 및 시간</div>
-            <p>2022. 12. 01. 목요일 18:00 - 20:00 (120분)</p>
-          </div>
-          <div>
-            <div>공연 장소</div>
-            <p>서울시 관악구 서울대입구 우리집 집주소 515-12</p>
-          </div>
-        </Description>
-        <Wrap>
-          <div>참여 아티스트</div>
-          <Artist>
-            {artistData.map((artist, id) => (
-              <div key={id}>
-                <img src={artist.imgUrl} />
-                <p>{artist.name}</p>
-              </div>
-            ))}
-          </Artist>
-        </Wrap>
-        <Wrap>
-          <div>추천상품</div>
-          <Shop>
-            {shopping_item.map((data, id) => (
-              <div key={id}>
-                <img src={data.imgUrl} />
+class index extends React.Component {
+  public state = {
+    shareModalOpen: false,
+    declarationModalClose: false,
+  };
+
+  openShareModal = () => {
+    this.setState({ shareModalOpen: true });
+  };
+  closeShareModal = () => {
+    this.setState({ shareModalOpen: false });
+  };
+  openDeclarationModal = () => {
+    this.setState({ declarationModalOpen: true });
+  };
+  closeDeclarationModal = () => {
+    this.setState({ declarationModalClose: false });
+  };
+
+  // videoRef: React.RefObject<HTMLVideoElement>;
+  // player: any;
+  // constructor(props: {} | Readonly<{}>) {
+  //   super(props);
+
+  //   this.videoRef = React.createRef();
+  // }
+
+  // state = {
+  //   data: null,
+  // };
+
+  // componentDidMount() {
+  //   this.data();
+  //   this.buildPlayer();
+  // }
+
+  // componentDidUpdate() {
+  //   this.buildPlayer();
+  // }
+
+  // componentWillUnmount() {
+  //   this.player.destroy();
+  // }
+
+  // async data() {
+  //   let qs = queryString.parse(window.location.search);
+
+  //   await axios
+  //     .post("http://52.53.207.20:8080/api/stage/findIdLiveList", { stageStreamKey: qs.streamKey })
+  //     .then((res) => this.setState({ data: res }));
+  // }
+
+  // buildPlayer() {
+  //   let qs = queryString.parse(window.location.search);
+
+  //   if (this.player) {
+  //     return;
+  //   }
+
+  //   this.player = flv.createPlayer({
+  //     type: "flv",
+  //     // url: `http://52.53.207.20:8000/live/${qs.streamKey}`,
+  //     url: `http://172.30.1.8:8000/live/cb792f82-fbce-48f4-a5b2-b30fcae31d59.flv`,
+  //   });
+  //   this.player.attachMediaElement(this.videoRef.current);
+  //   this.player.load();
+
+  //   // const { id } = this.props.match.params;
+  //   // this.player = flv.createPlayer({
+  //   //     type: "flv",
+  //   //     url: `http://172.30.1.8:8000/live/cb792f82-fbce-48f4-a5b2-b30fcae31d59.flv`,
+  //   // });
+  //   // this.player.attachMediaElement(this.videoRef);
+  //   // this.player.load();
+  // }
+
+  render() {
+    return (
+      <Container>
+        <Left>
+          <VideoContainer>
+            {/* <video ref={this.videoRef} width="100%" controls> */}
+            {/* <source src={this.videoRef} type="video/mp4" label="SD" res="480" />
+              <source src={this.videoRef} type="video/mp4" label="HD" res="1080" />
+              <source src={this.videoRef} type="video/mp4" label="phone" res="144" />
+              <source src={this.videoRef} type="video/mp4" label="4k" res="2160" /> */}
+            {/* </video> */}
+          </VideoContainer>
+          <Title>
+            <div>
+              <p>지킬 앤 하이드</p>
+              <span>
+                실시간 시청자 수 <span>00명</span>
+              </span>
+            </div>
+            <ButtonWrap>
+              <button onClick={this.openShareModal}>공유</button>
+              <ShareModal visible={this.state.shareModalOpen} onClose={this.closeShareModal} />
+              <button onClick={this.openDeclarationModal}>신고</button>
+              <DeclarationModal visible={this.state.declarationModalClose} onClose={this.closeDeclarationModal} />
+            </ButtonWrap>
+          </Title>
+          <ContentBox>
+            <img src="/images/artist.svg" />
+            <div>공연 기획자</div>
+          </ContentBox>
+          <Description>
+            <div className="date">
+              <div>공연 날짜 및 시간</div>
+              <p>2022. 12. 01. 목요일 18:00 - 20:00 (120분)</p>
+            </div>
+            <div>
+              <div>공연 장소</div>
+              <p>서울시 관악구 서울대입구 우리집 집주소 515-12</p>
+            </div>
+          </Description>
+          <Wrap>
+            <div>참여 아티스트</div>
+            <Artist>
+              {artistData.map((artist, id) => (
+                <div key={id}>
+                  <img src={artist.imgUrl} />
+                  <p>{artist.name}</p>
+                </div>
+              ))}
+            </Artist>
+          </Wrap>
+          <Wrap>
+            <div>추천상품</div>
+            <Shop>
+              {shopping_item.map((data, id) => (
+                <div key={id}>
+                  <img src={data.imgUrl} />
+                  <div>
+                    <p className="name">{data.name}</p>
+                    <p className="company">{data.company}</p>
+                    <p className="cost">{data.cost}</p>
+                  </div>
+                </div>
+              ))}
+            </Shop>
+          </Wrap>
+        </Left>
+        <Right>
+          <div>채팅</div>
+          <ChatBoxContainer>
+            <div>
+              <ChatBox>
+                <img src="/images/artist.svg" />
                 <div>
-                  <p className="name">{data.name}</p>
-                  <p className="company">{data.company}</p>
-                  <p className="cost">{data.cost}</p>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-              </div>
-            ))}
-          </Shop>
-        </Wrap>
-      </Left>
-      <Right>
-        <div>채팅</div>
-        <ChatBoxContainer>
-          <div>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
-                </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-          </div>
-          <Chatting placeholder="메세지를 입력해주세요" />
-        </ChatBoxContainer>
-      </Right>
-    </Container>
-  );
-};
+              </ChatBox>
+            </div>
+            <label>
+              <Chatting placeholder="메세지를 입력해주세요" />
+              <ChatButton>{/* <img src="/images/stage/sendbutton.svg" /> */}</ChatButton>
+            </label>
+          </ChatBoxContainer>
+        </Right>
+      </Container>
+    );
+  }
+}
+
+const ChatButton = styled.button`
+  width: 63px;
+  height: 25px;
+  position: absolute;
+  background: url("/images/stage/sendbutton.svg") no-repeat 50% #273dff;
+  padding: 0 21px;
+  top: 1px;
+  right: 12px;
+  border-radius: 12px;
+`;
 
 const Chatting = styled.input`
   width: 100%;
@@ -226,7 +329,7 @@ const Chatting = styled.input`
   border-radius: 4px;
   color: #ffffff;
   font-size: 0.9rem;
-  padding: 0 12px;
+  padding: 0 25% 0 12px;
 `;
 
 const ChatBox = styled.div`
@@ -256,6 +359,9 @@ const ChatBox = styled.div`
 
 const ChatBoxContainer = styled.div`
   margin-bottom: 7px;
+  > label {
+    position: relative;
+  }
   > div {
     height: 600px;
     overflow: scroll;
@@ -398,7 +504,7 @@ const VideoContainer = styled.div`
 
 const Right = styled.div`
   position: sticky;
-  height: 60%;
+  height: 100%;
   padding: 24px;
   background: #181820;
   width: 35%;
@@ -423,6 +529,7 @@ const Left = styled.div`
 
 const Container = styled.main`
   width: calc(100vw - 250px);
+  margin-left: 250px;
   height: 100%;
   background: #1e1e1e;
   color: #ffffff;

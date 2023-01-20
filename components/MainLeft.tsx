@@ -67,8 +67,10 @@ const MainLeft = () => {
 };
 
 const Nav = styled.nav`
+  position: fixed;
   padding-top: 100px;
   min-width: 250px;
+  height: 100%;
   background: #181820;
   padding: 10px 30px;
   color: #878787;

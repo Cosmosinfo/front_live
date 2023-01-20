@@ -42,6 +42,7 @@ const Form = styled.div`
 const Container = styled.div`
   display: inline-block;
   width: calc(100vw - 250px);
+  margin-left: 250px;
   height: 100%;
   background: #1e1e1e;
   color: #ffffff;
