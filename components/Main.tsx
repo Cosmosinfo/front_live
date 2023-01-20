@@ -138,7 +138,7 @@ const Main = () => {
           </Swiper>
         </SwiperLayout>
         <Section>
-        <video width="320" height="240" src="/images/2023-01-17-22-00-02.mp4" controls></video> 
+        <video width="320" height="240" src="/images/media/live/TEST/2023-01-20-06-05-32.mp4" controls></video> 
           <a href="/artist">
             <Title>새로운 아티스트</Title>
           </a>
