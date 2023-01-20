@@ -91,7 +91,7 @@ const shopping_item = [
 class index extends React.Component {
   public state = {
     shareModalOpen: false,
-    declarationModalClose: false,
+    declarationModalOpen: false,
   };
 
   openShareModal = () => {
@@ -104,7 +104,7 @@ class index extends React.Component {
     this.setState({ declarationModalOpen: true });
   };
   closeDeclarationModal = () => {
-    this.setState({ declarationModalClose: false });
+    this.setState({ declarationModalOpen: false });
   };
 
   // videoRef: React.RefObject<HTMLVideoElement>;
@@ -187,7 +187,7 @@ class index extends React.Component {
               <button onClick={this.openShareModal}>공유</button>
               <ShareModal visible={this.state.shareModalOpen} onClose={this.closeShareModal} />
               <button onClick={this.openDeclarationModal}>신고</button>
-              <DeclarationModal visible={this.state.declarationModalClose} onClose={this.closeDeclarationModal} />
+              <DeclarationModal visible={this.state.declarationModalOpen} onClose={this.closeDeclarationModal} />
             </ButtonWrap>
           </Title>
           <ContentBox>

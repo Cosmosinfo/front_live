@@ -1,33 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 
-const icons = [
+const declaration_reasons = [
   {
     id: 1,
-    imgUrl: "/images/stage/instagram.svg",
+    reason: "폭력적 또는 혐오스러운 콘텐츠",
   },
   {
     id: 2,
-    imgUrl: "/images/stage/twitter.svg",
+    reason: "증오 또는 악의적인 콘텐츠",
   },
   {
     id: 3,
-    imgUrl: "/images/stage/facebook.svg",
+    reason: "희롱 또는 괴롭힘",
   },
   {
     id: 4,
-    imgUrl: "/images/stage/kakao.svg",
+    reason: "성적인 콘텐츠",
   },
   {
     id: 5,
-    imgUrl: "/images/stage/line.svg",
+    reason: "스팸 및 광고",
+  },
+  {
+    id: 6,
+    reason: "잘못된 정보",
+  },
+  {
+    id: 7,
+    reason: "기타",
   },
 ];
 
-const DeclarationModal = ({ children, visible, onClose }: any) => {
+const DeclarationModal = ({ visible, onClose }: any) => {
   if (!visible) {
     return null;
   }
+
+  const [text, setText] = useState("");
+  const [checkedList, setCheckedList] = useState([]);
+
+  const checkOnlyOne = (checkThis: any) => {
+    const checkedList = document.getElementsByName("test");
+    for (let i = 0; i < checkedList.length; i++) {
+      if (checkedList[i] !== checkThis) {
+        checkedList[i].checked = false;
+      }
+    }
+    console.log(checkedList);
+  };
+
+  const handleMessageValue = (e: any) => {
+    setText(e.target.value);
+  };
+
+  console.log(text);
 
   return (
     <>
@@ -37,31 +64,58 @@ const DeclarationModal = ({ children, visible, onClose }: any) => {
           <CloseButton type="button" onClick={onClose}></CloseButton>
         </Close>
         <Content>
-          <div>공유하기</div>
-          <p>링크(URL) 복사하기</p>
-          <div className="copyInput">
-            <div>http://www.fulldive.live/123456</div>
-            <button>복사하기</button>
-          </div>
-          <div>SNS로 공유하기</div>
-          <Icons>
-            {icons.map((icon, id) => (
+          <div className="declaration">신고하기</div>
+          <span>신고사유</span>
+          <span className="reason">신고 사유를 선택해주세요</span>
+          <DeclareContainer>
+            {declaration_reasons.map((reason, id) => (
               <div key={id}>
-                <img src={icon.imgUrl} />
+                <input type="checkbox" name="test" value={reason.id} onChange={(e) => checkOnlyOne(e.target)} />
+                {reason.reason}
               </div>
             ))}
-          </Icons>
-          {children}
+          </DeclareContainer>
+          <Textarea id="text" name="text" value={text} onChange={handleMessageValue} />
+          <Button>전송</Button>
         </Content>
       </ModalSection>
     </>
   );
 };
 
-const Icons = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 25px;
+const Button = styled.button`
+  display: block;
+  padding: 11px 46px;
+  background: #273dff;
+  border-radius: 36px;
+  margin: 12px auto 0;
+  font-size: 1rem;
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  height: 130px;
+  resize: none;
+  background: none;
+  border: 2px solid #202eae;
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 12px;
+`;
+
+const DeclareContainer = styled.div`
+  margin: 10px 0;
+  > div {
+    font-size: 0.875rem;
+    margin-bottom: 12px;
+    > input {
+      appearance: none;
+      background: #d9d9d9;
+      width: 20px;
+      height: 20px;
+      border-radius: 12px;
+    }
+  }
 `;
 
 const modalSettings = (visible: boolean) => css`
@@ -83,7 +137,6 @@ const Background = styled.div<{ visible: boolean }>`
 
 const ModalSection = styled.div<{ visible: boolean }>`
   width: 35%;
-  height: 300px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -92,9 +145,6 @@ const ModalSection = styled.div<{ visible: boolean }>`
   border-radius: 24px;
   padding: 16px;
   ${(props) => modalSettings(props.visible)}
-  > div {
-    text-align: center;
-  }
 `;
 
 const Close = styled.div`
@@ -105,30 +155,19 @@ const Close = styled.div`
 
 const Content = styled.div`
   padding: 0 11px 16px 11px;
-  > p {
-    margin-top: 18px;
-    margin-bottom: 6px;
-    font-size: 0.875rem;
-    text-align: initial;
-  }
   > div {
-    &.copyInput {
-      display: flex;
-      font-size: 1rem;
-      margin-bottom: 24px;
-      > div {
-        max-width: 325px;
-        font-size: 1rem;
-        padding: 15px 24px;
-        border: 2px solid #202eae;
-        border-radius: 120px;
-        margin-right: 12px;
-      }
-      > button {
-        padding: 14px 36px;
-        background: #273dff;
-        border-radius: 100px;
-      }
+    &.declaration {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+  }
+  > span {
+    font-size: 1rem;
+    &.reason {
+      font-size: 0.875rem;
+      color: #ff2121;
+      margin-left: 8px;
+      line-height: 19px;
     }
   }
 `;
