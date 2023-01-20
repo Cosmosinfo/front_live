@@ -138,6 +138,7 @@ const Main = () => {
           </Swiper>
         </SwiperLayout>
         <Section>
+        <video width="320" height="240" src="../../../cjh/Downloads/rtmp_test_video/live/TEST/2023-01-17-22-00-02.mp4" controls></video> 
           <a href="/artist">
             <Title>새로운 아티스트</Title>
           </a>
