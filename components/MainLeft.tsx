@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 const menus = [
   {
     id: 1,
-    name: "홈",
+    name: "Fuck you",
     imgUrl: "/images/house.svg",
     nowImgUrl: "/images/house_white.svg",
     pathname: "/",
