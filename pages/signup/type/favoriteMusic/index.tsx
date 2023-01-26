@@ -117,7 +117,7 @@ const index = () => {
           </Profile>
           <MusicBox>
             {music.map((data, id) => (
-              <div>{data.type}</div>
+              <div key={id}>{data.type}</div>
             ))}
           </MusicBox>
         </Main>

@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { GlobalStyles } from "components/styles/GlobalStyles";
 import MainTop from "components/MainTop";
 import MainLeft from "components/MainLeft";
-import { RecoilRoot } from "recoil";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -14,14 +13,12 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <title>FullDive</title>
       </Head>
-      <RecoilRoot>
-        <MainTop />
-        <Wrap>
-          <MainLeft />
-          <Component {...pageProps} />
-        </Wrap>
-        <GlobalStyles />
-      </RecoilRoot>
+      <MainTop />
+      <Wrap>
+        <MainLeft />
+        <Component {...pageProps} />
+      </Wrap>
+      <GlobalStyles />
     </>
   );
 };

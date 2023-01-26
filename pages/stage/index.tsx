@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import queryString from "query-string";
 import ShareModal from "../../components/modal/ShareModal";
 import DeclarationModal from "components/modal/DeclarationModal";
+// import ReactPlayer from "react-player";
 import dynamic from "next/dynamic";
-const FlvNextPlayer = dynamic(() => import("@ztxtxwd/react-ts-flv-player/dist/ReactFlvPlayer"), {
-  ssr: false,
-});
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
+// const FlvNextPlayer = dynamic(() => import("@ztxtxwd/react-ts-flv-player/dist/ReactFlvPlayer"), {
+//   ssr: false,
+// });
 
 const artistData = [
   {
@@ -142,147 +144,155 @@ const index = () => {
   // this.player.load();
 
   return (
-    <Container>
-      <Left>
-        <VideoContainer>
-          <FlvNextPlayer
-            url={`http://118.63.182.3:8883/live/1.flv`}
-            isMuted={false}
-            isLive={true}
-            showControls={true}
-            enableStashBuffer={true}
-          />
-        </VideoContainer>
-        <Title>
-          <div>
-            <p>지킬 앤 하이드</p>
-            <span>
-              실시간 시청자 수 <span>00명</span>
-            </span>
-          </div>
-          <ButtonWrap>
-            <button onClick={openShareModal}>공유</button>
-            <ShareModal visible={shareModalOpen} onClose={closeShareModal} />
-            <button onClick={openDeclarationModal}>신고</button>
-            <DeclarationModal visible={declarationModalOpen} onClose={closeDeclarationModal} />
-          </ButtonWrap>
-        </Title>
-        <ContentBox>
-          <img src="/images/artist.svg" />
-          <div>공연 기획자</div>
-        </ContentBox>
-        <Description>
-          <div className="date">
-            <div>공연 날짜 및 시간</div>
-            <p>2022. 12. 01. 목요일 18:00 - 20:00 (120분)</p>
-          </div>
-          <div>
-            <div>공연 장소</div>
-            <p>서울시 관악구 서울대입구 우리집 집주소 515-12</p>
-          </div>
-        </Description>
-        <Wrap>
-          <div>참여 아티스트</div>
-          <Artist>
-            {artistData.map((artist, id) => (
-              <div key={id}>
-                <img src={artist.imgUrl} />
-                <p>{artist.name}</p>
-              </div>
-            ))}
-          </Artist>
-        </Wrap>
-        <Wrap>
-          <div>추천상품</div>
-          <Shop>
-            {shopping_item.map((data, id) => (
-              <div key={id}>
-                <img src={data.imgUrl} />
+    <Fragment>
+      <Container>
+        <Left>
+          <VideoContainer>
+            <ReactPlayer
+              url={`http://118.63.182.3:8883/live/1.flv`}
+              muted={true}
+              playing={true}
+              controls={true}
+              enableStashBuffer={true}
+              width="100%"
+              config={{
+                file: {
+                  forceFLV: true,
+                },
+              }}
+            />
+          </VideoContainer>
+          <Title>
+            <div>
+              <p>지킬 앤 하이드</p>
+              <span>
+                실시간 시청자 수 <span>00명</span>
+              </span>
+            </div>
+            <ButtonWrap>
+              <button onClick={openShareModal}>공유</button>
+              <ShareModal visible={shareModalOpen} onClose={closeShareModal} />
+              <button onClick={openDeclarationModal}>신고</button>
+              <DeclarationModal visible={declarationModalOpen} onClose={closeDeclarationModal} />
+            </ButtonWrap>
+          </Title>
+          <ContentBox>
+            <img src="/images/artist.svg" />
+            <div>공연 기획자</div>
+          </ContentBox>
+          <Description>
+            <div className="date">
+              <div>공연 날짜 및 시간</div>
+              <p>2022. 12. 01. 목요일 18:00 - 20:00 (120분)</p>
+            </div>
+            <div>
+              <div>공연 장소</div>
+              <p>서울시 관악구 서울대입구 우리집 집주소 515-12</p>
+            </div>
+          </Description>
+          <Wrap>
+            <div>참여 아티스트</div>
+            <Artist>
+              {artistData.map((artist, id) => (
+                <div key={id}>
+                  <img src={artist.imgUrl} />
+                  <p>{artist.name}</p>
+                </div>
+              ))}
+            </Artist>
+          </Wrap>
+          <Wrap>
+            <div>추천상품</div>
+            <Shop>
+              {shopping_item.map((data, id) => (
+                <div key={id}>
+                  <img src={data.imgUrl} />
+                  <div>
+                    <p className="name">{data.name}</p>
+                    <p className="company">{data.company}</p>
+                    <p className="cost">{data.cost}</p>
+                  </div>
+                </div>
+              ))}
+            </Shop>
+          </Wrap>
+        </Left>
+        <Right>
+          <div>채팅</div>
+          <ChatBoxContainer>
+            <div>
+              <ChatBox>
+                <img src="/images/artist.svg" />
                 <div>
-                  <p className="name">{data.name}</p>
-                  <p className="company">{data.company}</p>
-                  <p className="cost">{data.cost}</p>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-              </div>
-            ))}
-          </Shop>
-        </Wrap>
-      </Left>
-      <Right>
-        <div>채팅</div>
-        <ChatBoxContainer>
-          <div>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
+              </ChatBox>
+              <ChatBox>
+                <img src="/images/artist.svg" />
+                <div>
+                  <div className="user">
+                    sangyeon Kim<span>AM 11:00</span>
+                  </div>
+                  <div>Goooooooooooooood!</div>
                 </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-            <ChatBox>
-              <img src="/images/artist.svg" />
-              <div>
-                <div className="user">
-                  sangyeon Kim<span>AM 11:00</span>
-                </div>
-                <div>Goooooooooooooood!</div>
-              </div>
-            </ChatBox>
-          </div>
-          <label>
-            <Chatting placeholder="메세지를 입력해주세요" />
-            <ChatButton>{/* <img src="/images/stage/sendbutton.svg" /> */}</ChatButton>
-          </label>
-        </ChatBoxContainer>
-      </Right>
-    </Container>
+              </ChatBox>
+            </div>
+            <label>
+              <Chatting placeholder="메세지를 입력해주세요" />
+              <ChatButton>{/* <img src="/images/stage/sendbutton.svg" /> */}</ChatButton>
+            </label>
+          </ChatBoxContainer>
+        </Right>
+      </Container>
+    </Fragment>
   );
 };
 

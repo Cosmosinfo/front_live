@@ -5,6 +5,7 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import axios from "axios";
 SwiperCore.use([Navigation, Pagination]);
 
 const images = [
@@ -116,6 +117,16 @@ const Main = () => {
   // console.log(stageData);
   // console.log(newData);
 
+  useEffect(() => {
+    getLiveMainData();
+  }, []);
+
+  const [liveStageData, setLiveStageData] = useState<any>(null);
+
+  const getLiveMainData = async () => {
+    await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/main/mainInfo`).then((res) => setLiveStageData(res.data.stageStartInfo));
+  };
+
   return (
     <Container>
       <React.Suspense fallback={<div>Loading...</div>}>
@@ -165,8 +176,8 @@ const Main = () => {
             </a>
             <SwiperLayout>
               <Swiper className="liveStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-                {liveData &&
-                  liveData.map((data: any, id: any) => (
+                {liveStageData &&
+                  liveStageData.map((data: any, id: any) => (
                     <SwiperSlide key={id}>
                       <Figure href={data.stageStreamKey} artist="none">
                         <Live>
