@@ -191,11 +191,11 @@ const Shop = styled.div`
       width: 23.5%;
     }
     > img {
-      width: 90px;
-      height: 90px;
+      width: 110px;
+      height: 100%;
     }
     > div {
-      padding: 12px;
+      padding: 17px;
       > p {
         &.name {
           font-size: 1rem;
