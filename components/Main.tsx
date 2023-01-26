@@ -118,13 +118,13 @@ const Main = () => {
   // console.log(newData);
 
   useEffect(() => {
-    getLiveMainData();
+    getStageData();
   }, []);
 
-  const [liveStageData, setLiveStageData] = useState<any>(null);
+  const [StageData, setStageData] = useState<any>(null);
 
-  const getLiveMainData = async () => {
-    await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/main/mainInfo`).then((res) => setLiveStageData(res.data.stageStartInfo));
+  const getStageData = async () => {
+    await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/main/mainInfo`).then((res) => setStageData(res.data));
   };
 
   return (
@@ -176,8 +176,8 @@ const Main = () => {
             </a>
             <SwiperLayout>
               <Swiper className="liveStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-                {liveStageData &&
-                  liveStageData.map((data: any, id: any) => (
+                {StageData &&
+                  StageData.stageStartInfo.map((data: any, id: any) => (
                     <SwiperSlide key={id}>
                       <Figure href={data.stageStreamKey} artist="none">
                         <Live>
@@ -195,8 +195,8 @@ const Main = () => {
                           </div>
                         </div>
                         <Ticket>
-                          <img src={data.ticketImg} className="ticket" />
-                          {data.ticket}
+                          <img src="/images/ticket.svg" className="ticket" />
+                          1장
                         </Ticket>
                       </StageContentBox>
                     </SwiperSlide>
@@ -210,26 +210,27 @@ const Main = () => {
             </a>
             <SwiperLayout>
               <Swiper className="upcomingStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-                {liveData.map((data, id) => (
-                  <SwiperSlide key={id}>
-                    <Figure href={data.link} artist="none">
-                      <ImageArea src={data.imgUrl} alt="upcoming_stage" />
-                    </Figure>
-                    <StageContentBox>
-                      <div>
-                        <img src={data.imgUrl} />
+                {StageData &&
+                  StageData.stageReadyInfo.map((data: any, id: any) => (
+                    <SwiperSlide key={id}>
+                      <Figure href={data.stageStreamKey} artist="none">
+                        <ImageArea src={data.stageThumbnailImage} alt="upcoming_stage" />
+                      </Figure>
+                      <StageContentBox>
                         <div>
-                          <p>{data.title}</p>
-                          <span>{data.artist}</span>
+                          <img src={data.stageThumbnailImage} />
+                          <div>
+                            <p>{data.stageTitle}</p>
+                            <span>{data.artistId}</span>
+                          </div>
                         </div>
-                      </div>
-                      <Ticket>
-                        <img src={data.ticketImg} className="ticket" />
-                        {data.ticket}
-                      </Ticket>
-                    </StageContentBox>
-                  </SwiperSlide>
-                ))}
+                        <Ticket>
+                          <img src="/images/ticket.svg" className="ticket" />
+                          1장
+                        </Ticket>
+                      </StageContentBox>
+                    </SwiperSlide>
+                  ))}
               </Swiper>
             </SwiperLayout>
           </StageContainer>
@@ -239,26 +240,27 @@ const Main = () => {
             </a>
             <SwiperLayout>
               <Swiper className="goneStage-swiper" slidesPerView={4} spaceBetween={20} loop={true}>
-                {liveData.map((data, id) => (
-                  <SwiperSlide key={id}>
-                    <Figure href={data.link} artist="none">
-                      <ImageArea src={data.imgUrl} alt="gone_stage" />
-                    </Figure>
-                    <StageContentBox>
-                      <div>
-                        <img src={data.imgUrl} />
+                {StageData &&
+                  StageData.stageExitInfo.map((data: any, id: any) => (
+                    <SwiperSlide key={id}>
+                      <Figure href={data.stageStreamKey} artist="none">
+                        <ImageArea src={data.stageThumbnailImage} alt="gone_stage" />
+                      </Figure>
+                      <StageContentBox>
                         <div>
-                          <p>{data.title}</p>
-                          <span>{data.artist}</span>
+                          <img src={data.stageThumbnailImage} />
+                          <div>
+                            <p>{data.stageTitle}</p>
+                            <span>{data.artistId}</span>
+                          </div>
                         </div>
-                      </div>
-                      <Ticket>
-                        <img src={data.ticketImg} className="ticket" />
-                        {data.ticket}
-                      </Ticket>
-                    </StageContentBox>
-                  </SwiperSlide>
-                ))}
+                        <Ticket>
+                          <img src="/images/ticket.svg" className="ticket" />
+                          1장
+                        </Ticket>
+                      </StageContentBox>
+                    </SwiperSlide>
+                  ))}
               </Swiper>
             </SwiperLayout>
           </StageContainer>
@@ -298,7 +300,9 @@ const Live = styled.div`
 `;
 
 const Ticket = styled.div`
+  min-width: 50px;
   font-size: 1rem;
+  margin-left: 10px;
 `;
 
 const ContentBox = styled.div`
