@@ -1,8 +1,14 @@
 import Link from "next/link";
 import React, { useState, ChangeEvent } from "react";
 import styled, { css } from "styled-components";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setToken, setAdmin } from "../../store/_redcuers/authReducer";
+import Router from "next/router";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -24,6 +30,8 @@ const Login = () => {
     });
   };
 
+  const fullEmail = email + "@" + emailSite;
+
   const handlePasswordType = () => {
     setPasswordType(() => {
       if (!passwordType.visible) {
@@ -31,6 +39,31 @@ const Login = () => {
       }
       return { type: "password", visible: false };
     });
+  };
+
+  const submit = async (e: any) => {
+    e.preventDefault();
+    const userData = {
+      userEmail: fullEmail,
+      userPassword: password,
+    };
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: data,
+    // };
+    try {
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, userData);
+      data.responses === 200 && dispatch(setToken(data.jwt));
+      dispatch(setAdmin(data.admin));
+      Router.push("/");
+    } catch (e) {
+      // 서버에서 받은 에러 메시지 출력
+      console.log(e);
+      window.alert("로그인 에러");
+    }
   };
 
   return (
@@ -53,7 +86,7 @@ const Login = () => {
             </SocialLogin>
           </Top>
           <Or>또는</Or>
-          <LoginForm>
+          <LoginForm onSubmit={submit}>
             <p>이메일</p>
             <EmailForm>
               <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
@@ -65,7 +98,7 @@ const Login = () => {
               <Password name="password" type={passwordType.type} autoComplete="off" value={password} onChange={onChangeValues} />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            <LoginButton>접속하기</LoginButton>
+            <LoginButton type="submit">접속하기</LoginButton>
             <Bottom>
               <p className="mssing_user">아이디 / 비밀번호 찾기</p>
               <Link href="/signup">

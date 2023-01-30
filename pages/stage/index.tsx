@@ -96,6 +96,7 @@ const shopping_item = [
 const index = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [declarationModalOpen, setDeclareModalOpen] = useState(false);
+  const [seconds, setSeconds] = useState<any>(0);
 
   const openShareModal = () => {
     setShareModalOpen(true);
@@ -110,38 +111,9 @@ const index = () => {
     setDeclareModalOpen(false);
   };
 
-  const url = "http://118.63.182.3:8883/live/1.flv";
-
-  // async data() {
-  //   let qs = queryString.parse(window.location.search);
-
-  //   await axios
-  //     .post("http://52.53.207.20:8080/api/stage/findIdLiveList", { stageStreamKey: qs.streamKey })
-  //     .then((res) => this.setState({ data: res }));
-  // }
-
-  // buildPlayer() {
-  //   let qs = queryString.parse(window.location.search);
-
-  //   if (this.player) {
-  //     return;
-  //   }
-  //   console.log(flv);
-  //   this.player = flv.createPlayer({
-  //     type: "flv",
-  //     // url: `http://52.53.207.20:8000/live/${qs.streamKey}`,
-  //     url: `http://172.30.1.8:8000/live/cb792f82-fbce-48f4-a5b2-b30fcae31d59.flv`,
-  //   });
-  //   this.player.attachMediaElement(this.videoRef.current);
-  //   this.player.load();
-
-  // const { id } = this.props.match.params;
-  // this.player = flv.createPlayer({
-  //     type: "flv",
-  //     url: `http://172.30.1.8:8000/live/cb792f82-fbce-48f4-a5b2-b30fcae31d59.flv`,
-  // });
-  // this.player.attachMediaElement(this.videoRef);
-  // this.player.load();
+  const handleProgress = (secs: number) => {
+    setSeconds(secs);
+  };
 
   return (
     <Fragment>
@@ -149,12 +121,15 @@ const index = () => {
         <Left>
           <VideoContainer>
             <ReactPlayer
-              url={`http://118.63.182.3:8883/live/1.flv`}
+              url={`${process.env.NEXT_PUBLIC_RTMP_SERVER_URL}/1.flv`}
+              // #t=,00:01:00 <- 1분 미리보기
               muted={true}
               playing={true}
               controls={true}
               enableStashBuffer={true}
               width="100%"
+              height="100%"
+              onProgress={(e) => handleProgress(e.playedSeconds)}
               config={{
                 file: {
                   forceFLV: true,
@@ -165,6 +140,7 @@ const index = () => {
           <Title>
             <div>
               <p>지킬 앤 하이드</p>
+              <button style={parseFloat(seconds) > 60 ? { display: "none" } : {}}>asd</button>
               <span>
                 실시간 시청자 수 <span>00명</span>
               </span>
