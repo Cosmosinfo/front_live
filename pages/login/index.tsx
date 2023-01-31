@@ -47,13 +47,6 @@ const Login = () => {
       userEmail: fullEmail,
       userPassword: password,
     };
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: data,
-    // };
     try {
       const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, userData);
       data.responses === 200 && dispatch(setToken(data.jwt));

@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 const menus = [
   {
@@ -48,21 +49,73 @@ const menus = [
   },
 ];
 
+const setting_menus = [
+  {
+    id: 1,
+    name: "프로필",
+    imgUrl: "/images/setting/user.svg",
+    nowImgUrl: "/images/setting/user_white.svg",
+    pathname: "/setting/profile",
+  },
+  {
+    id: 2,
+    name: "애널리틱스",
+    imgUrl: "/images/setting/analytics.svg",
+    nowImgUrl: "/images/setting/analytics_white.svg",
+    pathname: "/setting/analytics",
+  },
+  {
+    id: 3,
+    name: "스튜디오",
+    imgUrl: "/images/setting/studio.svg",
+    nowImgUrl: "/images/setting/studio_white.svg",
+    pathname: "/setting/studio",
+  },
+  {
+    id: 1,
+    name: "수익정산",
+    imgUrl: "/images/setting/coin.svg",
+    nowImgUrl: "/images/setting/coin_white.svg",
+    pathname: "/setting/coin",
+  },
+];
+
 const MainLeft = () => {
   const router = useRouter();
   const { pathname } = router;
   const pathname_split = pathname.split("/")[1];
+  const setting_pathname_split = pathname.split("/")[2];
+  const token = useSelector((state: any) => state.Auth.token);
 
   return (
-    <Nav>
-      {menus.map((menu, index) => (
-        <Link href={menu.pathname} key={index} legacyBehavior passHref>
-          <NavInfo key={index} imgUrl={menu.imgUrl} isHere={pathname_split === menu.pathname.split("/")[1]} nowImgUrl={menu.nowImgUrl}>
-            {menu.name}
-          </NavInfo>
-        </Link>
-      ))}
-    </Nav>
+    <>
+      {token === "Test" && pathname_split === "setting" ? (
+        <Nav>
+          {setting_menus.map((menu, index) => (
+            <Link href={menu.pathname} key={index} legacyBehavior passHref>
+              <NavInfo
+                key={index}
+                imgUrl={menu.imgUrl}
+                isHere={setting_pathname_split === menu.pathname.split("/")[2]}
+                nowImgUrl={menu.nowImgUrl}
+              >
+                {menu.name}
+              </NavInfo>
+            </Link>
+          ))}
+        </Nav>
+      ) : (
+        <Nav>
+          {menus.map((menu, index) => (
+            <Link href={menu.pathname} key={index} legacyBehavior passHref>
+              <NavInfo key={index} imgUrl={menu.imgUrl} isHere={pathname_split === menu.pathname.split("/")[1]} nowImgUrl={menu.nowImgUrl}>
+                {menu.name}
+              </NavInfo>
+            </Link>
+          ))}
+        </Nav>
+      )}
+    </>
   );
 };
 
