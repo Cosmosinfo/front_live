@@ -1,16 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styled, { keyframes, css } from "styled-components";
 
-const WithdrawArtistModal = ({ visible, onClose }: any) => {
+const WithdrawArtistCompleteModal = ({ visible, onClose }: any) => {
   if (!visible) {
     return null;
   }
-
-  const [confirm, setConfirm] = useState(false);
-
-  const sendConfirm = () => {
-    setConfirm(true);
-  };
 
   return (
     <>
@@ -19,33 +13,22 @@ const WithdrawArtistModal = ({ visible, onClose }: any) => {
         <Close>
           <CloseButton type="button" onClick={onClose}></CloseButton>
         </Close>
-        {confirm ? (
-          <Content>
-            <div className="confirm_title">회원탈퇴</div>
-            <p className="confirm">탈퇴 요청 완료</p>
-            <p className="confirm">
-              풀다이브 회원 탈퇴 요청이 완료되었습니다. 관리자 확인후 회원탈퇴 완료시 회원가입 시 기재한 이메일로 안내 드리겠습니다.
-            </p>
-            <button onClick={onClose}>확인</button>
-          </Content>
-        ) : (
-          <Content>
-            <div>회원탈퇴</div>
-            <p>탈퇴전 유의사항</p>
-            <p className="main">
-              회원 탈퇴 요청을 하시면 해당 계정은 관리자 확인 후 회원탈퇴 처리되며 이후 영구적으로 사용이 중지되므로 새로운 아이디로만
-              재가입이 가능합니다.
-            </p>
-            <p className="main">
-              사이트에 등록된 게시글,댓글,컨텐츠는 탈퇴 후에도 삭제되지 않습니다. 게시글,댓글의 삭제를 원하시는 경우에는 반드시 탈퇴 전
-              삭제하시기 바랍니다. 컨텐츠 삭제를 원하시는 경우 폴다이브로 문의 바랍니다.
-            </p>
-            <p className="bottom">
-              계약 내용에 따라 회원탈퇴가 정상적으로 처리되지 않을 수 있습니다. 해당 계약 사항 관련해서는 폴다이브로 문의 바랍니다.
-            </p>
-            <button onClick={sendConfirm}>탈퇴 요청</button>
-          </Content>
-        )}
+        <Content>
+          <div>회원탈퇴</div>
+          <p>탈퇴전 유의사항</p>
+          <p className="main">
+            회원 탈퇴 요청을 하시면 해당 계정은 관리자 확인 후 회원탈퇴 처리되며 이후 영구적으로 사용이 중지되므로 새로운 아이디로만
+            재가입이 가능합니다.
+          </p>
+          <p className="main">
+            사이트에 등록된 게시글,댓글,컨텐츠는 탈퇴 후에도 삭제되지 않습니다. 게시글,댓글의 삭제를 원하시는 경우에는 반드시 탈퇴 전
+            삭제하시기 바랍니다. 컨텐츠 삭제를 원하시는 경우 폴다이브로 문의 바랍니다.
+          </p>
+          <p className="bottom">
+            계약 내용에 따라 회원탈퇴가 정상적으로 처리되지 않을 수 있습니다. 해당 계약 사항 관련해서는 폴다이브로 문의 바랍니다.
+          </p>
+          <button>탈퇴 요청</button>
+        </Content>
       </ModalSection>
     </>
   );
@@ -91,11 +74,6 @@ const Close = styled.div`
 
 const Content = styled.div`
   padding: 0 11px 16px 11px;
-  > div {
-    &.confirm_title {
-      margin-bottom: 40px;
-    }
-  }
   > p {
     margin-top: 18px;
     margin-bottom: 6px;
@@ -110,10 +88,6 @@ const Content = styled.div`
       margin-top: 12px;
       font-size: 0.875rem;
       color: #ff2e2e;
-    }
-    &.confirm {
-      margin-top: 6px;
-      text-align: center;
     }
   }
   > button {
@@ -149,4 +123,4 @@ const fadeOut = keyframes`
   }
 `;
 
-export default WithdrawArtistModal;
+export default WithdrawArtistCompleteModal;
