@@ -38,7 +38,7 @@ const menus = [
     name: "설정",
     imgUrl: "/images/setting.svg",
     nowImgUrl: "/images/setting_white.svg",
-    pathname: "/setting",
+    pathname: "/setting/profile",
   },
   {
     id: 6,

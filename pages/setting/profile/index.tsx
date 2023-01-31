@@ -1,6 +1,8 @@
 import WithdrawArtistModal from "components/modal/WithdrawArtistModal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import Router from "next/router";
 
 const index = () => {
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
@@ -11,6 +13,12 @@ const index = () => {
   const closeWithdrawModal = () => {
     setWithdrawModalOpen(false);
   };
+
+  const token = useSelector((state: any) => state.Auth.token);
+
+  useEffect(() => {
+    !token && Router.push("/login");
+  }, [token]);
 
   return (
     <Container>
