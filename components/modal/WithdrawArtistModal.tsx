@@ -1,35 +1,10 @@
 import React from "react";
 import styled, { keyframes, css } from "styled-components";
 
-const icons = [
-  {
-    id: 1,
-    imgUrl: "/images/stage/instagram.svg",
-  },
-  {
-    id: 2,
-    imgUrl: "/images/stage/twitter.svg",
-  },
-  {
-    id: 3,
-    imgUrl: "/images/stage/facebook.svg",
-  },
-  {
-    id: 4,
-    imgUrl: "/images/stage/kakao.svg",
-  },
-  {
-    id: 5,
-    imgUrl: "/images/stage/line.svg",
-  },
-];
-
-const ShareModal = ({ children, visible, onClose }: any) => {
+const WithdrawArtistModal = ({ visible, onClose }: any) => {
   if (!visible) {
     return null;
   }
-
-  const text = window.location.href;
 
   return (
     <>
@@ -39,32 +14,25 @@ const ShareModal = ({ children, visible, onClose }: any) => {
           <CloseButton type="button" onClick={onClose}></CloseButton>
         </Close>
         <Content>
-          <div>공유하기</div>
-          <p>링크(URL) 복사하기</p>
-          <div className="copyInput">
-            <div>{window.location.href}</div>
-            <button onClick={() => navigator.clipboard.writeText(text)}>복사하기</button>
-          </div>
-          <div>SNS로 공유하기</div>
-          <Icons>
-            {icons.map((icon, id) => (
-              <div key={id}>
-                <img src={icon.imgUrl} />
-              </div>
-            ))}
-          </Icons>
-          {children}
+          <div>회원탈퇴</div>
+          <p>탈퇴전 유의사항</p>
+          <p className="main">
+            회원 탈퇴 요청을 하시면 해당 계정은 관리자 확인 후 회원탈퇴 처리되며 이후 영구적으로 사용이 중지되므로 새로운 아이디로만
+            재가입이 가능합니다.
+          </p>
+          <p className="main">
+            사이트에 등록된 게시글,댓글,컨텐츠는 탈퇴 후에도 삭제되지 않습니다. 게시글,댓글의 삭제를 원하시는 경우에는 반드시 탈퇴 전
+            삭제하시기 바랍니다. 컨텐츠 삭제를 원하시는 경우 폴다이브로 문의 바랍니다.
+          </p>
+          <p className="bottom">
+            계약 내용에 따라 회원탈퇴가 정상적으로 처리되지 않을 수 있습니다. 해당 계약 사항 관련해서는 폴다이브로 문의 바랍니다.
+          </p>
+          <button>탈퇴 요청</button>
         </Content>
       </ModalSection>
     </>
   );
 };
-
-const Icons = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 25px;
-`;
 
 const modalSettings = (visible: boolean) => css`
   visibility: ${visible ? "visible" : "hidden"};
@@ -84,8 +52,7 @@ const Background = styled.div<{ visible: boolean }>`
 `;
 
 const ModalSection = styled.div<{ visible: boolean }>`
-  width: 35%;
-  height: 300px;
+  width: 37%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -110,28 +77,25 @@ const Content = styled.div`
   > p {
     margin-top: 18px;
     margin-bottom: 6px;
-    font-size: 0.875rem;
+    font-size: 1rem;
     text-align: initial;
-  }
-  > div {
-    &.copyInput {
-      display: flex;
-      font-size: 1rem;
-      margin-bottom: 24px;
-      > div {
-        max-width: 325px;
-        font-size: 1rem;
-        padding: 15px 24px;
-        border: 2px solid #202eae;
-        border-radius: 120px;
-        margin-right: 12px;
-      }
-      > button {
-        padding: 14px 36px;
-        background: #273dff;
-        border-radius: 100px;
-      }
+    &.main {
+      margin-top: 12px;
+      font-size: 0.875rem;
+      color: #c5c5c5;
     }
+    &.bottom {
+      margin-top: 12px;
+      font-size: 0.875rem;
+      color: #ff2e2e;
+    }
+  }
+  > button {
+    margin-top: 24px;
+    background: #273dff;
+    padding: 15px 50px;
+    border-radius: 36px;
+    font-size: 1rem;
   }
 `;
 
@@ -159,4 +123,4 @@ const fadeOut = keyframes`
   }
 `;
 
-export default ShareModal;
+export default WithdrawArtistModal;

@@ -1,8 +1,17 @@
-import React from "react";
+import WithdrawArtistModal from "components/modal/WithdrawArtistModal";
+import React, { useState } from "react";
 import styled from "styled-components";
-import sha256 from "../../../sha256";
 
 const index = () => {
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
+
+  const openWithdrawModal = () => {
+    setWithdrawModalOpen(true);
+  };
+  const closeWithdrawModal = () => {
+    setWithdrawModalOpen(false);
+  };
+
   return (
     <Container>
       <Wrap>
@@ -47,9 +56,7 @@ const index = () => {
               <Input placeholder="관악구" />
             </div>
           </FlexWrap>
-
           <Input placeholder="상세 주소를 입력해주세요" />
-
           <FlexWrap>
             <div>
               <p>업태</p>
@@ -62,9 +69,12 @@ const index = () => {
           </FlexWrap>
           <FlexWrap>
             <p />
-            <p className="text">회원탈퇴</p>
+            <p className="text" onClick={openWithdrawModal}>
+              회원탈퇴
+            </p>
           </FlexWrap>
           <SendButton>수정</SendButton>
+          <WithdrawArtistModal visible={withdrawModalOpen} onClose={closeWithdrawModal} />
         </Info>
       </Wrap>
     </Container>
@@ -92,6 +102,9 @@ const FlexWrap = styled.div`
     margin-top: 10px;
     font-size: 1rem;
     text-decoration: underline;
+    &.text {
+      cursor: pointer;
+    }
   }
 `;
 
