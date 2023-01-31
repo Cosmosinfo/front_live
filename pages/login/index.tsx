@@ -5,6 +5,23 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken, setAdmin } from "../../store/_redcuers/authReducer";
 import Router from "next/router";
+import { useSearchParams } from "react-router-dom";
+import QueryString from 'qs';
+import liff from '@line/liff';
+import { gapi } from 'gapi-script';
+axios.defaults.withCredentials = true;
+import { useLocation, useParams } from 'react-router';
+
+import qs from "qs";
+
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -59,6 +76,298 @@ const Login = () => {
     }
   };
 
+
+
+  // const [userObj, setUserObj]=React.useState({
+  //   email:"",
+  //   name:""
+  // })
+  // //로그인 성공시 res처리
+  // const onLoginSuccess=(res:any)=>{
+  //   setUserObj({...userObj,
+  //     email:res.profileObj.email,
+  //     name:res.profileObj.name
+  //   })
+    
+  // }
+  // const onFailure = (res: any) => {
+  //   console.log(res);
+    
+  // }
+
+  const GoogleAPI = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
+
+  const onSuccess = (res: any) => {
+    console.log("Login SUCCESS! Current user : ", res.profileObj);
+
+
+  }
+
+  
+  const onFailure = (res: any) => {
+    console.log("Login faile! Current res : ", res);
+
+  }
+
+  // kakao login
+
+  
+  
+  
+
+  const kakaoLogin = async () => {
+
+    const {Kakao} = window;
+    // 카카오 초기화
+    Kakao.init('446d0bddcd2aabc533a967c7c8d61f0e');
+
+
+    
+    // 카카오 로그인 구현
+    
+    Kakao.Auth.login({
+        success: () => {
+            Kakao.API.request({
+                url: '/v2/user/me', // 사용자 정보 가져오기
+                success: (res: any) => {
+                    // 로그인 성공할 경우 정보 확인 후 /kakao 페이지로 push
+                    console.log(res);
+                    Router.push('/login');
+                },
+                fail: (error: any) => {
+                    console.log(error);
+                }
+            })
+        },
+        fail: (error: any) => {
+            console.log(error);
+        }
+    })
+}
+
+
+// 라인 로그인 구현 
+
+const [idCode, setidCode] = useState({
+  type: String,
+});
+
+
+const [idToken, setIdToken] = useState({
+  type: String,
+});
+
+const [pictureUrl, setPictureUrl] = useState()
+
+const [displayName, setDisplayName] = useState("")
+const [statusMessage, setStatusMessage] = useState("")
+const [userID, setUserID] = useState("")
+const [test, setTest] = useState<string | null>("")
+
+
+const Line_LOGIN_URL = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1657847379&redirect_uri=http://localhost:3000/login&state=cosmos&scope=profile%20openid%20email`;
+
+// async function getUser() {
+//   try {
+//     const response = await fetch(Line_LOGIN_URL, {
+//       method: 'POST',
+//       headers: {
+//         accept: 'application/json',
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Error! status: ${response.status}`);
+//     }
+
+//     const result = await response.json();
+//     return result;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
+
+const LineLoginHandler = async (e : any) => {
+  // getUser()
+
+await window.location.assign(Line_LOGIN_URL);
+// await window.open(Line_LOGIN_URL)
+  
+ 
+
+  console.log("1");
+  
+  const url = new URL(window.location.href);
+  console.log("2")
+  const authorizationCode = url.searchParams.get("code");
+  console.log("3")
+  console.log(authorizationCode);
+  console.log("4")
+  getToken(authorizationCode)
+ 
+};
+
+
+
+
+
+
+
+const getToken =  async (authorizationCode: any) => {
+
+console.log("5");
+console.log('authorizationCode',authorizationCode);
+
+
+  // const data =  qs.stringify({
+  //   'grant_type': 'authorization_code',
+  //   'code': authorizationCode,
+  //   'client_secret': '898f2a141088ca6c6617c33245a06a7b',
+  //   'redirect_uri': 'http://localhost:3000/login',
+  //   'client_id': '1657847379' 
+  // });
+  // const config = {
+  //   method: 'post',
+  //   url: 'https://api.line.me/oauth2/v2.1/token',
+  //   headers: { 
+  //     'Content-Type': 'application/x-www-form-urlencoded'
+  //   },
+  //   data : data
+  // };
+  // console.log("6")
+  //  axios(config)
+  // .then(function (response) {
+  //   console.log('token',JSON.stringify(response.data));
+  // })
+  // .catch(function (error) {
+  //   alert(error)
+  //   // console.log(error);
+  // });
+ 
+
+  
+  
+  
+  
+  return
+
+  
+  
+  
+  
+  
+
+  // const authorizationCode = AUTHORIZE_URI.searchParams.get("code");
+
+  // const handleGetAccessToken = async (authorizationCode) => {
+  //  await axios.post(
+  //     "http://localhost:80/sign/google", // 구글 소셜 로그인 엔드포인트
+  //     {
+  //       authorizationCode: authorizationCode,
+  //     },
+  //     {
+  //       headers: { accept: `application/json` },
+  //     },
+  //   );
+
+}
+
+
+
+const Linelogin = async (e: any) => {
+  
+
+  e.preventDefault();
+  
+
+  // const handleGetAccessToken = async (authorizationCode: any) => {
+  //  await axios.post(
+  //     "http://localhost:3000/login", 
+  //     {
+  //       authorizationCode: authorizationCode,
+  //     },
+  //     {
+  //       headers: { accept: `application/json` },
+  //     },
+  //   );
+
+  
+  
+  // const access_token = await axios
+	// .post(AUTHORIZE_URI, {
+	// 	headers: { "content-type": "application/x-www-form-urlencoded" },
+	// })
+	// .then((el) => { 
+	// 	return el.data.access_token
+	// })
+	// .catch((err) => {
+	// 	console.log("err=", err)
+	// })
+
+  // console.log(access_token);
+  
+  
+
+
+  
+
+  // setIdToken(AUTHORIZE_URI.searchParams.code)
+
+  // const query = new URLSearchParams();
+
+  // const authorizationCode = AUTHORIZE_URI.query.get("code");
+
+//   try {
+//     axios.post(`https://api.line.me/oauth2/v2.1/token`, {
+//       headers: {
+//         "content-type": "application/x-www-form-urlencoded",
+//         "grant_type" : "authorization_code",
+//         "client_id" : "1657847379",
+//         "client_secret" : '898f2a141088ca6c6617c33245a06a7b',
+//         "redirect_uri" : "http://localhost:3000/login" ,
+//         "code" : "bN2T4sbDs07p9VRPyeqL"
+
+
+//       },
+//     });
+//   } catch (res : any) {
+
+// console.log(res);
+
+   
+//   }
+
+  // liff.init({ liffId: "1657847379-PD7wYpD6" })
+  //   .then(() => {
+  //     if (liff.isLoggedIn()) {
+  //       runApp();
+  //     } else {
+  //       liff.login();
+  //     }
+  //   }).catch((err) => {
+  //     console.log(err.code, err.message);
+  //   });
+
+
+
+
+};
+
+
+
+
+
+// const runApp = () => {
+//   const idToken = liff.getIDToken();
+//   liff.getProfile().then(profile => {
+//     console.log(profile)
+//     setDisplayName(profile.displayName)
+//     setUserID(profile.userId)
+//   }).catch(err => console.error(err));
+// }
+  
+
+
   return (
     <Container>
       <Wrap>
@@ -70,11 +379,11 @@ const Login = () => {
             <SocialLogin>
               <div>
                 <SosicalLoginButton social="google">구글 계정으로 로그인</SosicalLoginButton>
-                <SosicalLoginButton social="line">라인 계정으로 로그인</SosicalLoginButton>
+                <SosicalLoginButton onClick={LineLoginHandler} social="line">라인 계정으로 로그인</SosicalLoginButton>
               </div>
               <div>
                 <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton>
-                <SosicalLoginButton social="kakao">카카오 계정으로 로그인</SosicalLoginButton>
+                <SosicalLoginButton onClick={kakaoLogin} social="kakao">카카오 계정으로 로그인</SosicalLoginButton> 
               </div>
             </SocialLogin>
           </Top>
@@ -294,3 +603,8 @@ const Container = styled.main`
 `;
 
 export default Login;
+
+
+
+
+

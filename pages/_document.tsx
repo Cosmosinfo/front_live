@@ -33,6 +33,8 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+          <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        
         </Head>
         <body>
           <Main />
