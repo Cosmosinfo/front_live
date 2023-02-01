@@ -2422,10 +2422,10 @@
     "object-assign" "^4.1.1"
     "prop-types" "^15.6.2"
 
-"redux-persist@^6.0.0":
-  "integrity" "sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ=="
-  "resolved" "https://registry.npmjs.org/redux-persist/-/redux-persist-6.0.0.tgz"
-  "version" "6.0.0"
+"redux-persist@^5.10.0":
+  "integrity" "sha512-sSJAzNq7zka3qVHKce1hbvqf0Vf5DuTVm7dr4GtsqQVOexnrvbV47RWFiPxQ8fscnyiuWyD2O92DOxPl0tGCRg=="
+  "resolved" "https://registry.npmjs.org/redux-persist/-/redux-persist-5.10.0.tgz"
+  "version" "5.10.0"
 
 "redux-promise@^0.6.0":
   "integrity" "sha512-R2mGxJbPFgXyCNbFDE6LjTZhCEuACF54g1bxld3nqBhnRMX0OsUyWk77moF7UMGkUdl5WOAwc4BC5jOd1dunqQ=="
@@ -2435,7 +2435,7 @@
     "flux-standard-action" "^2.0.3"
     "is-promise" "^2.1.0"
 
-"redux@^4", "redux@^4.2.0", "redux@>4.0.0":
+"redux@^4", "redux@^4.2.0", "redux@>3.0.0":
   "integrity" "sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w=="
   "resolved" "https://registry.npmjs.org/redux/-/redux-4.2.1.tgz"
   "version" "4.2.1"

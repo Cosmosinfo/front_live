@@ -1,27 +1,56 @@
 import styled from "styled-components";
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const MainTop = () => {
+  const token = useSelector((state: any) => state.Auth.token);
+
+  const onClickLogout = () => {
+    window.localStorage.clear();
+    window.location.replace("/");
+  };
+
   return (
-    <Header>
-      <Logo>
-        <Link href="/">FullDive</Link>
-      </Logo>
-      <Search>
-        <SearchBar placeholder="검색어를 입력해주세요" />
-        <RightBar>
-          <div>
-            <img src="/images/more.svg" />
-            <img src="/images/notification.svg" />
-            <img src="/images/ranking.svg" />
-          </div>
-          <Link href="/login">
-            <LoginButton>로그인</LoginButton>
-          </Link>
-        </RightBar>
-      </Search>
-    </Header>
+    <>
+      {token === "Test" ? (
+        <Header>
+          <Logo>
+            <Link href="/">FullDive</Link>
+          </Logo>
+          <Search>
+            <SearchBar placeholder="검색어를 입력해주세요" />
+            <RightBar>
+              <div>
+                <img src="/images/more.svg" />
+                <img src="/images/notification.svg" />
+                <img src="/images/ranking.svg" />
+              </div>
+              <LoginButton onClick={onClickLogout}>로그아웃</LoginButton>
+            </RightBar>
+          </Search>
+        </Header>
+      ) : (
+        <Header>
+          <Logo>
+            <Link href="/">FullDive</Link>
+          </Logo>
+          <Search>
+            <SearchBar placeholder="검색어를 입력해주세요" />
+            <RightBar>
+              <div>
+                <img src="/images/more.svg" />
+                <img src="/images/notification.svg" />
+                <img src="/images/ranking.svg" />
+              </div>
+              <Link href="/login">
+                <LoginButton>로그인</LoginButton>
+              </Link>
+            </RightBar>
+          </Search>
+        </Header>
+      )}
+    </>
   );
 };
 
@@ -76,7 +105,7 @@ const RightBar = styled.div`
 
 const LoginButton = styled.button`
   width: 5rem;
-  background: #202eae;
+  background: #273dff;
   border-radius: 100px;
   font-size: 1rem;
   margin-left: 10px;
