@@ -1,5 +1,7 @@
+import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router"
 
 const menus = [
   {
@@ -44,6 +46,12 @@ const data = [
 ];
 
 const index = () => {
+
+  const router = useRouter()
+  const { currentName } = router.query
+  console.log(currentName);
+
+
   const [checkItems, setCheckItems] = useState([1, 2]);
 
   const handleSingleCheck = (checked: boolean, id: number) => {
@@ -119,7 +127,17 @@ const index = () => {
         </Main>
         <Bottom>
           <button className="previous">이전</button>
-          <button className="next">다음</button>
+          <Link
+            href={{
+              pathname: `/signup/type/favoriteMusic`, // 라우팅 id
+              query: { currentName: JSON.stringify(currentName) }, // props 
+              }}
+              as={`/signup/type/favoriteMusic`} //url에 표시할 query
+            >
+            
+            <button className="next">다음</button>
+          </Link>
+          
         </Bottom>
       </Form>
     </Container>

@@ -1,8 +1,20 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router"
 
 const index = () => {
+  const router = useRouter()
+  const { email } = router.query
+  const { password } = router.query
+  console.log("email : " + email , "password : " + password );
+
+
+  
+  
+
+
+
   return (
     <Container>
       <Form>
@@ -17,7 +29,20 @@ const index = () => {
         </Member>
         <Bottom>
           <button className="previous">이전</button>
-          <button className="next">다음</button>
+
+
+          <Link
+            href={{
+              pathname: `/signup/type/agreement`, // 라우팅 id
+              query: { currentName: (email) }, // props 
+              }}
+              as={`/signup/type/agreement`} //url에 표시할 query
+            >
+            
+            <button className="next">다음</button>
+          </Link>
+
+         
         </Bottom>
       </Form>
     </Container>

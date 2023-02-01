@@ -1,7 +1,19 @@
+import Link from "next/link";
 import React, { useState, ChangeEvent } from "react";
+import { Interface } from "readline";
 import styled, { css } from "styled-components";
 
+
+
+// interface Iprops {
+//   detail : { email: string ,emailSite: string, password: string ,}
+// }
+
+
+
+
 const Login = () => {
+
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -14,7 +26,12 @@ const Login = () => {
     confirm_password: "",
   });
 
+  
+  
+
   const { email, emailSite, password, confirm_password } = values;
+
+  
 
   const onChangeValues = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -23,6 +40,13 @@ const Login = () => {
       [name]: value,
     });
   };
+
+  // const clickHandler = (values: { email: string; emailSite: string; password: string; confirm_password: string; }) => {
+  //   console.log(values);
+    
+  // }
+
+  
 
   const handlePasswordType = () => {
     setPasswordType(() => {
@@ -76,7 +100,23 @@ const Login = () => {
               />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            <LoginButton type="button">계정 만들기</LoginButton>
+            
+            <Link
+            href={{
+              pathname: `/signup/type`, // 라우팅 id
+              query: {
+                 
+                email : values.email,
+                password : values.password
+              
+              }, // props 
+              }}
+              as={`/signup/type`} //url에 표시할 query
+            >
+            
+              <LoginButton type="button">계정 만들기</LoginButton>
+              </Link>
+            
           </LoginForm>
         </Form>
       </Wrap>

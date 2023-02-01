@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
+import Link from "next/link";
+import { useRouter } from "next/router"
 
 const menus = [
   {
@@ -25,6 +27,13 @@ const menus = [
 ];
 
 const index = () => {
+
+
+  const router = useRouter()
+  const { currentName } = router.query
+  console.log(currentName);
+
+
   const [selected, setSelected] = useState("남자");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +104,18 @@ const index = () => {
         </Main>
         <Bottom>
           <button className="previous">이전</button>
-          <button className="next">다음</button>
+
+          <Link
+            href={{
+              pathname: `/signup/type/signupComplete`, // 라우팅 id
+              query: { currentName: JSON.stringify(currentName) }, // props 
+              }}
+              as={`/signup/type/signupComplete`} //url에 표시할 query
+            >
+            
+            <button className="next">다음</button>
+          </Link>
+          
         </Bottom>
       </Form>
     </Container>
