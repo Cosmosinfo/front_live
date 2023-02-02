@@ -1,5 +1,7 @@
 import React from "react";
+import Link from "next/link";
 import styled from "styled-components";
+import { useRouter } from "next/router"
 
 const menus = [
   {
@@ -100,6 +102,13 @@ const music = [
 ];
 
 const index = () => {
+
+  const router = useRouter()
+  const { currentName } = router.query
+  console.log(currentName);
+
+
+
   return (
     <Container>
       <Form>
@@ -123,7 +132,18 @@ const index = () => {
         </Main>
         <Bottom>
           <button className="previous">이전</button>
-          <button className="next">다음</button>
+
+          <Link
+            href={{
+              pathname: `/signup/type/privateInfo`, // 라우팅 id
+              query: { currentName: JSON.stringify(currentName) }, // props 
+              }}
+              as={`/signup/type/privateInfo`} //url에 표시할 query
+            >
+            
+            <button className="next">다음</button>
+          </Link>
+          
         </Bottom>
       </Form>
     </Container>
