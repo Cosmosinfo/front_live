@@ -48,8 +48,9 @@ const data = [
 const index = () => {
 
   const router = useRouter()
-  const { currentName } = router.query
-  console.log(currentName);
+  const userInfo = router.query
+  
+  console.log(userInfo );
 
 
   const [checkItems, setCheckItems] = useState([1, 2]);
@@ -129,14 +130,15 @@ const index = () => {
           <button className="previous">이전</button>
           <Link
             href={{
-              pathname: `/signup/type/favoriteMusic`, // 라우팅 id
-              query: { currentName: JSON.stringify(currentName) }, // props 
+              pathname: `/signup/type/favoriteMusice`, // 라우팅 id
+              query: userInfo
               }}
               as={`/signup/type/favoriteMusic`} //url에 표시할 query
             >
             
             <button className="next">다음</button>
           </Link>
+          
           
         </Bottom>
       </Form>

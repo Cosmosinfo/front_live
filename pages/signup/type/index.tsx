@@ -3,15 +3,20 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router"
 
+
 const index = () => {
   const router = useRouter()
-  const { email } = router.query
-  const { password } = router.query
-  console.log("email : " + email , "password : " + password );
-
-
   
+  const  userInfo  = router.query
+  // const { fullEmail } = router.query
+  // const { password } = router.query
+  // console.log("email : " + fullEmail , ", password : " + password );
+  console.log(userInfo);
   
+
+  // const userInfo = {fullEmail , password}
+  
+
 
 
 
@@ -31,16 +36,23 @@ const index = () => {
           <button className="previous">이전</button>
 
 
-          <Link
+          
+         <button className="next">다음</button>
+          {/* <Link
             href={{
               pathname: `/signup/type/agreement`, // 라우팅 id
-              query: { currentName: (email) }, // props 
+              query: userInfo
               }}
               as={`/signup/type/agreement`} //url에 표시할 query
             >
             
             <button className="next">다음</button>
-          </Link>
+          </Link> */}
+          
+         
+         
+          
+          
 
          
         </Bottom>

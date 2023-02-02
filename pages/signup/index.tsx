@@ -1,13 +1,9 @@
 import Link from "next/link";
 import React, { useState, ChangeEvent } from "react";
-import { Interface } from "readline";
 import styled, { css } from "styled-components";
+import SHA256 from "../../sha256";
 
 
-
-// interface Iprops {
-//   detail : { email: string ,emailSite: string, password: string ,}
-// }
 
 
 
@@ -31,7 +27,7 @@ const Login = () => {
 
   const { email, emailSite, password, confirm_password } = values;
 
-  
+  const fullEmail = email + "@" + emailSite;
 
   const onChangeValues = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -40,6 +36,15 @@ const Login = () => {
       [name]: value,
     });
   };
+
+  const userInfo = {
+    fullEmail : fullEmail,
+    password : SHA256(password)
+  }
+
+  
+  
+  
 
   // const clickHandler = (values: { email: string; emailSite: string; password: string; confirm_password: string; }) => {
   //   console.log(values);
@@ -104,12 +109,7 @@ const Login = () => {
             <Link
             href={{
               pathname: `/signup/type`, // 라우팅 id
-              query: {
-                 
-                email : values.email,
-                password : values.password
-              
-              }, // props 
+              query: userInfo
               }}
               as={`/signup/type`} //url에 표시할 query
             >

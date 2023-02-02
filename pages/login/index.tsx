@@ -102,7 +102,10 @@ const Login = () => {
   const kakaoLogin = async () => {
     const { Kakao } = window;
     // 카카오 초기화
-    Kakao.init("446d0bddcd2aabc533a967c7c8d61f0e");
+    if (!Kakao.isInitialized()) {
+      Kakao.init("446d0bddcd2aabc533a967c7c8d61f0e");
+  }
+    
 
     // 카카오 로그인 구현
 
