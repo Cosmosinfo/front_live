@@ -57,13 +57,13 @@ const setting_menus = [
     nowImgUrl: "/images/setting/user_white.svg",
     pathname: "/setting/profile",
   },
-  {
-    id: 2,
-    name: "애널리틱스",
-    imgUrl: "/images/setting/analytics.svg",
-    nowImgUrl: "/images/setting/analytics_white.svg",
-    pathname: "/setting/analytics",
-  },
+  // {
+  //   id: 2,
+  //   name: "애널리틱스",
+  //   imgUrl: "/images/setting/analytics.svg",
+  //   nowImgUrl: "/images/setting/analytics_white.svg",
+  //   pathname: "/setting/analytics",
+  // },
   {
     id: 3,
     name: "스튜디오",
