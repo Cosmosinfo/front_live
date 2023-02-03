@@ -104,8 +104,7 @@ const Login = () => {
     // 카카오 초기화
     if (!Kakao.isInitialized()) {
       Kakao.init("446d0bddcd2aabc533a967c7c8d61f0e");
-  }
-    
+    }
 
     // 카카오 로그인 구현
 
@@ -535,7 +534,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   display: flex;
 `;

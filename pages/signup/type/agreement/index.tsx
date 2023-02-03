@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 
 const menus = [
   {
@@ -46,12 +46,10 @@ const data = [
 ];
 
 const index = () => {
+  const router = useRouter();
+  const userInfo = router.query;
 
-  const router = useRouter()
-  const userInfo = router.query
-  
-  console.log(userInfo );
-
+  console.log(userInfo);
 
   const [checkItems, setCheckItems] = useState([1, 2]);
 
@@ -131,15 +129,12 @@ const index = () => {
           <Link
             href={{
               pathname: `/signup/type/favoriteMusice`, // 라우팅 id
-              query: userInfo
-              }}
-              as={`/signup/type/favoriteMusic`} //url에 표시할 query
-            >
-            
+              query: userInfo,
+            }}
+            as={`/signup/type/favoriteMusic`} //url에 표시할 query
+          >
             <button className="next">다음</button>
           </Link>
-          
-          
         </Bottom>
       </Form>
     </Container>
@@ -168,7 +163,7 @@ const Bottom = styled.div`
 
 const StyledTr = styled.tr<{ confirmed: boolean }>`
   margin-bottom: 10px;
-  ${({ confirmed }) => confirmed && `background-color: #1E1E1E;`}
+  ${({ confirmed }) => confirmed && `background-color: #14141C;`}
   > td {
     border: 1px solid #0f0f15;
     border-top-left-radius: 100px;
@@ -284,7 +279,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

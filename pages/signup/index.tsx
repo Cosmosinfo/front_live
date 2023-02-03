@@ -3,13 +3,7 @@ import React, { useState, ChangeEvent } from "react";
 import styled, { css } from "styled-components";
 import SHA256 from "../../sha256";
 
-
-
-
-
-
 const Login = () => {
-
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -21,9 +15,6 @@ const Login = () => {
     password: "",
     confirm_password: "",
   });
-
-  
-  
 
   const { email, emailSite, password, confirm_password } = values;
 
@@ -38,20 +29,14 @@ const Login = () => {
   };
 
   const userInfo = {
-    fullEmail : fullEmail,
-    password : SHA256(password)
-  }
-
-  
-  
-  
+    fullEmail: fullEmail,
+    password: SHA256(password),
+  };
 
   // const clickHandler = (values: { email: string; emailSite: string; password: string; confirm_password: string; }) => {
   //   console.log(values);
-    
-  // }
 
-  
+  // }
 
   const handlePasswordType = () => {
     setPasswordType(() => {
@@ -105,18 +90,16 @@ const Login = () => {
               />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            
+
             <Link
-            href={{
-              pathname: `/signup/type`, // 라우팅 id
-              query: userInfo
+              href={{
+                pathname: `/signup/type`, // 라우팅 id
+                query: userInfo,
               }}
               as={`/signup/type`} //url에 표시할 query
             >
-            
               <LoginButton type="button">계정 만들기</LoginButton>
-              </Link>
-            
+            </Link>
           </LoginForm>
         </Form>
       </Wrap>
@@ -294,7 +277,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   display: flex;
 `;

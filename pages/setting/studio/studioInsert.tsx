@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
+const submit = (e: any) => {
+  e.preventDefault();
+};
+
 const studioInsert = () => {
   return (
     <Container>
@@ -11,7 +15,8 @@ const studioInsert = () => {
           <div className="camera" />
           <div className="des">
             <span>사이즈 : 250*250px</span>
-            <input type="file" />
+            <Label>파일 업로드</Label>
+            <input type="file" style={{ display: "none" }} />
           </div>
         </Left>
         <Right>
@@ -64,6 +69,13 @@ const studioInsert = () => {
     </Container>
   );
 };
+
+const Label = styled.label`
+  padding: 7px 12px 7px 42px;
+  background: url("/images/setting/document.svg") no-repeat 10% center #273dff;
+  border-radius: 24px;
+  font-size: 1rem;
+`;
 
 const StageCalendar = styled.div`
   display: flex;
@@ -137,7 +149,7 @@ const ButtonWrap = styled.div`
     &.cancel {
       margin-right: 24px;
       border: 1px solid #888888;
-      background: #1e1e1e;
+      background: #14141c;
     }
   }
 `;
@@ -186,7 +198,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 110vh;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   padding: 30px;
   padding-top: 30px;

@@ -1,24 +1,18 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router"
-
+import { useRouter } from "next/router";
 
 const index = () => {
-  const router = useRouter()
-  
-  const  userInfo  = router.query
+  const router = useRouter();
+
+  const userInfo = router.query;
   // const { fullEmail } = router.query
   // const { password } = router.query
   // console.log("email : " + fullEmail , ", password : " + password );
   console.log(userInfo);
-  
 
   // const userInfo = {fullEmail , password}
-  
-
-
-
 
   return (
     <Container>
@@ -35,9 +29,7 @@ const index = () => {
         <Bottom>
           <button className="previous">이전</button>
 
-
-          
-         <button className="next">다음</button>
+          <button className="next">다음</button>
           {/* <Link
             href={{
               pathname: `/signup/type/agreement`, // 라우팅 id
@@ -48,13 +40,6 @@ const index = () => {
             
             <button className="next">다음</button>
           </Link> */}
-          
-         
-         
-          
-          
-
-         
         </Bottom>
       </Form>
     </Container>
@@ -115,7 +100,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

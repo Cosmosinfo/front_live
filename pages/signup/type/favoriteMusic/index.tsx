@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 
 const menus = [
   {
@@ -102,12 +102,9 @@ const music = [
 ];
 
 const index = () => {
-
-  const router = useRouter()
-  const { currentName } = router.query
+  const router = useRouter();
+  const { currentName } = router.query;
   console.log(currentName);
-
-
 
   return (
     <Container>
@@ -136,14 +133,12 @@ const index = () => {
           <Link
             href={{
               pathname: `/signup/type/privateInfo`, // 라우팅 id
-              query: { currentName: JSON.stringify(currentName) }, // props 
-              }}
-              as={`/signup/type/privateInfo`} //url에 표시할 query
-            >
-            
+              query: { currentName: JSON.stringify(currentName) }, // props
+            }}
+            as={`/signup/type/privateInfo`} //url에 표시할 query
+          >
             <button className="next">다음</button>
           </Link>
-          
         </Bottom>
       </Form>
     </Container>
@@ -254,7 +249,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 
