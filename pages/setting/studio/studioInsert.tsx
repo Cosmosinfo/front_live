@@ -1,22 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-
-const submit = (e: any) => {
-  e.preventDefault();
-};
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const studioInsert = () => {
+  const [imageSrc, setImageSrc] = useState<any>("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [timeDate, setTimeDate] = useState(new Date());
+
+  const encodeFileToBase64 = (fileBlob: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise<void>((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  console.log(startDate);
+  console.log(timeDate);
+
   return (
     <Container>
       <p>공연 등록</p>
       <Main>
         <Left>
           <p>공연 썸네일</p>
-          <div className="camera" />
+          <div className="camera"> {imageSrc && <Img src={imageSrc} alt="preview-img" width="520px" height="325px" />}</div>
           <div className="des">
-            <span>사이즈 : 250*250px</span>
-            <Label>파일 업로드</Label>
-            <input type="file" style={{ display: "none" }} />
+            <span>사이즈 : 520*325px</span>
+            <Label
+              htmlFor="file"
+              onChange={(e: any) => {
+                encodeFileToBase64(e.target.files[0]);
+              }}
+            >
+              <div> 파일 업로드</div>
+            </Label>
+            <input
+              type="file"
+              name="file"
+              id="file"
+              style={{ display: "none" }}
+              onChange={(e: any) => {
+                encodeFileToBase64(e.target.files[0]);
+              }}
+            />
           </div>
         </Left>
         <Right>
@@ -25,14 +56,28 @@ const studioInsert = () => {
             <input placeholder="공연 기획사" />
           </Wrap>
           <Wrap>
-            <Title className="title">공연 일정</Title>
             <StageCalendar>
               <div className="left">
-                <input className="date" />
+                <TimeTitle className="title">공연 일정</TimeTitle>
+                <StyledDatepicker
+                  dateFormat="yyyy/MM/dd"
+                  selected={startDate}
+                  onChange={(date: any) => setStartDate(date)}
+                  minDate={new Date()}
+                />
+                {/* <input className="date" placeholder="YYYY/MM/DD" /> */}
               </div>
-              <div>
-                <input className="time" />
-                <input className="time" />
+              <div className="right">
+                <TimeTitle className="title">공연 일정</TimeTitle>
+                <TimeDatepicker
+                  selected={timeDate}
+                  onChange={(date: any) => setTimeDate(date)}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                />
               </div>
             </StageCalendar>
           </Wrap>
@@ -45,14 +90,25 @@ const studioInsert = () => {
             <input placeholder="공연 기획사" />
           </Wrap>
           <Wrap>
-            <Title className="title">공연 장르</Title>
             <StageCalendar>
               <div className="left">
+                <TimeTitle className="title">공연 장르</TimeTitle>
                 <input className="date" />
               </div>
               <div>
+                <TimeTitle className="title">티켓 종류</TimeTitle>
                 <input className="time" />
                 <input className="time" />
+              </div>
+            </StageCalendar>
+          </Wrap>
+          <Wrap>
+            <StageCalendar>
+              <div className="left">
+                <TimeTitle className="title">성인 콘텐츠 설정</TimeTitle>
+              </div>
+              <div>
+                <TimeTitle className="title">스튜디오</TimeTitle>
               </div>
             </StageCalendar>
           </Wrap>
@@ -70,11 +126,36 @@ const studioInsert = () => {
   );
 };
 
+const TimeDatepicker = styled(DatePicker)`
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 100px;
+  background: #d9d9d91a;
+  color: #ffffff;
+  padding: 0 12px;
+`;
+
+const StyledDatepicker = styled(DatePicker)`
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 100px;
+  background: #d9d9d91a;
+  color: #ffffff;
+  padding: 0 12px;
+`;
+
+const Img = styled.img`
+  border-radius: 12px;
+`;
+
 const Label = styled.label`
   padding: 7px 12px 7px 42px;
   background: url("/images/setting/document.svg") no-repeat 10% center #273dff;
   border-radius: 24px;
   font-size: 1rem;
+  cursor: pointer;
 `;
 
 const StageCalendar = styled.div`
@@ -100,6 +181,11 @@ const StageCalendar = styled.div`
       }
     }
   }
+`;
+
+const TimeTitle = styled.div`
+  font-size: 1rem;
+  margin: 24px 0 12px;
 `;
 
 const Title = styled.div`
@@ -197,7 +283,7 @@ const Main = styled.div`
 const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
-  height: 110vh;
+  height: 100%;
   background: #14141c;
   color: #ffffff;
   padding: 30px;

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
@@ -47,7 +48,9 @@ const index = () => {
         </div>
         <div>
           <SearchBar />
-          <InsertButton>공연 등록</InsertButton>
+          <Link href="/setting/studio/studioInsert">
+            <InsertButton>공연 등록</InsertButton>
+          </Link>
           <div>정렬</div>
         </div>
       </Top>
