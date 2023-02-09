@@ -3,10 +3,118 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const music = [
+  {
+    id: 1,
+    type: "케이팝",
+  },
+  {
+    id: 2,
+    type: "알앤비",
+  },
+  {
+    id: 3,
+    type: "락/메탈",
+  },
+  {
+    id: 4,
+    type: "팝",
+  },
+  {
+    id: 5,
+    type: "일렉트로닉",
+  },
+  {
+    id: 6,
+    type: "얼터너티브",
+  },
+  {
+    id: 7,
+    type: "제이팝",
+  },
+  {
+    id: 8,
+    type: "발라드",
+  },
+  {
+    id: 9,
+    type: "재즈",
+  },
+  {
+    id: 10,
+    type: "컨트리",
+  },
+  {
+    id: 11,
+    type: "힙합",
+  },
+  {
+    id: 12,
+    type: "펑크",
+  },
+  {
+    id: 13,
+    type: "메탈",
+  },
+  {
+    id: 14,
+    type: "댄스",
+  },
+  {
+    id: 15,
+    type: "클래식",
+  },
+  {
+    id: 16,
+    type: "이디엠",
+  },
+  {
+    id: 17,
+    type: "레게",
+  },
+  {
+    id: 18,
+    type: "인디",
+  },
+];
+
+const ticket = [
+  {
+    id: 1,
+    imgUrl: "/images/ticket_clover.svg",
+    ticket: "클로버",
+  },
+  {
+    id: 2,
+    imgUrl: "/images/ticket_heart.svg",
+    ticket: "하트",
+  },
+  {
+    id: 3,
+    imgUrl: "/images/ticket_dia.svg",
+    ticket: "다이아",
+  },
+  {
+    id: 4,
+    imgUrl: "/images/ticket_spade.svg",
+    ticket: "스페이드",
+  },
+];
+
 const studioInsert = () => {
   const [imageSrc, setImageSrc] = useState<any>("");
   const [startDate, setStartDate] = useState(new Date());
   const [timeDate, setTimeDate] = useState(new Date());
+  const [selected, setSelected] = useState("케이팝");
+  const [selectedTicket, setSelectedTicket] = useState("클로버");
+
+  const handleSelect = (e: any) => {
+    setSelected(e.target.value);
+  };
+
+  const handleSelectTicket = (e: any) => {
+    setSelectedTicket(e.target.value);
+  };
 
   const encodeFileToBase64 = (fileBlob: any) => {
     const reader = new FileReader();
@@ -18,9 +126,6 @@ const studioInsert = () => {
       };
     });
   };
-
-  console.log(startDate);
-  console.log(timeDate);
 
   return (
     <Container>
@@ -93,12 +198,23 @@ const studioInsert = () => {
             <StageCalendar>
               <div className="left">
                 <TimeTitle className="title">공연 장르</TimeTitle>
-                <input className="date" />
+                <Select onChange={handleSelect} value={selected}>
+                  {music.map((item, index) => (
+                    <option value={item.type} key={index}>
+                      {item.type}
+                    </option>
+                  ))}
+                </Select>
               </div>
               <div>
                 <TimeTitle className="title">티켓 종류</TimeTitle>
-                <input className="time" />
-                <input className="time" />
+                <Select onChange={handleSelectTicket} value={selectedTicket}>
+                  {ticket.map((item, index) => (
+                    <option value={item.ticket} key={index}>
+                      {item.ticket}
+                    </option>
+                  ))}
+                </Select>
               </div>
             </StageCalendar>
           </Wrap>
@@ -125,6 +241,17 @@ const studioInsert = () => {
     </Container>
   );
 };
+
+const Select = styled.select`
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 100px;
+  background: #d9d9d91a;
+  color: #ffffff;
+  padding: 0 12px;
+  font-size: 1rem;
+`;
 
 const TimeDatepicker = styled(DatePicker)`
   width: 100%;
