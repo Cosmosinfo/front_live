@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 const music = [
   {
@@ -103,10 +104,13 @@ const ticket = [
 
 const studioInsert = () => {
   const [imageSrc, setImageSrc] = useState<any>("");
+  const [imgUrl, setImgUrl] = useState<any>(null);
   const [startDate, setStartDate] = useState(new Date());
   const [timeDate, setTimeDate] = useState(new Date());
   const [selected, setSelected] = useState("케이팝");
   const [selectedTicket, setSelectedTicket] = useState("클로버");
+  const [selectedContent, setSelectedContent] = useState("no");
+  const [selectedStudio, setSelectedStudio] = useState("single");
 
   const handleSelect = (e: any) => {
     setSelected(e.target.value);
@@ -117,6 +121,7 @@ const studioInsert = () => {
   };
 
   const encodeFileToBase64 = (fileBlob: any) => {
+    setImgUrl(fileBlob);
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise<void>((resolve) => {
@@ -127,120 +132,198 @@ const studioInsert = () => {
     });
   };
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSelectedContent(e.target.value);
+  };
+
+  const handleChangeStudio = (e: ChangeEvent<HTMLInputElement>) => {
+    setSelectedStudio(e.target.value);
+  };
+
+  const submit = async (e: any) => {
+    e.preventDefault();
+    if (imgUrl) {
+      const formData = new FormData();
+
+      formData.append("photo", imgUrl);
+
+      try {
+        const { data } = await axios.post("http://118.63.182.3:8880/api/stage/stageImageInsert", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(data.response);
+        data.response === 200 && window.alert("공연 등록 성공");
+      } catch (e) {
+        // 서버에서 받은 에러 메시지 출력
+        console.log(e);
+        window.alert("공연 등록 실패");
+      }
+    }
+
+    // const studioData = {
+    //   userId: "test",
+    //   stageTitle: imageSrc,
+    //   stageImage: "",
+    //   stageLocation: "",
+    //   stageTimestamp: "",
+    //   stageArtistId: "",
+    //   stageDescription: "",
+    //   stageThumbnailImage: "",
+    //   stageCombineId: "",
+    //   stageCategoryId: "",
+    //   stageTicketId: "",
+    //   stageAdultType: "",
+    //   staegStudioType: selectedStudio,
+    // };
+  };
+
   return (
     <Container>
       <p>공연 등록</p>
-      <Main>
-        <Left>
-          <p>공연 썸네일</p>
-          <div className="camera"> {imageSrc && <Img src={imageSrc} alt="preview-img" width="520px" height="325px" />}</div>
-          <div className="des">
-            <span>사이즈 : 520*325px</span>
-            <Label
-              htmlFor="file"
-              onChange={(e: any) => {
-                encodeFileToBase64(e.target.files[0]);
-              }}
-            >
-              <div> 파일 업로드</div>
-            </Label>
-            <input
-              type="file"
-              name="file"
-              id="file"
-              style={{ display: "none" }}
-              onChange={(e: any) => {
-                encodeFileToBase64(e.target.files[0]);
-              }}
-            />
-          </div>
-        </Left>
-        <Right>
-          <Wrap>
-            <span>공연 제목</span>
-            <input placeholder="공연 기획사" />
-          </Wrap>
-          <Wrap>
-            <StageCalendar>
-              <div className="left">
-                <TimeTitle className="title">공연 일정</TimeTitle>
-                <StyledDatepicker
-                  dateFormat="yyyy/MM/dd"
-                  selected={startDate}
-                  onChange={(date: any) => setStartDate(date)}
-                  minDate={new Date()}
-                />
-                {/* <input className="date" placeholder="YYYY/MM/DD" /> */}
-              </div>
-              <div className="right">
-                <TimeTitle className="title">공연 일정</TimeTitle>
-                <TimeDatepicker
-                  selected={timeDate}
-                  onChange={(date: any) => setTimeDate(date)}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  timeCaption="Time"
-                  dateFormat="h:mm aa"
-                />
-              </div>
-            </StageCalendar>
-          </Wrap>
-          <Wrap>
-            <Title className="title">공연 장소</Title>
-            <input placeholder="서울특별시 관악구 벽산아파트 301-906" />
-          </Wrap>
-          <Wrap>
-            <Title className="title">참여 아티스트</Title>
-            <input placeholder="공연 기획사" />
-          </Wrap>
-          <Wrap>
-            <StageCalendar>
-              <div className="left">
-                <TimeTitle className="title">공연 장르</TimeTitle>
-                <Select onChange={handleSelect} value={selected}>
-                  {music.map((item, index) => (
-                    <option value={item.type} key={index}>
-                      {item.type}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <div>
-                <TimeTitle className="title">티켓 종류</TimeTitle>
-                <Select onChange={handleSelectTicket} value={selectedTicket}>
-                  {ticket.map((item, index) => (
-                    <option value={item.ticket} key={index}>
-                      {item.ticket}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </StageCalendar>
-          </Wrap>
-          <Wrap>
-            <StageCalendar>
-              <div className="left">
-                <TimeTitle className="title">성인 콘텐츠 설정</TimeTitle>
-              </div>
-              <div>
-                <TimeTitle className="title">스튜디오</TimeTitle>
-              </div>
-            </StageCalendar>
-          </Wrap>
-          <Wrap>
-            <Title className="title">공연 설명</Title>
-            <textarea placeholder="공연 설명 입력" />
-          </Wrap>
-          <ButtonWrap>
-            <button className="cancel">취소</button>
-            <button>등록</button>
-          </ButtonWrap>
-        </Right>
-      </Main>
+      <form onSubmit={submit}>
+        <Main>
+          <Left>
+            <p>공연 썸네일</p>
+            <div className="camera"> {imageSrc && <Img src={imageSrc} alt="preview-img" width="520px" height="325px" />}</div>
+            <div className="des">
+              <span>사이즈 : 520*325px</span>
+              <Label
+                htmlFor="file"
+                onChange={(e: any) => {
+                  encodeFileToBase64(e.target.files[0]);
+                }}
+              >
+                <div> 파일 업로드</div>
+              </Label>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(e: any) => {
+                  encodeFileToBase64(e.target.files[0]);
+                }}
+              />
+            </div>
+          </Left>
+          <Right>
+            <Wrap>
+              <span>공연 제목</span>
+              <input placeholder="공연 기획사" />
+            </Wrap>
+            <Wrap>
+              <StageCalendar>
+                <div className="left">
+                  <TimeTitle className="title">공연 일정</TimeTitle>
+                  <StyledDatepicker
+                    dateFormat="yyyy/MM/dd"
+                    selected={startDate}
+                    onChange={(date: any) => setStartDate(date)}
+                    minDate={new Date()}
+                  />
+                  {/* <input className="date" placeholder="YYYY/MM/DD" /> */}
+                </div>
+                <div className="right">
+                  <TimeTitle className="title">공연 일정</TimeTitle>
+                  <TimeDatepicker
+                    selected={timeDate}
+                    onChange={(date: any) => setTimeDate(date)}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    timeCaption="Time"
+                    dateFormat="h:mm aa"
+                  />
+                </div>
+              </StageCalendar>
+            </Wrap>
+            <Wrap>
+              <Title className="title">공연 장소</Title>
+              <input placeholder="서울특별시 관악구 벽산아파트 301-906" />
+            </Wrap>
+            <Wrap>
+              <Title className="title">참여 아티스트</Title>
+              <input placeholder="공연 기획사" />
+            </Wrap>
+            <Wrap>
+              <StageCalendar>
+                <div className="left">
+                  <TimeTitle className="title">공연 장르</TimeTitle>
+                  <Select onChange={handleSelect} value={selected}>
+                    {music.map((item, index) => (
+                      <option value={item.type} key={index}>
+                        {item.type}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div>
+                  <TimeTitle className="title">티켓 종류</TimeTitle>
+                  <Select onChange={handleSelectTicket} value={selectedTicket}>
+                    {ticket.map((item, index) => (
+                      <option value={item.ticket} key={index}>
+                        {item.ticket}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </StageCalendar>
+            </Wrap>
+            <Wrap>
+              <StageCalendar>
+                <div className="left">
+                  <TimeTitle className="title">성인 콘텐츠 설정</TimeTitle>
+                  <InputWrap>
+                    <input type="radio" name="yes" value="yes" checked={selectedContent === "yes"} onChange={handleChange} />
+                    <label>예</label>
+                    <input type="radio" name="no" value="no" checked={selectedContent === "no"} onChange={handleChange} />
+                    <label>아니오</label>
+                  </InputWrap>
+                </div>
+                <div>
+                  <TimeTitle className="title">스튜디오</TimeTitle>
+                  <InputWrap>
+                    <input type="radio" name="single" value="single" checked={selectedStudio === "single"} onChange={handleChangeStudio} />
+                    <label>단일 스튜디오</label>
+                    <input
+                      type="radio"
+                      name="multiple"
+                      value="multiple"
+                      checked={selectedStudio === "multiple"}
+                      onChange={handleChangeStudio}
+                    />
+                    <label>다중 스튜디오</label>
+                  </InputWrap>
+                  {selectedStudio === "multiple" && <div>asd</div>}
+                </div>
+              </StageCalendar>
+            </Wrap>
+            <Wrap>
+              <Title className="title">공연 설명</Title>
+              <textarea placeholder="공연 설명 입력" />
+            </Wrap>
+            <ButtonWrap>
+              <button className="cancel">취소</button>
+              <button type="submit">등록</button>
+            </ButtonWrap>
+          </Right>
+        </Main>
+      </form>
     </Container>
   );
 };
+
+const InputWrap = styled.div`
+  font-size: 1rem;
+  > input {
+    margin-right: 6px;
+  }
+  &:nth-child(1) {
+    margin-right: 10px;
+  }
+`;
 
 const Select = styled.select`
   width: 100%;

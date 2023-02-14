@@ -6,9 +6,9 @@ const artists = [
   {
     id: 1,
     imgUrl: "/images/artist.png",
-    artist_img: "/images/sample.png",
+    artist_img: "/images/artist.png",
     name: "아이유",
-    category: "장르",
+    category: "메탈, 발라드",
     link: "",
   },
   {
