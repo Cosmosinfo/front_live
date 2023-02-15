@@ -1,7 +1,21 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 
 const index = () => {
+  const [selected, setSelected] = useState({
+    comet: "",
+    ticket: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target; // 우선 e.target 에서 name 과 value 를 추출
+    setSelected({
+      ...selected, // 기존의 input 객체를 복사한 뒤
+      [name]: value, // name 키를 가진 값을 value 로 설정
+    });
+  };
+
   return (
     <Container>
       <Wrap>
@@ -26,62 +40,79 @@ const index = () => {
           <p>코멧 구매</p>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="comet" value="10000" checked={selected.comet === "10000"} onChange={handleChange} />
               <CometLabel ticket="comet">코멧</CometLabel>
             </div>
-            <div>$ 10000</div>
+            <div>￦ 10000</div>
           </CometDiv>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="comet" value="30000" checked={selected.comet === "30000"} onChange={handleChange} />
               <CometLabel ticket="comet">코멧</CometLabel>
             </div>
-            <div>$ 30000</div>
+            <div>￦ 30000</div>
           </CometDiv>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="comet" value="50000" checked={selected.comet === "50000"} onChange={handleChange} />
               <CometLabel ticket="comet">코멧</CometLabel>
             </div>
-            <div>$ 50000</div>
+            <div>￦ 50000</div>
           </CometDiv>
         </TicketWrap>
         <TicketWrap>
           <p>티켓 구매</p>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="ticket" value="10000" checked={selected.ticket === "10000"} onChange={handleChange} />
               <CometLabel ticket="clover">클로버</CometLabel>
             </div>
-            <div>$ 10000</div>
+            <div>￦ 10000</div>
           </CometDiv>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="ticket" value="10000" checked={selected.ticket === "20000"} onChange={handleChange} />
               <CometLabel ticket="dia">다이아</CometLabel>
             </div>
-            <div>$ 20000</div>
+            <div>￦ 20000</div>
           </CometDiv>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="ticket" value="10000" checked={selected.ticket === "30000"} onChange={handleChange} />
               <CometLabel ticket="heart">하트</CometLabel>
             </div>
-            <div>$ 30000</div>
+            <div>￦ 30000</div>
           </CometDiv>
           <CometDiv>
             <div>
-              <CometInput type="radio" />
+              <CometInput type="radio" name="ticket" value="10000" checked={selected.ticket === "40000"} onChange={handleChange} />
               <CometLabel ticket="spade">스페이드</CometLabel>
             </div>
-            <div>$ 40000</div>
+            <div>￦ 40000</div>
           </CometDiv>
         </TicketWrap>
-        <button>다음</button>
+        <Link
+          href={{
+            pathname: "/setting/coin/payment",
+            query: selected,
+          }}
+        >
+          <Button>다음</Button>
+        </Link>
       </Wrap>
     </Container>
   );
 };
+
+const Button = styled.button`
+  display: block;
+  max-width: 120px;
+  margin: 24px auto 0;
+  padding: 15px 45px;
+  background: #273dff;
+  border-radius: 36px;
+  font-size: 1rem;
+`;
 
 const CometDiv = styled.div`
   display: flex;
@@ -181,15 +212,6 @@ const Wrap = styled.div`
   padding: 24px;
   > p {
     text-align: center;
-  }
-  > button {
-    display: block;
-    max-width: 120px;
-    margin: 24px auto 0;
-    padding: 15px 45px;
-    background: #273dff;
-    border-radius: 36px;
-    font-size: 1rem;
   }
 `;
 
