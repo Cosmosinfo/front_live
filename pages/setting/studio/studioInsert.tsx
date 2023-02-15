@@ -148,7 +148,7 @@ const studioInsert = () => {
       formData.append("photo", imgUrl);
 
       try {
-        const { data } = await axios.post("http://118.63.182.3:8880/api/stage/stageImageInsert", formData, {
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/stage/stageImageInsert`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -296,7 +296,7 @@ const studioInsert = () => {
                     />
                     <label>다중 스튜디오</label>
                   </InputWrap>
-                  {selectedStudio === "multiple" && <div>asd</div>}
+                  {selectedStudio === "multiple" && <StudioInput />}
                 </div>
               </StageCalendar>
             </Wrap>
@@ -314,6 +314,10 @@ const studioInsert = () => {
     </Container>
   );
 };
+
+const StudioInput = styled.input`
+  width: 100%;
+`;
 
 const InputWrap = styled.div`
   font-size: 1rem;
