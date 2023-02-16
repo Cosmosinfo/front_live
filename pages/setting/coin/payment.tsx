@@ -14,12 +14,44 @@ const payment = () => {
       <Wrap>
         <p>결제하기</p>
         <div>결제 내용</div>
-        <CometWrap></CometWrap>
+        <CometWrap>
+          {data.comet && (
+            <Payment>
+              <div>코멧</div>
+              <div>{data.comet}</div>
+            </Payment>
+          )}
+          {data.ticket && (
+            <Payment>
+              <div>코멧</div>
+              <div>{data.ticket}</div>
+            </Payment>
+          )}
+          <Bottom>
+            <div>결제 금액</div>
+            <div>{data && Number(data.comet) + Number(data.ticket)}</div>
+          </Bottom>
+        </CometWrap>
         <div>카드 정보 입력</div>
       </Wrap>
     </Container>
   );
 };
+
+const Payment = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2e2e33;
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  > div {
+    font-size: 1rem;
+  }
+`;
 
 const CometWrap = styled.div`
   padding: 24px;

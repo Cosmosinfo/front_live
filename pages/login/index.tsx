@@ -16,6 +16,8 @@ declare global {
     Kakao: any;
   }
 }
+const frog = 1;
+console.log(123123);
 
 const Login = () => {
   const dispatch = useDispatch();
