@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router"
+import Router, { useRouter } from "next/router"
+
 
 const menus = [
   {
@@ -47,10 +48,15 @@ const data = [
 
 const index = () => {
 
-  const router = useRouter()
-  const userInfo = router.query
-  
-  console.log(userInfo );
+  const userInfo = {
+    email: sessionStorage.getItem('fullEmail'),
+    password: sessionStorage.getItem('password'),
+    Type: sessionStorage.getItem('type'),
+    // Type : type,
+
+  }
+
+  console.log(userInfo);
 
 
   const [checkItems, setCheckItems] = useState([1, 2]);
@@ -76,6 +82,25 @@ const index = () => {
       setCheckItems([]);
     }
   };
+
+  const backUrl = () => {
+    window.location.href = '/signup/type';
+  }
+
+
+
+  const nextUrl = () => {
+    if (sessionStorage.getItem('password') === null) {
+      alert("이메일 또는 비밀번호를 먼저 입력하세요")
+      Router.push("/signup")
+    } else {
+      // sessionStorage.setItem('회원유형', )
+
+      Router.push("/signup/type/privateInfo")
+
+    }
+  };
+
 
   return (
     <Container>
@@ -127,19 +152,23 @@ const index = () => {
           </StyledTable>
         </Main>
         <Bottom>
-          <button className="previous">이전</button>
-          <Link
+          <button onClick={backUrl} className="previous">이전</button>
+          {/* <Link
             href={{
-              pathname: `/signup/type/favoriteMusice`, // 라우팅 id
+              pathname: `/signup/type/privateInfo`, // 라우팅 id
               query: userInfo
+              
               }}
-              as={`/signup/type/favoriteMusic`} //url에 표시할 query
+              as={`/signup/type/privateInfo`} //url에 표시할 query
+              
             >
             
-            <button className="next">다음</button>
-          </Link>
-          
-          
+            
+          </Link> */}
+
+          <button onClick={nextUrl} className="next">다음</button>
+
+
         </Bottom>
       </Form>
     </Container>
@@ -190,9 +219,9 @@ const StyledTr = styled.tr<{ confirmed: boolean }>`
       ${({ confirmed }) => !confirmed && `border-left-style: none;`}
     }
     ${({ confirmed }) =>
-      !confirmed
-        ? `border: 2px solid #2435C0;`
-        : `background-color: #0f0f15;
+    !confirmed
+      ? `border: 2px solid #2435C0;`
+      : `background-color: #0f0f15;
     `}
   }
 `;

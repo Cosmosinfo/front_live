@@ -1,7 +1,8 @@
 import Link from "next/link";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styled, { css } from "styled-components";
 import SHA256 from "../../sha256";
+import Router, { useRouter } from "next/router"
 
 
 
@@ -22,8 +23,8 @@ const Login = () => {
     confirm_password: "",
   });
 
-  
-  
+
+
 
   const { email, emailSite, password, confirm_password } = values;
 
@@ -37,22 +38,6 @@ const Login = () => {
     });
   };
 
-  const userInfo = {
-    fullEmail : fullEmail,
-    password : SHA256(password)
-  }
-
-  
-  
-  
-
-  // const clickHandler = (values: { email: string; emailSite: string; password: string; confirm_password: string; }) => {
-  //   console.log(values);
-    
-  // }
-
-  
-
   const handlePasswordType = () => {
     setPasswordType(() => {
       if (!passwordType.visible) {
@@ -60,6 +45,19 @@ const Login = () => {
       }
       return { type: "password", visible: false };
     });
+  };
+
+
+
+  const sessionStorage = window.sessionStorage;
+
+  const nextUrl = () => {
+    sessionStorage.setItem('fullEmail', fullEmail)
+    sessionStorage.setItem('password', SHA256(password))
+
+    Router.push("/signup/type")
+
+
   };
 
   return (
@@ -105,18 +103,9 @@ const Login = () => {
               />
               <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
             </PasswordForm>
-            
-            <Link
-            href={{
-              pathname: `/signup/type`, // 라우팅 id
-              query: userInfo
-              }}
-              as={`/signup/type`} //url에 표시할 query
-            >
-            
-              <LoginButton type="button">계정 만들기</LoginButton>
-              </Link>
-            
+
+            <LoginButton onClick={nextUrl} type="button">계정 만들기</LoginButton>
+
           </LoginForm>
         </Form>
       </Wrap>

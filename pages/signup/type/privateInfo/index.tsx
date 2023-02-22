@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { useRouter } from "next/router"
+import Router, { useRouter } from "next/router"
 
 const menus = [
   {
@@ -29,15 +29,88 @@ const menus = [
 const index = () => {
 
 
-  const router = useRouter()
-  const { currentName } = router.query
-  console.log(currentName);
+  const userInfo = {
+    email: sessionStorage.getItem('fullEmail'),
+    password: sessionStorage.getItem('password'),
+    Type: sessionStorage.getItem('type'),
+    // Type : type,
+
+  }
+
+  console.log(userInfo);
 
 
-  const [selected, setSelected] = useState("남자");
+
+  const [values, setValues] = useState({
+
+    nickname: "",
+    gender: "",
+    name: "",
+    brith: "",
+    country: "",
+    city: "",
+    address: "",
+    phone: "",
+    phonecity: "",
+
+  });
+
+  const { nickname, name, brith, country, city, address, phone, phonecity } = values;
+
+
+
+
+
+
+  const [selected, setSelected] = useState("")
+
+
+  const onChangeValues = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+
+    setValues({
+      ...values,
+      [name]: value,
+    });
+    setSelected(e.target.value);
+  };
+
+  const [genderSelected, setgenderSelected] = useState("남자");
+
+
+
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelected(e.target.value);
+    setgenderSelected(e.target.value);
+  };
+
+  const backUrl = () => {
+    window.location.href = '/signup/type/agreement';
+  }
+
+
+
+  const nextUrl = () => {
+    if (sessionStorage.getItem('password') === null) {
+      alert("이메일 또는 비밀번호를 먼저 입력하세요")
+      Router.push("/signup")
+    } else {
+      // sessionStorage.setItem('회원유형', )
+
+      sessionStorage.setItem('Nickname', nickname)
+      sessionStorage.setItem('Gender', genderSelected)
+      sessionStorage.setItem('Name', name)
+      sessionStorage.setItem('Brith', brith)
+      sessionStorage.setItem('Country', country)
+      sessionStorage.setItem('City', city)
+      sessionStorage.setItem('Address', address)
+      sessionStorage.setItem('Phone', phone)
+      sessionStorage.setItem('Phonecity', phonecity)
+
+      Router.push("/signup/type/favoriteMusic")
+
+    }
   };
 
   return (
@@ -56,14 +129,14 @@ const index = () => {
           <InputForm>
             <Individual>
               <div>닉네임</div>
-              <input type="text" className="nickname" placeholder="닉네임을 입력해주세요." />
+              <input name="nickname" type="text" className="nickname" placeholder="닉네임을 입력해주세요." value={nickname} onChange={onChangeValues} />
             </Individual>
             <Individual>
               <div>성별</div>
               <Gender>
-                <input type="radio" name="남자" value="남자" checked={selected === "남자"} onChange={handleChange} />
+                <input type="radio" name="남자" value="남자" checked={genderSelected === "남자"} onChange={onChangeValues} />
                 <label>남자</label>
-                <input type="radio" name="여자" value="여자" checked={selected === "여자"} onChange={handleChange} />
+                <input type="radio" name="여자" value="여자" checked={genderSelected === "여자"} onChange={handleChange} />
                 <label>여자</label>
               </Gender>
             </Individual>
@@ -71,51 +144,44 @@ const index = () => {
           <InputForm className="second">
             <Individual>
               <div>이름</div>
-              <input type="text" className="name" placeholder="이름을 입력해주세요." />
+              <input type="text" name="name" className="name" placeholder="이름을 입력해주세요." value={name} onChange={onChangeValues} />
             </Individual>
             <Individual>
               <div>생년월일</div>
-              <input type="text" className="date" placeholder="YYYY/MM/DD" />
+              <input type="text" name="brith" className="date" placeholder="YYYY/MM/DD" value={brith} onChange={onChangeValues} />
             </Individual>
           </InputForm>
           <InputForm className="second">
             <Individual>
               <div>국가</div>
-              <input type="text" className="name" placeholder="대한민국" />
+              <input type="text" name="country" className="name" placeholder="대한민국" value={country} onChange={onChangeValues} />
             </Individual>
             <Individual>
               <div>도시</div>
-              <input type="text" className="date" placeholder="서울특별시" />
+              <input type="text" name="city" className="date" placeholder="서울특별시" value={city} onChange={onChangeValues} />
             </Individual>
           </InputForm>
           <Individual>
-            <input type="text" className="location" placeholder="상세주소를 입력하세요. (선택사항)" />
+            <input type="text" name="address" className="location" placeholder="상세주소를 입력하세요. (선택사항)" value={address} onChange={onChangeValues} />
           </Individual>
           <InputForm className="second">
             <Individual>
               <div>휴대전화</div>
-              <input type="text" className="name" placeholder="대한민국" />
+              <input type="text" name="phone" className="name" placeholder="대한민국" value={phone} onChange={onChangeValues} />
             </Individual>
             <Individual>
               <div>도시</div>
-              <input type="text" className="date" placeholder="서울특별시" />
+              <input type="text" name="phonecity" className="date" placeholder="서울특별시" value={phonecity} onChange={onChangeValues} />
             </Individual>
           </InputForm>
         </Main>
         <Bottom>
-          <button className="previous">이전</button>
+          <button onClick={backUrl} className="previous">이전</button>
 
-          <Link
-            href={{
-              pathname: `/signup/type/signupComplete`, // 라우팅 id
-              query: { currentName: JSON.stringify(currentName) }, // props 
-              }}
-              as={`/signup/type/signupComplete`} //url에 표시할 query
-            >
-            
-            <button className="next">다음</button>
-          </Link>
-          
+
+          <button onClick={nextUrl} className="next">다음</button>
+
+
         </Bottom>
       </Form>
     </Container>
@@ -166,24 +232,26 @@ const Main = styled.div`
 `;
 
 const Bottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 60px;
-  margin: 10% auto;
-  > button {
-    width: 50%;
-    border-radius: 200px;
-    font-size: 1rem;
-    &.previous {
-      border: 1px solid #888888;
-    }
-    &.next {
-      background-color: #273dff;
-      margin-left: 24px;
-    }
+display: flex;
+justify-content: space-between;
+width: 100%;
+height: 60px;
+margin: 10% auto;
+> button {
+  width: 50%;
+  border-radius: 200px;
+  font-size: 1rem;
+  &.previous {
+    border: 1px solid #888888;
   }
+  &.next {
+    background-color: #273dff;
+    margin-left: 24px;
+  }
+}
 `;
+
+
 
 const Menu = styled.div<{ imgUrl: string }>`
   position: relative;

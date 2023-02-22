@@ -1,8 +1,32 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router"
 
 const index = () => {
+
+  const userInfo = {
+
+    email: sessionStorage.getItem('fullEmail'),
+    password: sessionStorage.getItem('password'),
+    Type: sessionStorage.getItem('type'),
+    Nickname: sessionStorage.getItem('Nickname'),
+    Gender: sessionStorage.getItem('Gender'),
+    Name: sessionStorage.getItem('Name'),
+    Brith: sessionStorage.getItem('Brith'),
+    Country: sessionStorage.getItem('Country'),
+    City: sessionStorage.getItem('City'),
+    Address: sessionStorage.getItem('Address'),
+    Phone: sessionStorage.getItem('Phone'),
+    Phonecity: sessionStorage.getItem('Phonecity'),
+    Music: sessionStorage.getItem('music')
+  }
+
+  console.log(userInfo);
+
+
+
+
   return (
     <Container>
       <Form>

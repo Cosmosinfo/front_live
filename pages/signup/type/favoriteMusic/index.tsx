@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import { useRouter } from "next/router"
+import Router, { useRouter } from "next/router"
 
 const menus = [
   {
@@ -27,85 +27,201 @@ const menus = [
 ];
 
 const music = [
+
+
+
   {
-    id: 1,
-    type: "케이팝",
+    category_code: 'KPO',
+    category_name_kr: '케이팝',
+    category_name_en: 'KPOP',
+    category_name_jp: '???',
+    category_sequence: 1
   },
   {
-    id: 2,
-    type: "알앤비",
+    category_code: 'RNB',
+    category_name_kr: '알앤비',
+    category_name_en: 'R&B',
+    category_name_jp: '???',
+    category_sequence: 2
   },
   {
-    id: 3,
-    type: "락/메탈",
+    category_code: 'RMT',
+    category_name_kr: '락/메탈',
+    category_name_en: 'METAL',
+    category_name_jp: '???',
+    category_sequence: 3
   },
   {
-    id: 4,
-    type: "팝",
+    category_code: 'POP',
+    category_name_kr: '팝',
+    category_name_en: 'POP',
+    category_name_jp: '???',
+    category_sequence: 4
   },
   {
-    id: 5,
-    type: "일렉트로닉",
+    category_code: 'ELE',
+    category_name_kr: '일렉트로닉',
+    category_name_en: 'Electronic',
+    category_name_jp: '???',
+    category_sequence: 5
   },
   {
-    id: 6,
-    type: "얼터너티브",
+    category_code: 'ALT',
+    category_name_kr: '얼터너티브',
+    category_name_en: 'Alternative',
+    category_name_jp: '???',
+    category_sequence: 6
   },
   {
-    id: 7,
-    type: "제이팝",
+    category_code: 'JPO',
+    category_name_kr: '제이팝',
+    category_name_en: 'JPOP',
+    category_name_jp: '???',
+    category_sequence: 7
   },
   {
-    id: 8,
-    type: "발라드",
+    category_code: 'BAL',
+    category_name_kr: '발라드',
+    category_name_en: 'Ballad',
+    category_name_jp: '???',
+    category_sequence: 8
   },
   {
-    id: 9,
-    type: "재즈",
+    category_code: 'JAZ',
+    category_name_kr: '재즈',
+    category_name_en: 'Jazz',
+    category_name_jp: '???',
+    category_sequence: 9
   },
   {
-    id: 10,
-    type: "컨트리",
+    category_code: 'COU',
+    category_name_kr: '컨트리',
+    category_name_en: 'Country',
+    category_name_jp: '???',
+    category_sequence: 10
   },
   {
-    id: 11,
-    type: "힙합",
+    category_code: 'HIP',
+    category_name_kr: '힙합',
+    category_name_en: 'Hip-hop',
+    category_name_jp: '???',
+    category_sequence: 11
   },
   {
-    id: 12,
-    type: "펑크",
+    category_code: 'FUN',
+    category_name_kr: '펑크',
+    category_name_en: 'Funk',
+    category_name_jp: '???',
+    category_sequence: 12
   },
   {
-    id: 13,
-    type: "메탈",
+    category_code: 'MET',
+    category_name_kr: '메탈',
+    category_name_en: 'Metal',
+    category_name_jp: '???',
+    category_sequence: 13
   },
   {
-    id: 14,
-    type: "댄스",
+    category_code: 'DAN',
+    category_name_kr: '댄스',
+    category_name_en: 'Dance',
+    category_name_jp: '???',
+    category_sequence: 14
   },
   {
-    id: 15,
-    type: "클래식",
+    category_code: 'CLA',
+    category_name_kr: '클래식',
+    category_name_en: 'Classic',
+    category_name_jp: '???',
+    category_sequence: 15
   },
   {
-    id: 16,
-    type: "이디엠",
+    category_code: 'EDM',
+    category_name_kr: '이디엠',
+    category_name_en: 'EDM',
+    category_name_jp: '???',
+    category_sequence: 16
   },
   {
-    id: 17,
-    type: "레게",
+    category_code: 'REG',
+    category_name_kr: '레게',
+    category_name_en: 'Reggae',
+    category_name_jp: '???',
+    category_sequence: 17
   },
   {
-    id: 18,
-    type: "인디",
+    category_code: 'IND',
+    category_name_kr: '인디',
+    category_name_en: 'Indie',
+    category_name_jp: '???',
+    category_sequence: 18
   },
+
 ];
+
+
+
 
 const index = () => {
 
-  const router = useRouter()
-  const { currentName } = router.query
-  console.log(currentName);
+
+
+  const userInfo = {
+
+    email: sessionStorage.getItem('fullEmail'),
+    password: sessionStorage.getItem('password'),
+    Type: sessionStorage.getItem('type'),
+    Nickname: sessionStorage.getItem('Nickname'),
+    Gender: sessionStorage.getItem('Gender'),
+    Name: sessionStorage.getItem('Name'),
+    Brith: sessionStorage.getItem('Brith'),
+    Country: sessionStorage.getItem('Country'),
+    City: sessionStorage.getItem('City'),
+    Address: sessionStorage.getItem('Address'),
+    Phone: sessionStorage.getItem('Phone'),
+    Phonecity: sessionStorage.getItem('Phonecity'),
+
+  }
+
+  console.log(userInfo);
+
+
+
+
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
+  const handleGenreClick = (name: string) => {
+    if (selectedGenres.includes(name)) {
+      setSelectedGenres(selectedGenres.filter((genre) => genre !== name));
+    } else {
+      setSelectedGenres([...selectedGenres, name]);
+    }
+  };
+
+
+
+  console.log(selectedGenres);
+
+
+
+
+  const backUrl = () => {
+    window.location.href = '/signup/type';
+  }
+
+
+
+  const nextUrl = () => {
+    if (sessionStorage.getItem('password') === null) {
+      alert("이메일 또는 비밀번호를 먼저 입력하세요")
+      Router.push("/signup")
+    } else {
+      sessionStorage.setItem('music', selectedGenres)
+
+      Router.push("/signup/type/signupComplete")
+
+    }
+  };
 
 
 
@@ -125,25 +241,27 @@ const index = () => {
             좋아하는 장르<span>*복수선택 3가지 가능</span>
           </Profile>
           <MusicBox>
-            {music.map((data, id) => (
-              <div key={id}>{data.type}</div>
+
+
+            {music.map((music, index) => (
+              <MusicCheck
+                key={index}
+                isSelected={selectedGenres.includes(music.category_name_kr)}
+                onClick={() => handleGenreClick(music.category_name_kr)}
+              >
+                {music.category_name_kr}
+              </MusicCheck>
             ))}
           </MusicBox>
-        </Main>
-        <Bottom>
-          <button className="previous">이전</button>
 
-          <Link
-            href={{
-              pathname: `/signup/type/privateInfo`, // 라우팅 id
-              query: { currentName: JSON.stringify(currentName) }, // props 
-              }}
-              as={`/signup/type/privateInfo`} //url에 표시할 query
-            >
-            
-            <button className="next">다음</button>
-          </Link>
-          
+        </Main>
+
+        <Bottom>
+          <button onClick={backUrl} className="previous">이전</button>
+
+
+          <button onClick={nextUrl} className="next">다음</button>
+
         </Bottom>
       </Form>
     </Container>
@@ -179,10 +297,26 @@ const MusicBox = styled.div`
     width: 30%;
     margin-bottom: 12px;
     padding: 16px 30px;
-    border: 1px solid #9a9a9a;
+    
     border-radius: 100px;
     color: #cacaca;
   }
+`;
+const MusicCheck = styled.div<{ isSelected: boolean }>`
+  
+    display: block;
+    width: 30%;
+    margin-bottom: 12px;
+    padding: 16px 30px;
+    // border: 1px solid #9a9a9a;
+    border-radius: 100px;
+    color: #cacaca;
+    cursor: pointer;
+  background-color: ${(props) => (props.isSelected ? 'blue' : 'transparent')};
+  
+  border: ${(props) => (props.isSelected ? 'none' : '1px solid #9a9a9a')};
+    
+    
 `;
 
 const Profile = styled.div`

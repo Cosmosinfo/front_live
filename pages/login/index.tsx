@@ -1,19 +1,16 @@
 import Link from "next/link";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken, setAdmin } from "../../store/_redcuers/authReducer";
 import Router from "next/router";
-// import QueryString from 'qs';
 // import liff from '@line/liff';
-// import { gapi } from 'gapi-script';
-
-// import qs from "qs";
 
 declare global {
   interface Window {
     Kakao: any;
+    gapi: any;
   }
 }
 
@@ -70,32 +67,107 @@ const Login = () => {
     }
   };
 
-  // const [userObj, setUserObj]=React.useState({
-  //   email:"",
-  //   name:""
+
+  const [contactGroups, setContactGroups] = useState([]);
+
+
+
+  const GoogleLoginHandler = () => {
+
+
+    const CLIENT_ID = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
+    const AUTHORIZE_URI = "https://accounts.google.com/o/oauth2/v2/auth";
+    const PEOPLE_URI = "https://people.googleapis.com/v1/contactGroups";
+
+    const queryStr = qs.stringify({
+      client_id: CLIENT_ID,
+      redirect_uri: 'http://localhost:3000/login',
+      response_type: "token",
+      scope: "https://www.googleapis.com/auth/contacts.readonly"
+    });
+
+    const loginUrl = AUTHORIZE_URI + "?" + queryStr;
+
+
+    const { access_token } = qs.parse(window.location.hash.substr(1));
+
+    if (!access_token) {
+      window.location.assign(loginUrl);
+      return null;
+    }
+
+
+
+    useEffect(() => {
+      fetch(PEOPLE_URI, {
+        headers: { Authorization: "Bearer " + access_token }
+      })
+        .then(response => response.json())
+        .then(data => setContactGroups(data.contactGroups));
+      console.log(contactGroups);
+
+    }, [access_token]);
+
+    console.log(contactGroups);
+
+
+  }
+
+  console.log(contactGroups);
+
+
+
+
+  //  gapi.load('auth2', function(){
+  //    // Retrieve the singleton for the GoogleAuth library and set up the client.
+  //    gapi.auth2.init({
+  //      client_id: '181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com',
+  //      cookiepolicy: 'single_host_origin',
+  //      // Request scopes in addition to 'profile' and 'email'
+  //      //scope: 'additional_scope'
+  //    });
   // })
-  // //로그인 성공시 res처리
-  // const onLoginSuccess=(res:any)=>{
-  //   setUserObj({...userObj,
-  //     email:res.profileObj.email,
-  //     name:res.profileObj.name
-  //   })
 
-  // }
+  //    const GoogleLoginHandler = (auth2: {
+  //     [x: string]: any; attachClickHandler: (arg0: any, arg1: {}, arg2: (googleUser: any) => void, arg3: (error: any) => void) => void; 
+  // },element: { id: any; }) => {
+
+  //     console.log(element.id);
+  //         auth2.attachClickHandler(element, {},
+  //             function(googleUser) {
+  //                 const profile = auth2.googleUser.get().getBasicProfile();
+  //   console.log('ID: ' + profile.getId());
+  //   console.log('Full Name: ' + profile.getName());
+  //   console.log('Given Name: ' + profile.getGivenName());
+  //   console.log('Family Name: ' + profile.getFamilyName());
+  //   console.log('Image URL: ' + profile.getImageUrl());
+  //   console.log('Email: ' + profile.getEmail());
+
+  //             }, function(error) {
+  //               alert(JSON.stringify(error, undefined, 2));
+  //             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const GoogleAPI = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
+
+  // const onSuccess = (res: any) => {
+  //   console.log("Login SUCCESS! Current user : ", res.profileObj);
+  // };
+
   // const onFailure = (res: any) => {
-  //   console.log(res);
-
-  // }
-
-  const GoogleAPI = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
-
-  const onSuccess = (res: any) => {
-    console.log("Login SUCCESS! Current user : ", res.profileObj);
-  };
-
-  const onFailure = (res: any) => {
-    console.log("Login faile! Current res : ", res);
-  };
+  //   console.log("Login faile! Current res : ", res);
+  // };
 
   // kakao login
 
@@ -104,8 +176,8 @@ const Login = () => {
     // 카카오 초기화
     if (!Kakao.isInitialized()) {
       Kakao.init("446d0bddcd2aabc533a967c7c8d61f0e");
-  }
-    
+    }
+
 
     // 카카오 로그인 구현
 
@@ -312,7 +384,8 @@ const Login = () => {
             </Title>
             <SocialLogin>
               <div>
-                <SosicalLoginButton social="google">구글 계정으로 로그인</SosicalLoginButton>
+                <SosicalLoginButton className="g-signin2" data-onsuccess="GoogleLoginHandler" onClick={GoogleLoginHandler} social="google">구글 계정으로 로그인</SosicalLoginButton>
+
                 <SosicalLoginButton onClick={LineLoginHandler} social="line">
                   라인 계정으로 로그인
                 </SosicalLoginButton>
