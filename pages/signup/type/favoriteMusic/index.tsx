@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
+<<<<<<< HEAD
 import Router, { useRouter } from "next/router"
+=======
+import { useRouter } from "next/router";
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
 
 const menus = [
   {
@@ -163,6 +167,7 @@ const music = [
 
 
 const index = () => {
+<<<<<<< HEAD
 
 
 
@@ -222,8 +227,11 @@ const index = () => {
 
     }
   };
-
-
+=======
+  const router = useRouter();
+  const { currentName } = router.query;
+  console.log(currentName);
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
 
   return (
     <Container>
@@ -257,11 +265,25 @@ const index = () => {
         </Main>
 
         <Bottom>
+<<<<<<< HEAD
           <button onClick={backUrl} className="previous">이전</button>
 
 
           <button onClick={nextUrl} className="next">다음</button>
 
+=======
+          <button className="previous">이전</button>
+
+          <Link
+            href={{
+              pathname: `/signup/type/privateInfo`, // 라우팅 id
+              query: { currentName: JSON.stringify(currentName) }, // props
+            }}
+            as={`/signup/type/privateInfo`} //url에 표시할 query
+          >
+            <button className="next">다음</button>
+          </Link>
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
         </Bottom>
       </Form>
     </Container>
@@ -388,7 +410,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

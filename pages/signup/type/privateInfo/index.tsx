@@ -1,7 +1,11 @@
 import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import Link from "next/link";
+<<<<<<< HEAD
 import Router, { useRouter } from "next/router"
+=======
+import { useRouter } from "next/router";
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
 
 const menus = [
   {
@@ -27,6 +31,7 @@ const menus = [
 ];
 
 const index = () => {
+<<<<<<< HEAD
 
 
   const userInfo = {
@@ -38,6 +43,13 @@ const index = () => {
   }
 
   console.log(userInfo);
+=======
+  const router = useRouter();
+  const { currentName } = router.query;
+  console.log(currentName);
+
+  const [selected, setSelected] = useState("남자");
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
 
 
 
@@ -176,12 +188,26 @@ const index = () => {
           </InputForm>
         </Main>
         <Bottom>
+<<<<<<< HEAD
           <button onClick={backUrl} className="previous">이전</button>
 
 
           <button onClick={nextUrl} className="next">다음</button>
 
 
+=======
+          <button className="previous">이전</button>
+
+          <Link
+            href={{
+              pathname: `/signup/type/signupComplete`, // 라우팅 id
+              query: { currentName: JSON.stringify(currentName) }, // props
+            }}
+            as={`/signup/type/signupComplete`} //url에 표시할 query
+          >
+            <button className="next">다음</button>
+          </Link>
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
         </Bottom>
       </Form>
     </Container>
@@ -302,7 +328,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+<<<<<<< HEAD
 import Router, { useRouter } from "next/router"
 import Ex from "../../../public/images/signup/user.svg"
 import Ex2 from "../../../public/images/signup/user_white.svg"
@@ -83,6 +84,20 @@ const index = () => {
 
 
 
+=======
+import { useRouter } from "next/router";
+
+const index = () => {
+  const router = useRouter();
+
+  const userInfo = router.query;
+  // const { fullEmail } = router.query
+  // const { password } = router.query
+  // console.log("email : " + fullEmail , ", password : " + password );
+  console.log(userInfo);
+
+  // const userInfo = {fullEmail , password}
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
 
   return (
     <Container>
@@ -124,10 +139,26 @@ const index = () => {
           </MemberType2>
         </Member>
         <Bottom>
+<<<<<<< HEAD
           <button onClick={backUrl} className="previous">이전</button>
 
           <button onClick={nextUrl} className="next">다음</button>
 
+=======
+          <button className="previous">이전</button>
+
+          <button className="next">다음</button>
+          {/* <Link
+            href={{
+              pathname: `/signup/type/agreement`, // 라우팅 id
+              query: userInfo
+              }}
+              as={`/signup/type/agreement`} //url에 표시할 query
+            >
+            
+            <button className="next">다음</button>
+          </Link> */}
+>>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
         </Bottom>
       </Form>
     </Container>
@@ -259,7 +290,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

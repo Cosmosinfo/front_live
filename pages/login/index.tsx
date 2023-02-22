@@ -13,6 +13,8 @@ declare global {
     gapi: any;
   }
 }
+const frog = 1;
+console.log(123123);
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -608,7 +610,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   display: flex;
 `;

@@ -6,9 +6,9 @@ const artists = [
   {
     id: 1,
     imgUrl: "/images/artist.png",
-    artist_img: "/images/sample.png",
+    artist_img: "/images/artist.png",
     name: "아이유",
-    category: "장르",
+    category: "메탈, 발라드",
     link: "",
   },
   {
@@ -216,7 +216,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100vh;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   padding: 30px;
   padding-top: 30px;

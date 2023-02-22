@@ -58,6 +58,7 @@ const index = () => {
 
   console.log(userInfo);
 
+  console.log(userInfo);
 
   const [checkItems, setCheckItems] = useState([1, 2]);
 
@@ -153,18 +154,7 @@ const index = () => {
         </Main>
         <Bottom>
           <button onClick={backUrl} className="previous">이전</button>
-          {/* <Link
-            href={{
-              pathname: `/signup/type/privateInfo`, // 라우팅 id
-              query: userInfo
-              
-              }}
-              as={`/signup/type/privateInfo`} //url에 표시할 query
-              
-            >
-            
-            
-          </Link> */}
+
 
           <button onClick={nextUrl} className="next">다음</button>
 
@@ -197,7 +187,7 @@ const Bottom = styled.div`
 
 const StyledTr = styled.tr<{ confirmed: boolean }>`
   margin-bottom: 10px;
-  ${({ confirmed }) => confirmed && `background-color: #1E1E1E;`}
+  ${({ confirmed }) => confirmed && `background-color: #14141C;`}
   > td {
     border: 1px solid #0f0f15;
     border-top-left-radius: 100px;
@@ -313,7 +303,7 @@ const Container = styled.div`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

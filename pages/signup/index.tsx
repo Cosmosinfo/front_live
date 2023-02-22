@@ -4,13 +4,7 @@ import styled, { css } from "styled-components";
 import SHA256 from "../../sha256";
 import Router, { useRouter } from "next/router"
 
-
-
-
-
-
 const Login = () => {
-
   const [passwordType, setPasswordType] = useState({
     type: "password",
     visible: false,
@@ -24,8 +18,6 @@ const Login = () => {
   });
 
 
-
-
   const { email, emailSite, password, confirm_password } = values;
 
   const fullEmail = email + "@" + emailSite;
@@ -37,6 +29,16 @@ const Login = () => {
       [name]: value,
     });
   };
+
+  const userInfo = {
+    fullEmail: fullEmail,
+    password: SHA256(password),
+  };
+
+  // const clickHandler = (values: { email: string; emailSite: string; password: string; confirm_password: string; }) => {
+  //   console.log(values);
+
+  // }
 
   const handlePasswordType = () => {
     setPasswordType(() => {
@@ -106,10 +108,10 @@ const Login = () => {
 
             <LoginButton onClick={nextUrl} type="button">계정 만들기</LoginButton>
 
-          </LoginForm>
-        </Form>
-      </Wrap>
-    </Container>
+          </LoginForm >
+        </Form >
+      </Wrap >
+    </Container >
   );
 };
 
@@ -283,7 +285,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   display: flex;
 `;

@@ -391,7 +391,7 @@ const Section = styled.section`
 const Container = styled.main`
   min-width: 80%;
   margin-left: 250px;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
 `;
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
@@ -47,7 +48,9 @@ const index = () => {
         </div>
         <div>
           <SearchBar />
-          <InsertButton>공연 등록</InsertButton>
+          <Link href="/setting/studio/studioInsert">
+            <InsertButton>공연 등록</InsertButton>
+          </Link>
           <div>정렬</div>
         </div>
       </Top>
@@ -151,7 +154,7 @@ const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
-  background: #1e1e1e;
+  background: #14141c;
   color: #ffffff;
   padding: 30px;
   padding-top: 30px;
