@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-<<<<<<< HEAD
 import Router, { useRouter } from "next/router"
 import Ex from "../../../public/images/signup/user.svg"
 import Ex2 from "../../../public/images/signup/user_white.svg"
@@ -23,9 +22,7 @@ const index = () => {
 
   const sessionStorage = window.sessionStorage;
 
-  const backUrl = () => {
-    window.location.href = '/signup';
-  }
+
 
   // console.log(sessionStorage.getItem('fullEmail'));
   // console.log(sessionStorage.getItem('password'));
@@ -37,17 +34,6 @@ const index = () => {
 
   console.log(userInfo);
 
-  const nextUrl = () => {
-    if (sessionStorage.getItem('password') === null) {
-      alert("이메일 또는 비밀번호를 먼저 입력하세요")
-      Router.push("/signup")
-    } else {
-      sessionStorage.setItem('type', checkValue)
-
-      Router.push("/signup/type/agreement")
-
-    }
-  };
 
 
 
@@ -84,20 +70,27 @@ const index = () => {
 
 
 
-=======
-import { useRouter } from "next/router";
 
-const index = () => {
-  const router = useRouter();
+  const nextUrl = () => {
+    if (sessionStorage.getItem('password') === null) {
+      alert("이메일 또는 비밀번호를 먼저 입력하세요")
+      Router.push("/signup")
+    } else if (isChecked == false && isChecked2 == false) {
+      alert('You must check 1 checkboxes!');
+      return;
 
-  const userInfo = router.query;
-  // const { fullEmail } = router.query
-  // const { password } = router.query
-  // console.log("email : " + fullEmail , ", password : " + password );
-  console.log(userInfo);
+    } else {
+      sessionStorage.setItem('type', checkValue)
 
-  // const userInfo = {fullEmail , password}
->>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
+      Router.push("/signup/type/agreement")
+    }
+  };
+
+  const backUrl = () => {
+    window.location.href = '/signup';
+  }
+
+
 
   return (
     <Container>
@@ -139,26 +132,12 @@ const index = () => {
           </MemberType2>
         </Member>
         <Bottom>
-<<<<<<< HEAD
           <button onClick={backUrl} className="previous">이전</button>
 
           <button onClick={nextUrl} className="next">다음</button>
 
-=======
-          <button className="previous">이전</button>
 
-          <button className="next">다음</button>
-          {/* <Link
-            href={{
-              pathname: `/signup/type/agreement`, // 라우팅 id
-              query: userInfo
-              }}
-              as={`/signup/type/agreement`} //url에 표시할 query
-            >
-            
-            <button className="next">다음</button>
-          </Link> */}
->>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
+
         </Bottom>
       </Form>
     </Container>

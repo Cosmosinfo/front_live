@@ -1,8 +1,10 @@
-import Link from "next/link";
+
 import React, { useState, ChangeEvent, useEffect } from "react";
 import styled, { css } from "styled-components";
 import SHA256 from "../../sha256";
 import Router, { useRouter } from "next/router"
+import { Formik, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 const Login = () => {
   const [passwordType, setPasswordType] = useState({
@@ -18,6 +20,8 @@ const Login = () => {
   });
 
 
+
+
   const { email, emailSite, password, confirm_password } = values;
 
   const fullEmail = email + "@" + emailSite;
@@ -30,16 +34,6 @@ const Login = () => {
     });
   };
 
-  const userInfo = {
-    fullEmail: fullEmail,
-    password: SHA256(password),
-  };
-
-  // const clickHandler = (values: { email: string; emailSite: string; password: string; confirm_password: string; }) => {
-  //   console.log(values);
-
-  // }
-
   const handlePasswordType = () => {
     setPasswordType(() => {
       if (!passwordType.visible) {
@@ -49,11 +43,29 @@ const Login = () => {
     });
   };
 
+  // formik 
+  const ValidationSchema = Yup.object().shape({
+    email: Yup.string()
+      .required("이름은 필수항목입니다."),
+    password: Yup.string()
+      .required("이름은 필수항목입니다.")
+  });
 
+  const initialValues = {
+    email: "",
+    password: ""
+  };
 
   const sessionStorage = window.sessionStorage;
 
+  const [emailError, setEmailError] = useState(false);
+
+
+
   const nextUrl = () => {
+
+
+
     sessionStorage.setItem('fullEmail', fullEmail)
     sessionStorage.setItem('password', SHA256(password))
 
@@ -83,8 +95,9 @@ const Login = () => {
           </Top>
           <Or>또는</Or>
           <LoginForm>
+
             <p>이메일</p>
-            <EmailForm>
+            <EmailForm >
               <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
               <span>@</span>
               <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={emailSite} onChange={onChangeValues} />
@@ -97,6 +110,7 @@ const Login = () => {
             <p>비밀번호 확인</p>
             <PasswordForm>
               <Password
+
                 name="confirm_password"
                 type={passwordType.type}
                 autoComplete="off"
@@ -151,6 +165,7 @@ const Password = styled.input`
     border: 2px solid #273dff;
     background: url("/images/login/password_white.svg") no-repeat 25px 50% #28282f;
   }
+  
 `;
 
 const EmailSite = styled.input`
@@ -177,6 +192,7 @@ const Email = styled.input`
     border: 2px solid #273dff;
     background: url("/images/login/email_white.svg") no-repeat 25px 50% #28282f;
   }
+  
 `;
 
 const EmailForm = styled.div`

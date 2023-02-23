@@ -1,11 +1,8 @@
 import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
-<<<<<<< HEAD
 import Router, { useRouter } from "next/router"
-=======
-import { useRouter } from "next/router";
->>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
+import axios from "axios";
 
 const menus = [
   {
@@ -167,40 +164,52 @@ const music = [
 
 
 const index = () => {
-<<<<<<< HEAD
 
 
 
   const userInfo = {
 
-    email: sessionStorage.getItem('fullEmail'),
-    password: sessionStorage.getItem('password'),
-    Type: sessionStorage.getItem('type'),
-    Nickname: sessionStorage.getItem('Nickname'),
-    Gender: sessionStorage.getItem('Gender'),
-    Name: sessionStorage.getItem('Name'),
-    Brith: sessionStorage.getItem('Brith'),
-    Country: sessionStorage.getItem('Country'),
-    City: sessionStorage.getItem('City'),
-    Address: sessionStorage.getItem('Address'),
-    Phone: sessionStorage.getItem('Phone'),
-    Phonecity: sessionStorage.getItem('Phonecity'),
+    userEmail: sessionStorage.getItem('fullEmail'),
+    userPassword: sessionStorage.getItem('password'),
+    userNickname: sessionStorage.getItem('Nickname'),
+    userGender: sessionStorage.getItem('Gender'),
+    userName: sessionStorage.getItem('Name'),
+    userBirth: sessionStorage.getItem('Brith'),
+    userNation: sessionStorage.getItem('Country'),
+    userCity: sessionStorage.getItem('City'),
+    userAddress: sessionStorage.getItem('Address'),
+    userPhone: sessionStorage.getItem('Phone'),
+
 
   }
 
   console.log(userInfo);
 
 
-
-
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
+  const numChecked = selectedGenres.filter((isSelected) => isSelected).length;
+
   const handleGenreClick = (name: string) => {
+
+
+
+
+
+
+
     if (selectedGenres.includes(name)) {
-      setSelectedGenres(selectedGenres.filter((genre) => genre !== name));
+      setSelectedGenres(selectedGenres.filter((music) => music !== name));
+    } else if (numChecked >= 3) {
+      alert('You cannot check more than 3 checkboxes!');
+      return;
     } else {
+
       setSelectedGenres([...selectedGenres, name]);
     }
+
+
+
   };
 
 
@@ -209,33 +218,40 @@ const index = () => {
 
 
 
+  const nextUrl = async () => {
+    if (sessionStorage.getItem('password') === null) {
+      alert("이메일 또는 비밀번호를 먼저 입력하세요")
+      Router.push("/signup")
+    } else if (numChecked < 3) {
+      alert('You must check 3 checkboxes!');
+    } else {
+      // sessionStorage.setItem('music', selectedGenres)
+
+
+      try {
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/join`, userInfo);
+        console.log(data.response);
+        data.response === 200 && window.alert("회원가입 성공");
+        Router.push("/signup/type/signupComplete")
+      } catch (e) {
+        // 서버에서 받은 에러 메시지 출력
+        console.log(e);
+        window.alert("회원가입 실패");
+      }
+
+
+
+    }
+  };
 
   const backUrl = () => {
     window.location.href = '/signup/type';
   }
 
 
-
-  const nextUrl = () => {
-    if (sessionStorage.getItem('password') === null) {
-      alert("이메일 또는 비밀번호를 먼저 입력하세요")
-      Router.push("/signup")
-    } else {
-      sessionStorage.setItem('music', selectedGenres)
-
-      Router.push("/signup/type/signupComplete")
-
-    }
-  };
-=======
-  const router = useRouter();
-  const { currentName } = router.query;
-  console.log(currentName);
->>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
-
   return (
     <Container>
-      <Form>
+      <Form >
         <Title>회원가입</Title>
         <Top>
           {menus.map((menu, id) => (
@@ -265,25 +281,11 @@ const index = () => {
         </Main>
 
         <Bottom>
-<<<<<<< HEAD
           <button onClick={backUrl} className="previous">이전</button>
 
 
-          <button onClick={nextUrl} className="next">다음</button>
+          <button type="submit" onClick={nextUrl} className="next">다음</button>
 
-=======
-          <button className="previous">이전</button>
-
-          <Link
-            href={{
-              pathname: `/signup/type/privateInfo`, // 라우팅 id
-              query: { currentName: JSON.stringify(currentName) }, // props
-            }}
-            as={`/signup/type/privateInfo`} //url에 표시할 query
-          >
-            <button className="next">다음</button>
-          </Link>
->>>>>>> e1ec51dad10b878d3532c12a36de7c1e6ec695b0
         </Bottom>
       </Form>
     </Container>
