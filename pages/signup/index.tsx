@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import styled, { css } from "styled-components";
 import SHA256 from "../../sha256";
 import Router, { useRouter } from "next/router"
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
 
 const Login = () => {
@@ -12,27 +12,7 @@ const Login = () => {
     visible: false,
   });
 
-  const [values, setValues] = useState({
-    email: "",
-    emailSite: "",
-    password: "",
-    confirm_password: "",
-  });
 
-
-
-
-  const { email, emailSite, password, confirm_password } = values;
-
-  const fullEmail = email + "@" + emailSite;
-
-  const onChangeValues = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
-  };
 
   const handlePasswordType = () => {
     setPasswordType(() => {
@@ -46,33 +26,18 @@ const Login = () => {
   // formik 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string()
-      .required("이름은 필수항목입니다."),
+      .required("중복된 이메일 입니다."),
     password: Yup.string()
-      .required("이름은 필수항목입니다.")
+      .required("영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요."),
+    confirm_password: Yup.string()
+      .required("비밀번호가 일치하지 않습니다.")
   });
 
-  const initialValues = {
-    email: "",
-    password: ""
-  };
+
 
   const sessionStorage = window.sessionStorage;
 
-  const [emailError, setEmailError] = useState(false);
 
-
-
-  const nextUrl = () => {
-
-
-
-    sessionStorage.setItem('fullEmail', fullEmail)
-    sessionStorage.setItem('password', SHA256(password))
-
-    Router.push("/signup/type")
-
-
-  };
 
   return (
     <Container>
@@ -94,35 +59,78 @@ const Login = () => {
             </SocialLogin>
           </Top>
           <Or>또는</Or>
-          <LoginForm>
+          <Formik
+            initialValues={{ email: "", password: "", emailSite: "", confirm_password: "" }}
+            onSubmit={async (values) => {
+              await new Promise((resolve) => setTimeout(resolve, 500));
 
-            <p>이메일</p>
-            <EmailForm >
-              <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
-              <span>@</span>
-              <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={emailSite} onChange={onChangeValues} />
-            </EmailForm>
-            <p>비밀번호</p>
-            <PasswordForm>
-              <Password name="password" type={passwordType.type} autoComplete="off" value={password} onChange={onChangeValues} />
-              <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
-            </PasswordForm>
-            <p>비밀번호 확인</p>
-            <PasswordForm>
-              <Password
+              const fullEmail = values.email + "@" + values.emailSite;
 
-                name="confirm_password"
-                type={passwordType.type}
-                autoComplete="off"
-                value={confirm_password}
-                onChange={onChangeValues}
-              />
-              <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
-            </PasswordForm>
+              sessionStorage.setItem('fullEmail', fullEmail)
+              sessionStorage.setItem('password', SHA256(values.password))
+              Router.push("/signup/type")
+            }}
+            validationSchema={ValidationSchema}
+          >
+            {(props) => {
+              const {
+                values,
+                touched,
+                errors,
+                handleChange,
+                handleBlur,
+                handleSubmit
+              } = props;
+              return (
+                <LoginForm onSubmit={handleSubmit}>
+                  <EmailText>
+                    <p>이메일</p>
+                    {errors.email && touched.email && (
+                      <Inputfeedback className="input-feedback">{errors.email}</Inputfeedback>
+                    )}
+                  </EmailText>
+                  <EmailForm >
+                    <Email name="email" onBlur={handleBlur}
+                      className={errors.email && touched.email ? " error" : "none"} type="text" placeholder="abcd1234" autoComplete="off" value={values.email} onChange={handleChange} />
+                    <span>@</span>
+                    <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={values.emailSite} onChange={handleChange} />
+                  </EmailForm>
 
-            <LoginButton onClick={nextUrl} type="button">계정 만들기</LoginButton>
+                  <PasswordText>
+                    <p>비밀번호</p>
+                    {errors.password && touched.password && (
+                      <Inputfeedback className="input-feedback">{errors.password}</Inputfeedback>
+                    )}
+                  </PasswordText>
+                  <PasswordForm>
+                    <Password onBlur={handleBlur} className={errors.password && touched.password ? " error" : "none"} name="password" type={passwordType.type} autoComplete="off" value={values.password} onChange={handleChange} />
+                    <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
+                  </PasswordForm>
 
-          </LoginForm >
+                  <PasswordText>
+                    <p>비밀번호 확인</p>
+                    {errors.confirm_password && touched.confirm_password && (
+                      <Inputfeedback className="input-feedback">{errors.confirm_password}</Inputfeedback>
+                    )}
+                  </PasswordText>
+                  <PasswordForm>
+                    <Password
+                      name="confirm_password"
+                      type={passwordType.type}
+                      autoComplete="off"
+                      value={values.confirm_password}
+                      onChange={handleChange}
+                    />
+                    <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
+                  </PasswordForm>
+
+                  <LoginButton type="submit">계정 만들기</LoginButton>
+
+                </LoginForm >
+              );
+            }}
+          </Formik>
+
         </Form >
       </Wrap >
     </Container >
@@ -165,7 +173,25 @@ const Password = styled.input`
     border: 2px solid #273dff;
     background: url("/images/login/password_white.svg") no-repeat 25px 50% #28282f;
   }
+
+  &.error {
+    border : 2px solid #FF2E2E;
+  }
   
+`;
+
+const Inputfeedback = styled.div`
+  color: red;
+  margin-left : 0.5rem ;
+  font-size: 1rem;
+`;
+const EmailText = styled.div`
+  display : flex;
+`;
+
+const PasswordText = styled.div`
+  display : flex;
+  margin-top: 35px;
 `;
 
 const EmailSite = styled.input`
@@ -184,16 +210,16 @@ const Email = styled.input`
   max-width: 240px;
   color: inherit;
   height: 60px;
-  border: none;
+  border : none;
   border-radius: 100px;
   padding: 20px 40px 20px 60px;
   background: url("/images/login/email.svg") no-repeat 25px 50% #28282f;
-  :focus {
-    border: 2px solid #273dff;
-    background: url("/images/login/email_white.svg") no-repeat 25px 50% #28282f;
+ 
+  &.error {
+    border : 2px solid #FF2E2E;
   }
-  
 `;
+
 
 const EmailForm = styled.div`
   display: flex;

@@ -170,264 +170,265 @@ const Login = () => {
     // const onFailure = (res: any) => {
     //   console.log("Login faile! Current res : ", res);
     // };
+  }
 
-    // kakao login
+  // kakao login
 
-    const kakaoLogin = async () => {
-      const { Kakao } = window;
-      // 카카오 초기화
-      if (!Kakao.isInitialized()) {
-        Kakao.init("446d0bddcd2aabc533a967c7c8d61f0e");
-      }
+  const kakaoLogin = async () => {
+    const { Kakao } = window;
+    // 카카오 초기화
+    if (!Kakao.isInitialized()) {
+      Kakao.init("446d0bddcd2aabc533a967c7c8d61f0e");
+    }
 
 
-      // 카카오 로그인 구현
+    // 카카오 로그인 구현
 
-      Kakao.Auth.login({
-        success: () => {
-          Kakao.API.request({
-            url: "/v2/user/me", // 사용자 정보 가져오기
-            success: (res: any) => {
-              // 로그인 성공할 경우 정보 확인 후 /kakao 페이지로 push
-              console.log(res);
-              Router.push("/login");
-            },
-            fail: (error: any) => {
-              console.log(error);
-            },
-          });
-        },
-        fail: (error: any) => {
-          console.log(error);
-        },
-      });
-    };
-
-    // 라인 로그인 구현
-
-    const [idCode, setidCode] = useState({
-      type: String,
+    Kakao.Auth.login({
+      success: () => {
+        Kakao.API.request({
+          url: "/v2/user/me", // 사용자 정보 가져오기
+          success: (res: any) => {
+            // 로그인 성공할 경우 정보 확인 후 /kakao 페이지로 push
+            console.log(res);
+            Router.push("/login");
+          },
+          fail: (error: any) => {
+            console.log(error);
+          },
+        });
+      },
+      fail: (error: any) => {
+        console.log(error);
+      },
     });
-
-    const [idToken, setIdToken] = useState({
-      type: String,
-    });
-
-    const [pictureUrl, setPictureUrl] = useState();
-
-    const [displayName, setDisplayName] = useState("");
-    const [statusMessage, setStatusMessage] = useState("");
-    const [userID, setUserID] = useState("");
-    const [test, setTest] = useState<string | null>("");
-
-    const Line_LOGIN_URL = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1657847379&redirect_uri=http://localhost:3000/login&state=cosmos&scope=profile%20openid%20email`;
-
-    // async function getUser() {
-    //   try {
-    //     const response = await fetch(Line_LOGIN_URL, {
-    //       method: 'POST',
-    //       headers: {
-    //         accept: 'application/json',
-    //       },
-    //     });
-
-    //     if (!response.ok) {
-    //       throw new Error(`Error! status: ${response.status}`);
-    //     }
-
-    //     const result = await response.json();
-    //     return result;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
-
-    const LineLoginHandler = async (e: any) => {
-      // getUser()
-
-      await window.location.assign(Line_LOGIN_URL);
-      // await window.open(Line_LOGIN_URL)
-
-      console.log("1");
-
-      const url = new URL(window.location.href);
-      console.log("2");
-      const authorizationCode = url.searchParams.get("code");
-      console.log("3");
-      console.log(authorizationCode);
-      console.log("4");
-      getToken(authorizationCode);
-    };
-
-    const getToken = async (authorizationCode: any) => {
-      console.log("5");
-      console.log("authorizationCode", authorizationCode);
-
-      // const data =  qs.stringify({
-      //   'grant_type': 'authorization_code',
-      //   'code': authorizationCode,
-      //   'client_secret': '898f2a141088ca6c6617c33245a06a7b',
-      //   'redirect_uri': 'http://localhost:3000/login',
-      //   'client_id': '1657847379'
-      // });
-      // const config = {
-      //   method: 'post',
-      //   url: 'https://api.line.me/oauth2/v2.1/token',
-      //   headers: {
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   },
-      //   data : data
-      // };
-      // console.log("6")
-      //  axios(config)
-      // .then(function (response) {
-      //   console.log('token',JSON.stringify(response.data));
-      // })
-      // .catch(function (error) {
-      //   alert(error)
-      //   // console.log(error);
-      // });
-
-      return;
-
-      // const authorizationCode = AUTHORIZE_URI.searchParams.get("code");
-
-      // const handleGetAccessToken = async (authorizationCode) => {
-      //  await axios.post(
-      //     "http://localhost:80/sign/google", // 구글 소셜 로그인 엔드포인트
-      //     {
-      //       authorizationCode: authorizationCode,
-      //     },
-      //     {
-      //       headers: { accept: `application/json` },
-      //     },
-      //   );
-    };
-
-    const Linelogin = async (e: any) => {
-      e.preventDefault();
-
-      // const handleGetAccessToken = async (authorizationCode: any) => {
-      //  await axios.post(
-      //     "http://localhost:3000/login",
-      //     {
-      //       authorizationCode: authorizationCode,
-      //     },
-      //     {
-      //       headers: { accept: `application/json` },
-      //     },
-      //   );
-
-      // const access_token = await axios
-      // .post(AUTHORIZE_URI, {
-      // 	headers: { "content-type": "application/x-www-form-urlencoded" },
-      // })
-      // .then((el) => {
-      // 	return el.data.access_token
-      // })
-      // .catch((err) => {
-      // 	console.log("err=", err)
-      // })
-
-      // console.log(access_token);
-
-      // setIdToken(AUTHORIZE_URI.searchParams.code)
-
-      // const query = new URLSearchParams();
-
-      // const authorizationCode = AUTHORIZE_URI.query.get("code");
-
-      //   try {
-      //     axios.post(`https://api.line.me/oauth2/v2.1/token`, {
-      //       headers: {
-      //         "content-type": "application/x-www-form-urlencoded",
-      //         "grant_type" : "authorization_code",
-      //         "client_id" : "1657847379",
-      //         "client_secret" : '898f2a141088ca6c6617c33245a06a7b',
-      //         "redirect_uri" : "http://localhost:3000/login" ,
-      //         "code" : "bN2T4sbDs07p9VRPyeqL"
-
-      //       },
-      //     });
-      //   } catch (res : any) {
-
-      // console.log(res);
-
-      //   }
-
-      // liff.init({ liffId: "1657847379-PD7wYpD6" })
-      //   .then(() => {
-      //     if (liff.isLoggedIn()) {
-      //       runApp();
-      //     } else {
-      //       liff.login();
-      //     }
-      //   }).catch((err) => {
-      //     console.log(err.code, err.message);
-      //   });
-    };
-
-    // const runApp = () => {
-    //   const idToken = liff.getIDToken();
-    //   liff.getProfile().then(profile => {
-    //     console.log(profile)
-    //     setDisplayName(profile.displayName)
-    //     setUserID(profile.userId)
-    //   }).catch(err => console.error(err));
-    // }
-
-    return (
-      <Container>
-        <Wrap>
-          <Form>
-            <Top>
-              <Title>
-                로그인<p>풀다이브에 오신것을 환영합니다.</p>
-              </Title>
-              <SocialLogin>
-                <div>
-                  <SosicalLoginButton className="g-signin2" data-onsuccess="GoogleLoginHandler" onClick={GoogleLoginHandler} social="google">구글 계정으로 로그인</SosicalLoginButton>
-
-                  <SosicalLoginButton onClick={LineLoginHandler} social="line">
-                    라인 계정으로 로그인
-                  </SosicalLoginButton>
-                </div>
-                <div>
-                  <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton>
-                  <SosicalLoginButton onClick={kakaoLogin} social="kakao">
-                    카카오 계정으로 로그인
-                  </SosicalLoginButton>
-                </div>
-              </SocialLogin>
-            </Top>
-            <Or>또는</Or>
-            <LoginForm onSubmit={submit}>
-              <p>이메일</p>
-              <EmailForm>
-                <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
-                <span>@</span>
-                <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={emailSite} onChange={onChangeValues} />
-              </EmailForm>
-              <p>비밀번호</p>
-              <PasswordForm>
-                <Password name="password" type={passwordType.type} autoComplete="off" value={password} onChange={onChangeValues} />
-                <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
-              </PasswordForm>
-              <LoginButton type="submit">접속하기</LoginButton>
-              <Bottom>
-                <p className="mssing_user">아이디 / 비밀번호 찾기</p>
-                <Link href="/signup">
-                  <p>계정이 없으신가요?</p>
-                </Link>
-              </Bottom>
-            </LoginForm>
-          </Form>
-        </Wrap>
-      </Container>
-    );
   };
 
-  const Bottom = styled.div`
+  // 라인 로그인 구현
+
+  const [idCode, setidCode] = useState({
+    type: String,
+  });
+
+  const [idToken, setIdToken] = useState({
+    type: String,
+  });
+
+  const [pictureUrl, setPictureUrl] = useState();
+
+  const [displayName, setDisplayName] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
+  const [userID, setUserID] = useState("");
+  const [test, setTest] = useState<string | null>("");
+
+  const Line_LOGIN_URL = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1657847379&redirect_uri=http://localhost:3000/login&state=cosmos&scope=profile%20openid%20email`;
+
+  // async function getUser() {
+  //   try {
+  //     const response = await fetch(Line_LOGIN_URL, {
+  //       method: 'POST',
+  //       headers: {
+  //         accept: 'application/json',
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Error! status: ${response.status}`);
+  //     }
+
+  //     const result = await response.json();
+  //     return result;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  const LineLoginHandler = async (e: any) => {
+    // getUser()
+
+    await window.location.assign(Line_LOGIN_URL);
+    // await window.open(Line_LOGIN_URL)
+
+    console.log("1");
+
+    const url = new URL(window.location.href);
+    console.log("2");
+    const authorizationCode = url.searchParams.get("code");
+    console.log("3");
+    console.log(authorizationCode);
+    console.log("4");
+    getToken(authorizationCode);
+  };
+
+  const getToken = async (authorizationCode: any) => {
+    console.log("5");
+    console.log("authorizationCode", authorizationCode);
+
+    // const data =  qs.stringify({
+    //   'grant_type': 'authorization_code',
+    //   'code': authorizationCode,
+    //   'client_secret': '898f2a141088ca6c6617c33245a06a7b',
+    //   'redirect_uri': 'http://localhost:3000/login',
+    //   'client_id': '1657847379'
+    // });
+    // const config = {
+    //   method: 'post',
+    //   url: 'https://api.line.me/oauth2/v2.1/token',
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    //   },
+    //   data : data
+    // };
+    // console.log("6")
+    //  axios(config)
+    // .then(function (response) {
+    //   console.log('token',JSON.stringify(response.data));
+    // })
+    // .catch(function (error) {
+    //   alert(error)
+    //   // console.log(error);
+    // });
+
+    return;
+
+    // const authorizationCode = AUTHORIZE_URI.searchParams.get("code");
+
+    // const handleGetAccessToken = async (authorizationCode) => {
+    //  await axios.post(
+    //     "http://localhost:80/sign/google", // 구글 소셜 로그인 엔드포인트
+    //     {
+    //       authorizationCode: authorizationCode,
+    //     },
+    //     {
+    //       headers: { accept: `application/json` },
+    //     },
+    //   );
+  };
+
+  const Linelogin = async (e: any) => {
+    e.preventDefault();
+
+    // const handleGetAccessToken = async (authorizationCode: any) => {
+    //  await axios.post(
+    //     "http://localhost:3000/login",
+    //     {
+    //       authorizationCode: authorizationCode,
+    //     },
+    //     {
+    //       headers: { accept: `application/json` },
+    //     },
+    //   );
+
+    // const access_token = await axios
+    // .post(AUTHORIZE_URI, {
+    // 	headers: { "content-type": "application/x-www-form-urlencoded" },
+    // })
+    // .then((el) => {
+    // 	return el.data.access_token
+    // })
+    // .catch((err) => {
+    // 	console.log("err=", err)
+    // })
+
+    // console.log(access_token);
+
+    // setIdToken(AUTHORIZE_URI.searchParams.code)
+
+    // const query = new URLSearchParams();
+
+    // const authorizationCode = AUTHORIZE_URI.query.get("code");
+
+    //   try {
+    //     axios.post(`https://api.line.me/oauth2/v2.1/token`, {
+    //       headers: {
+    //         "content-type": "application/x-www-form-urlencoded",
+    //         "grant_type" : "authorization_code",
+    //         "client_id" : "1657847379",
+    //         "client_secret" : '898f2a141088ca6c6617c33245a06a7b',
+    //         "redirect_uri" : "http://localhost:3000/login" ,
+    //         "code" : "bN2T4sbDs07p9VRPyeqL"
+
+    //       },
+    //     });
+    //   } catch (res : any) {
+
+    // console.log(res);
+
+    //   }
+
+    // liff.init({ liffId: "1657847379-PD7wYpD6" })
+    //   .then(() => {
+    //     if (liff.isLoggedIn()) {
+    //       runApp();
+    //     } else {
+    //       liff.login();
+    //     }
+    //   }).catch((err) => {
+    //     console.log(err.code, err.message);
+    //   });
+  };
+
+  // const runApp = () => {
+  //   const idToken = liff.getIDToken();
+  //   liff.getProfile().then(profile => {
+  //     console.log(profile)
+  //     setDisplayName(profile.displayName)
+  //     setUserID(profile.userId)
+  //   }).catch(err => console.error(err));
+  // }
+
+  return (
+    <Container>
+      <Wrap>
+        <Form>
+          <Top>
+            <Title>
+              로그인<p>풀다이브에 오신것을 환영합니다.</p>
+            </Title>
+            <SocialLogin>
+              <div>
+                <SosicalLoginButton className="g-signin2" data-onsuccess="GoogleLoginHandler" onClick={GoogleLoginHandler} social="google">구글 계정으로 로그인</SosicalLoginButton>
+
+                <SosicalLoginButton onClick={LineLoginHandler} social="line">
+                  라인 계정으로 로그인
+                </SosicalLoginButton>
+              </div>
+              <div>
+                <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton>
+                <SosicalLoginButton onClick={kakaoLogin} social="kakao">
+                  카카오 계정으로 로그인
+                </SosicalLoginButton>
+              </div>
+            </SocialLogin>
+          </Top>
+          <Or>또는</Or>
+          <LoginForm onSubmit={submit}>
+            <p>이메일</p>
+            <EmailForm>
+              <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
+              <span>@</span>
+              <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={emailSite} onChange={onChangeValues} />
+            </EmailForm>
+            <p>비밀번호</p>
+            <PasswordForm>
+              <Password name="password" type={passwordType.type} autoComplete="off" value={password} onChange={onChangeValues} />
+              <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
+            </PasswordForm>
+            <LoginButton type="submit">접속하기</LoginButton>
+            <Bottom>
+              <p className="mssing_user">아이디 / 비밀번호 찾기</p>
+              <Link href="/signup">
+                <p>계정이 없으신가요?</p>
+              </Link>
+            </Bottom>
+          </LoginForm>
+        </Form>
+      </Wrap>
+    </Container>
+  );
+};
+
+const Bottom = styled.div`
   margin-top: 12px;
   display: flex;
   justify-content: space-between;
@@ -440,11 +441,11 @@ const Login = () => {
   }
 `;
 
-  const PasswordForm = styled.div`
+const PasswordForm = styled.div`
   position: relative;
 `;
 
-  const LoginButton = styled.button`
+const LoginButton = styled.button`
   margin-top: 50px;
   width: 100%;
   height: 60px;
@@ -453,7 +454,7 @@ const Login = () => {
   background-color: #273dff;
 `;
 
-  const VisibleIcon = styled.div<{ type: string }>`
+const VisibleIcon = styled.div<{ type: string }>`
   position: absolute;
   top: 40%;
   right: 20px;
@@ -464,7 +465,7 @@ const Login = () => {
   ${({ type }) => type === "text" && ` background: url("/images/login/password_visible.svg") no-repeat;`}
 `;
 
-  const Password = styled.input`
+const Password = styled.input`
   width: 100%;
   margin-top: 10px;
   color: inherit;
@@ -478,7 +479,7 @@ const Login = () => {
   }
 `;
 
-  const EmailSite = styled.input`
+const EmailSite = styled.input`
   margin-top: 10px;
   max-width: 240px;
   height: 60px;
@@ -489,7 +490,7 @@ const Login = () => {
   color: inherit;
 `;
 
-  const Email = styled.input`
+const Email = styled.input`
   margin-top: 10px;
   max-width: 240px;
   color: inherit;
@@ -504,7 +505,7 @@ const Login = () => {
   }
 `;
 
-  const EmailForm = styled.div`
+const EmailForm = styled.div`
   display: flex;
   justify-content: space-between;
   > span {
@@ -513,13 +514,13 @@ const Login = () => {
   }
 `;
 
-  const LoginForm = styled.form`
+const LoginForm = styled.form`
   > p {
     margin-top: 35px;
   }
 `;
 
-  const Or = styled.div`
+const Or = styled.div`
   display: flex;
   flex-basis: 100%;
   align-items: center;
@@ -545,43 +546,43 @@ const Login = () => {
   }
 `;
 
-  const SosicalLoginButton = styled.button<{ social: string }>`
+const SosicalLoginButton = styled.button<{ social: string }>`
   min-width: 248px;
   height: 60px;
   padding: 20px 40px 20px 60px;
   margin-top: 36px;
   ${({ social }) => {
-      switch (social) {
-        case "google":
-          return css`
+    switch (social) {
+      case "google":
+        return css`
           background: url("/images/login/google.svg") no-repeat 35px 50% #28282f;
           margin-right: 24px;
         `;
-        case "line":
-          return css`
+      case "line":
+        return css`
           background: url("/images/login/line.svg") no-repeat 35px 50% #28282f;
         `;
-        case "apple":
-          return css`
+      case "apple":
+        return css`
           background: url("/images/login/apple.svg") no-repeat 35px 50% #28282f;
           margin-right: 24px;
           margin-top: 12px;
         `;
-        case "kakao":
-          return css`
+      case "kakao":
+        return css`
           background: url("/images/login/kakao.svg") no-repeat 25px 50% #28282f;
           padding-left: 50px;
           margin-top: 12px;
         `;
-      }
-    }}
+    }
+  }}
   border-radius: 100px;
   font-size: 1rem;
 `;
 
-  const SocialLogin = styled.div``;
+const SocialLogin = styled.div``;
 
-  const Title = styled.div`
+const Title = styled.div`
   font-weight: 600;
   font-size: 1.25rem;
   > p {
@@ -591,22 +592,22 @@ const Login = () => {
   }
 `;
 
-  const Top = styled.div`
+const Top = styled.div`
   text-align: center;
 `;
 
-  const Form = styled.div`
+const Form = styled.div`
   padding: 36px 32px;
 `;
 
-  const Wrap = styled.div`
+const Wrap = styled.div`
   min-width: 584px;
   height: 698px;
   margin: 36px auto;
   border-radius: 24px; ;
 `;
 
-  const Container = styled.main`
+const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
   height: 100%;
@@ -615,4 +616,4 @@ const Login = () => {
   display: flex;
 `;
 
-  export default Login;
+export default Login;
