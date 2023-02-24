@@ -127,6 +127,8 @@ const Main = () => {
     await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/main/mainInfo`).then((res) => setStageData(res.data));
   };
 
+  console.log(StageData);
+
   return (
     <Container>
       <React.Suspense fallback={<div>Loading...</div>}>

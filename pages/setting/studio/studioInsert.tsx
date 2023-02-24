@@ -3,6 +3,8 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import Link from "next/link";
+import Router from "next/router";
 
 const music = [
   {
@@ -107,17 +109,27 @@ const studioInsert = () => {
   const [imgUrl, setImgUrl] = useState<any>(null);
   const [startDate, setStartDate] = useState(new Date());
   const [timeDate, setTimeDate] = useState(new Date());
-  const [selected, setSelected] = useState("케이팝");
-  const [selectedTicket, setSelectedTicket] = useState("클로버");
-  const [selectedContent, setSelectedContent] = useState("no");
-  const [selectedStudio, setSelectedStudio] = useState("single");
+  const [inputs, setInputs] = useState({
+    title: "",
+    location: "",
+    artistId: "",
+    stageDescription: "",
+    stageCombineId: "",
+    stageCategoryId: "케이팝",
+    stageTicketId: "클로버",
+    stageAdultType: "N",
+    staegStudioType: "S",
+  });
 
-  const handleSelect = (e: any) => {
-    setSelected(e.target.value);
-  };
+  const { title, location, artistId, stageDescription, stageCombineId, stageCategoryId, stageTicketId, stageAdultType, staegStudioType } =
+    inputs;
 
-  const handleSelectTicket = (e: any) => {
-    setSelectedTicket(e.target.value);
+  const onChange = (e: any) => {
+    const { value, name } = e.target; // 우선 e.target 에서 name 과 value 를 추출
+    setInputs({
+      ...inputs, // 기존의 input 객체를 복사한 뒤
+      [name]: value, // name 키를 가진 값을 value 로 설정
+    });
   };
 
   const encodeFileToBase64 = (fileBlob: any) => {
@@ -130,14 +142,6 @@ const studioInsert = () => {
         resolve();
       };
     });
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedContent(e.target.value);
-  };
-
-  const handleChangeStudio = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedStudio(e.target.value);
   };
 
   const submit = async (e: any) => {
@@ -153,30 +157,38 @@ const studioInsert = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(data.response);
         data.response === 200 && window.alert("공연 등록 성공");
       } catch (e) {
         // 서버에서 받은 에러 메시지 출력
         console.log(e);
-        window.alert("공연 등록 실패");
+        window.alert("사진 등록 실패");
       }
     }
 
-    // const studioData = {
-    //   userId: "test",
-    //   stageTitle: imageSrc,
-    //   stageImage: "",
-    //   stageLocation: "",
-    //   stageTimestamp: "",
-    //   stageArtistId: "",
-    //   stageDescription: "",
-    //   stageThumbnailImage: "",
-    //   stageCombineId: "",
-    //   stageCategoryId: "",
-    //   stageTicketId: "",
-    //   stageAdultType: "",
-    //   staegStudioType: selectedStudio,
-    // };
+    const insertData = {
+      userId: "test",
+      stageTitle: title,
+      stageImage: imgUrl.name.slice(0, -4),
+      stageLocation: location,
+      stageTimestamp: "2023-04-16 18:00:00",
+      stageArtistId: artistId,
+      stageDescription: stageDescription,
+      stageCategoryId: stageCategoryId,
+      stageTicketId: stageTicketId,
+      stageAdultType: stageAdultType,
+      stageStudioType: staegStudioType,
+    };
+
+    try {
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/stage/stageInsert`, insertData);
+      console.log(data.response);
+      data.response === 200 && window.alert("공연 등록 성공");
+      Router.push("/setting/studio");
+    } catch (e) {
+      // 서버에서 받은 에러 메시지 출력
+      console.log(e);
+      window.alert("공연 등록 실패");
+    }
   };
 
   return (
@@ -211,7 +223,7 @@ const studioInsert = () => {
           <Right>
             <Wrap>
               <span>공연 제목</span>
-              <input placeholder="공연 기획사" />
+              <input placeholder="공연 기획사" name="title" onChange={onChange} value={title} />
             </Wrap>
             <Wrap>
               <StageCalendar>
@@ -241,17 +253,17 @@ const studioInsert = () => {
             </Wrap>
             <Wrap>
               <Title className="title">공연 장소</Title>
-              <input placeholder="서울특별시 관악구 벽산아파트 301-906" />
+              <input placeholder="서울특별시 관악구 벽산아파트 301-906" name="location" onChange={onChange} value={location} />
             </Wrap>
             <Wrap>
               <Title className="title">참여 아티스트</Title>
-              <input placeholder="공연 기획사" />
+              <input placeholder="공연 기획사" name="artistId" onChange={onChange} value={artistId} />
             </Wrap>
             <Wrap>
               <StageCalendar>
                 <div className="left">
                   <TimeTitle className="title">공연 장르</TimeTitle>
-                  <Select onChange={handleSelect} value={selected}>
+                  <Select name="stageCategoryId" onChange={onChange} value={stageCategoryId}>
                     {music.map((item, index) => (
                       <option value={item.type} key={index}>
                         {item.type}
@@ -261,7 +273,7 @@ const studioInsert = () => {
                 </div>
                 <div>
                   <TimeTitle className="title">티켓 종류</TimeTitle>
-                  <Select onChange={handleSelectTicket} value={selectedTicket}>
+                  <Select name="stageTicketId" onChange={onChange} value={stageTicketId}>
                     {ticket.map((item, index) => (
                       <option value={item.ticket} key={index}>
                         {item.ticket}
@@ -276,36 +288,34 @@ const studioInsert = () => {
                 <div className="left">
                   <TimeTitle className="title">성인 콘텐츠 설정</TimeTitle>
                   <InputWrap>
-                    <input type="radio" name="yes" value="yes" checked={selectedContent === "yes"} onChange={handleChange} />
+                    <input type="radio" name="stageAdultType" value="Y" checked={stageAdultType === "Y"} onChange={onChange} />
                     <label>예</label>
-                    <input type="radio" name="no" value="no" checked={selectedContent === "no"} onChange={handleChange} />
+                    <input type="radio" name="stageAdultType" value="N" checked={stageAdultType === "N"} onChange={onChange} />
                     <label>아니오</label>
                   </InputWrap>
                 </div>
                 <div>
                   <TimeTitle className="title">스튜디오</TimeTitle>
                   <InputWrap>
-                    <input type="radio" name="single" value="single" checked={selectedStudio === "single"} onChange={handleChangeStudio} />
+                    <input type="radio" name="staegStudioType" value="S" checked={staegStudioType === "S"} onChange={onChange} />
                     <label>단일 스튜디오</label>
-                    <input
-                      type="radio"
-                      name="multiple"
-                      value="multiple"
-                      checked={selectedStudio === "multiple"}
-                      onChange={handleChangeStudio}
-                    />
+                    <input type="radio" name="staegStudioType" value="M" checked={staegStudioType === "M"} onChange={onChange} />
                     <label>다중 스튜디오</label>
                   </InputWrap>
-                  {selectedStudio === "multiple" && <StudioInput />}
+                  {staegStudioType === "M" && (
+                    <StudioInput placeholder="공연 기획사명 입력" name="stageCombineId" onChange={onChange} value={stageCombineId} />
+                  )}
                 </div>
               </StageCalendar>
             </Wrap>
             <Wrap>
               <Title className="title">공연 설명</Title>
-              <textarea placeholder="공연 설명 입력" />
+              <textarea placeholder="공연 설명 입력" name="stageDescription" onChange={onChange} value={stageDescription} />
             </Wrap>
             <ButtonWrap>
-              <button className="cancel">취소</button>
+              <Link href="/setting/studio" legacyBehavior passHref>
+                <button className="cancel">취소</button>
+              </Link>
               <button type="submit">등록</button>
             </ButtonWrap>
           </Right>
@@ -317,6 +327,8 @@ const studioInsert = () => {
 
 const StudioInput = styled.input`
   width: 100%;
+  margin-top: 12px;
+  font-size: 1rem;
 `;
 
 const InputWrap = styled.div`
@@ -324,8 +336,10 @@ const InputWrap = styled.div`
   > input {
     margin-right: 6px;
   }
-  &:nth-child(1) {
-    margin-right: 10px;
+  > label {
+    :nth-child(2) {
+      margin-right: 10px;
+    }
   }
 `;
 

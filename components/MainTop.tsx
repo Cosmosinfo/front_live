@@ -62,7 +62,7 @@ const Header = styled.header`
   display: flex;
   color: #ffffff;
   align-items: center;
-  z-index: 999;
+  z-index: 100;
 `;
 
 const Logo = styled.div`
