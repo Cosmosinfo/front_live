@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Router, { useRouter } from "next/router"
-import { CallingCodePicker } from '@digieggs/rn-country-code-picker';
+
 
 const menus = [
   {
