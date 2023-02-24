@@ -94,12 +94,10 @@ const index = () => {
     if (sessionStorage.getItem('password') === null) {
       alert("이메일 또는 비밀번호를 먼저 입력하세요")
       Router.push("/signup")
-    } else {
-      // sessionStorage.setItem('회원유형', )
-
-      Router.push("/signup/type/privateInfo")
-
+    } else if (userInfo.Type === "아티스트") {
+      Router.push("/signup/type/artistInfo")
     }
+    Router.push("/signup/type/privateInfo")
   };
 
 

@@ -28,9 +28,14 @@ const Login = () => {
     email: Yup.string()
       .required("중복된 이메일 입니다."),
     password: Yup.string()
-      .required("영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요."),
+      .required("영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.")
+      .min(8, '영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.')
+      .matches(/[0-9]/, '영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.')
+      .matches(/[a-z]/, '영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.')
+      .matches(/[^\w]/, '영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.'),
     confirm_password: Yup.string()
-      .required("비밀번호가 일치하지 않습니다.")
+      .oneOf([Yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
+      .required("비밀번호를 입력해주세요")
   });
 
 
@@ -50,10 +55,10 @@ const Login = () => {
             <SocialLogin>
               <div>
                 <SosicalLoginButton social="google">구글 계정으로 로그인</SosicalLoginButton>
-                <SosicalLoginButton social="line">라인 계정으로 로그인</SosicalLoginButton>
+                {/* <SosicalLoginButton social="line">라인 계정으로 로그인</SosicalLoginButton> */}
               </div>
               <div>
-                <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton>
+                {/* <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton> */}
                 <SosicalLoginButton social="kakao">카카오 계정으로 로그인</SosicalLoginButton>
               </div>
             </SocialLogin>
@@ -115,6 +120,7 @@ const Login = () => {
                   </PasswordText>
                   <PasswordForm>
                     <Password
+                      onBlur={handleBlur} className={errors.confirm_password && touched.confirm_password ? " error" : "none"}
                       name="confirm_password"
                       type={passwordType.type}
                       autoComplete="off"
@@ -272,7 +278,7 @@ const SosicalLoginButton = styled.button<{ social: string }>`
       case "google":
         return css`
           background: url("/images/login/google.svg") no-repeat 35px 50% #28282f;
-          margin-right: 24px;
+          // margin-right: 24px;
         `;
       case "line":
         return css`

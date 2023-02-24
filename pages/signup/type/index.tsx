@@ -107,7 +107,7 @@ const index = () => {
               id="btn2"
               checked={isChecked}
               name="checkWrap"
-              value="일반(팬)"
+              value="일반"
               onChange={(e) => checkOnlyOne(e)}
 
             />

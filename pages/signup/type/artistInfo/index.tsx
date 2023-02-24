@@ -17,12 +17,7 @@ const menus = [
   },
   {
     id: 3,
-    name: "좋아하는 장르",
-    imgUrl: "/images/signup/music.svg",
-  },
-  {
-    id: 4,
-    name: "가입 완료",
+    name: "가입요청완료",
     imgUrl: "/images/signup/setting.svg",
   },
 ];
@@ -44,19 +39,19 @@ const index = () => {
 
   const [values, setValues] = useState({
 
-    nickname: "",
-    gender: "",
+    artistname: "",
     name: "",
-    brith: "",
-    country: "",
-    city: "",
-    address: "",
+    genre: "",
+    debutdate: "",
+    agency: "",
+    member: "",
+    membername: "",
     phone: "",
     phoneCountry: "",
 
   });
 
-  const { nickname, name, brith, country, city, address, phone, phoneCountry } = values;
+  const { artistname, name, genre, debutdate, agency, member, membername, phone, phoneCountry } = values;
 
 
 
@@ -79,17 +74,24 @@ const index = () => {
 
   const [genderSelected, setgenderSelected] = useState("남");
 
-
-
-
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setgenderSelected(e.target.value);
+  };
+
+  const [AgencySelected, setAgencySelected] = useState("유");
+
+
+  const handleAgencyChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAgencySelected(e.target.value);
+
   };
 
 
 
 
+  const backUrl = () => {
+    window.location.href = '/signup/type/agreement';
+  }
 
   const nextUrl = () => {
     if (sessionStorage.getItem('password') === null) {
@@ -98,29 +100,25 @@ const index = () => {
     } else {
       // sessionStorage.setItem('회원유형', )
 
-      sessionStorage.setItem('Nickname', nickname)
+      sessionStorage.setItem('artistname', artistname)
       sessionStorage.setItem('Gender', genderSelected)
       sessionStorage.setItem('Name', name)
-      sessionStorage.setItem('Brith', brith)
-      sessionStorage.setItem('Country', country)
-      sessionStorage.setItem('City', city)
-      sessionStorage.setItem('Address', address)
+      sessionStorage.setItem('genre', genre)
+      sessionStorage.setItem('debutdate', debutdate)
+      sessionStorage.setItem('agency', agency)
+      sessionStorage.setItem('member', member)
       sessionStorage.setItem('Phone', phone)
       sessionStorage.setItem('phoneCountry', phoneCountry)
 
-      Router.push("/signup/type/favoriteMusic")
+      Router.push("/signup/type/artistComplete")
 
     }
   };
 
-  const backUrl = () => {
-    window.location.href = '/signup/type/agreement';
-  }
-
   return (
     <Container>
       <Form>
-        <Title>회원가입</Title>
+        <Title>아티스트 정보입력</Title>
         <Top>
           {menus.map((menu, id) => (
             <Menu key={id} imgUrl={menu.imgUrl}>
@@ -129,12 +127,16 @@ const index = () => {
           ))}
         </Top>
         <Main>
-          <Profile>프로필</Profile>
+
           <InputForm className="one">
+
+            {/* 아티스트명 */}
             <Individual>
-              <div>닉네임</div>
-              <input name="nickname" type="text" className="nickname" placeholder="닉네임을 입력해주세요." value={nickname} onChange={onChangeValues} />
+              <div>아티스트명</div>
+              <input name="nickname" type="text" className="nickname" placeholder="닉네임을 입력해주세요." value={artistname} onChange={onChangeValues} />
             </Individual>
+
+            {/* 성별 */}
             <Individual>
               <div>성별</div>
               <Gender>
@@ -142,48 +144,89 @@ const index = () => {
                 <label>남자</label>
                 <input type="radio" name="여" value="여" checked={genderSelected === "여"} onChange={handleChange} />
                 <label>여자</label>
+                <input type="radio" name="혼성" value="혼성" checked={genderSelected === "혼성"} onChange={handleChange} />
+                <label>혼성</label>
               </Gender>
             </Individual>
           </InputForm>
+
           <InputForm className="second">
+
+            {/* 장르 */}
             <Individual>
-              <div>이름</div>
+              <div>장르</div>
               <input type="text" name="name" className="name" placeholder="이름을 입력해주세요." value={name} onChange={onChangeValues} />
             </Individual>
+
+            {/* 데뷔일 */}
             <Individual>
-              <div>생년월일</div>
-              <input type="text" name="brith" className="date" placeholder="YYYY/MM/DD" value={brith} onChange={onChangeValues} />
+              <div>데뷔일</div>
+              <input type="text" name="brith" className="date" placeholder="YYYY/MM/DD" value={debutdate} onChange={onChangeValues} />
             </Individual>
           </InputForm>
-          <InputForm className="second">
-            <Individual>
-              <div>국가</div>
-              <input type="text" name="country" className="name" placeholder="대한민국" value={country} onChange={onChangeValues} />
-            </Individual>
-            <Individual>
-              <div>도시</div>
-              <input type="text" name="city" className="date" placeholder="서울특별시" value={city} onChange={onChangeValues} />
-            </Individual>
-          </InputForm>
-          <Individual>
-            <input type="text" name="address" className="location" placeholder="상세주소를 입력하세요. (선택사항)" value={address} onChange={onChangeValues} />
-          </Individual>
 
           <InputForm className="third">
+            <InputFormAgText>
+              <div>소속사 유무</div>
+            </InputFormAgText>
+
+            <IndividualAgBox>
+
+              {/* 소속사 유무 */}
+              <Individual >
+                <Agency>
+                  <input type="radio" name="유" value="유" checked={AgencySelected === "유"} onChange={handleAgencyChange} />
+                  <label>유</label>
+
+
+                  <input type="radio" name="무" value="무" checked={AgencySelected === "무"} onChange={handleAgencyChange} />
+                  <label>무</label>
+                </Agency>
+              </Individual>
+
+              {/* 소속사 */}
+
+              <Individual>
+                {AgencySelected === "유" && <input type="text" name="brith" className="date" placeholder="00소속사" value={agency} onChange={onChangeValues} />
+                }
+              </Individual>
+
+            </IndividualAgBox>
+          </InputForm>
+
+          <InputForm className="member">
+
+            {/* 멥버수 */}
+            <Individual>
+              <div>멥버수</div>
+              <input type="text" name="country" className="name" placeholder="4" value={member} onChange={onChangeValues} />
+            </Individual>
+
+
+
+          </InputForm>
+
+          <InputForm className="third">
+
+            {/* 휴대전화 */}
             <InputFormText>
               <div>휴대전화</div>
             </InputFormText>
+
             <IndividualBox>
 
+              {/* 국가코드 */}
               <Individual className="ex1">
                 <input type="text" name="phoneCountry" className="name" placeholder="대한민국" value={phoneCountry} onChange={onChangeValues} />
               </Individual>
 
+              {/* 번호 */}
               <Individual className="ex2">
                 <input type="text" name="phone" className="date" placeholder="010-0000-0000" value={phone} onChange={onChangeValues} />
               </Individual>
 
             </IndividualBox>
+
           </InputForm>
         </Main>
         <Bottom>
@@ -197,12 +240,23 @@ const index = () => {
   );
 };
 
-const Profile = styled.div`
-  margin-bottom: 35px;
+const InputFormAgText = styled.div`
+  display : flex;
+`;
+const IndividualAgBox = styled.div`
+  display : flex;
+  gap: 24px;
 `;
 
 const Gender = styled.div`
   margin-top: 20px;
+  > label {
+    width: 95%;
+    margin: 10px;
+  }
+`;
+const Agency = styled.div`
+margin-top: 13px;
   > label {
     width: 95%;
     margin: 10px;
@@ -249,11 +303,19 @@ const Individual = styled.div`
 const InputForm = styled.div`
   display: flex;
   
-  
+  margin-top: 24px;
+
 
   &.one {
     gap : 24px;
     
+    
+  }
+
+  &.member{
+    margin-top: 24px;
+    gap : 24px;
+    max-width: 48%
     
   }
 

@@ -4,8 +4,12 @@ import styled, { css } from "styled-components";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken, setAdmin } from "../../store/_redcuers/authReducer";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
+import { Field, Formik } from 'formik';
+import * as Yup from 'yup';
 // import liff from '@line/liff';
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 declare global {
   interface Window {
@@ -17,6 +21,8 @@ const frog = 1;
 console.log(123123);
 
 const Login = () => {
+
+
   const dispatch = useDispatch();
 
   const [passwordType, setPasswordType] = useState({
@@ -32,13 +38,7 @@ const Login = () => {
 
   const { email, emailSite, password } = values;
 
-  const onChangeValues = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
-  };
+
 
   const fullEmail = email + "@" + emailSite;
 
@@ -51,128 +51,64 @@ const Login = () => {
     });
   };
 
-  const submit = async (e: any) => {
-    e.preventDefault();
-    const userData = {
-      userEmail: fullEmail,
-      userPassword: password,
-    };
-    try {
-      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, userData);
-      data.responses === 200 && dispatch(setToken(data.jwt));
-      dispatch(setAdmin(data.admin));
-      Router.push("/");
-    } catch (e) {
-      // 서버에서 받은 에러 메시지 출력
-      console.log(e);
-      window.alert("로그인 에러");
-    }
-  };
-
 
   const [contactGroups, setContactGroups] = useState([]);
 
 
+  // formik 
+  const ValidationSchema = Yup.object().shape({
+    email: Yup.string()
+      .required("이메일을 입력해주세요."),
+    password: Yup.string()
+      .required("비밀번호를 입력해 주세요."),
 
-  const GoogleLoginHandler = () => {
-
-
-    const CLIENT_ID = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
-    const AUTHORIZE_URI = "https://accounts.google.com/o/oauth2/v2/auth";
-    const PEOPLE_URI = "https://people.googleapis.com/v1/contactGroups";
-
-    // const queryStr = qs.stringify({
-    //   client_id: CLIENT_ID,
-    //   redirect_uri: 'http://localhost:3000/login',
-    //   response_type: "token",
-    //   scope: "https://www.googleapis.com/auth/contacts.readonly"
-    // });
-
-    // const loginUrl = AUTHORIZE_URI + "?" + queryStr;
-
-
-    // const { access_token } = qs.parse(window.location.hash.substr(1));
-
-    // if (!access_token) {
-    //   window.location.assign(loginUrl);
-    //   return null;
-    // }
+  });
 
 
 
-    //   useEffect(() => {
-    //     fetch(PEOPLE_URI, {
-    //       headers: { Authorization: "Bearer " + access_token }
-    //     })
-    //       .then(response => response.json())
-    //       .then(data => setContactGroups(data.contactGroups));
-    //     console.log(contactGroups);
+  // ================================================================================  Google 로그인  =================================================================================
 
-    //   }, [access_token]);
+  const router = useRouter();
 
-    //   console.log(contactGroups);
+  const GOOGLE_CLIENT_ID = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
+  //   const AUTHORIZE_URI = "https://accounts.google.com/o/oauth2/v2/auth";
+  //   const PEOPLE_URI = "https://people.googleapis.com/v1/contactGroups";
 
+  useEffect(() => {
+    // Load the Google API client library
+    gapi.load('auth2', () => {
+      gapi.auth2.init({
+        client_id: GOOGLE_CLIENT_ID,
+      });
+    });
+  }, []);
 
-    // }
+  const GoogleLoginHandler = async () => {
+    try {
+      const auth2 = gapi.auth2.getAuthInstance();
+      const user = await auth2.signIn();
 
-    console.log(contactGroups);
+      // Send the user ID token to your server to authenticate the user
+      const idToken = user.getAuthResponse().id_token;
+      // Replace the API endpoint with your server's authentication endpoint
+      const response = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+      });
+      if (response.ok) {
+        router.push('/dashboard');
+      } else {
+        console.error('Authentication failed');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-
-
-
-    //  gapi.load('auth2', function(){
-    //    // Retrieve the singleton for the GoogleAuth library and set up the client.
-    //    gapi.auth2.init({
-    //      client_id: '181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com',
-    //      cookiepolicy: 'single_host_origin',
-    //      // Request scopes in addition to 'profile' and 'email'
-    //      //scope: 'additional_scope'
-    //    });
-    // })
-
-    //    const GoogleLoginHandler = (auth2: {
-    //     [x: string]: any; attachClickHandler: (arg0: any, arg1: {}, arg2: (googleUser: any) => void, arg3: (error: any) => void) => void; 
-    // },element: { id: any; }) => {
-
-    //     console.log(element.id);
-    //         auth2.attachClickHandler(element, {},
-    //             function(googleUser) {
-    //                 const profile = auth2.googleUser.get().getBasicProfile();
-    //   console.log('ID: ' + profile.getId());
-    //   console.log('Full Name: ' + profile.getName());
-    //   console.log('Given Name: ' + profile.getGivenName());
-    //   console.log('Family Name: ' + profile.getFamilyName());
-    //   console.log('Image URL: ' + profile.getImageUrl());
-    //   console.log('Email: ' + profile.getEmail());
-
-    //             }, function(error) {
-    //               alert(JSON.stringify(error, undefined, 2));
-    //             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // const GoogleAPI = "181931049890-18f0g8iibl4ovduro9jehsjuekfnef5k.apps.googleusercontent.com";
-
-    // const onSuccess = (res: any) => {
-    //   console.log("Login SUCCESS! Current user : ", res.profileObj);
-    // };
-
-    // const onFailure = (res: any) => {
-    //   console.log("Login faile! Current res : ", res);
-    // };
-  }
-
-  // kakao login
+  // ================================================================================  Kakao 로그인  =================================================================================
 
   const kakaoLogin = async () => {
     const { Kakao } = window;
@@ -204,169 +140,13 @@ const Login = () => {
     });
   };
 
-  // 라인 로그인 구현
 
-  const [idCode, setidCode] = useState({
-    type: String,
-  });
 
-  const [idToken, setIdToken] = useState({
-    type: String,
-  });
 
-  const [pictureUrl, setPictureUrl] = useState();
-
-  const [displayName, setDisplayName] = useState("");
-  const [statusMessage, setStatusMessage] = useState("");
-  const [userID, setUserID] = useState("");
-  const [test, setTest] = useState<string | null>("");
+  // ================================================================================  Line 로그인  =================================================================================
 
   const Line_LOGIN_URL = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1657847379&redirect_uri=http://localhost:3000/login&state=cosmos&scope=profile%20openid%20email`;
 
-  // async function getUser() {
-  //   try {
-  //     const response = await fetch(Line_LOGIN_URL, {
-  //       method: 'POST',
-  //       headers: {
-  //         accept: 'application/json',
-  //       },
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Error! status: ${response.status}`);
-  //     }
-
-  //     const result = await response.json();
-  //     return result;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  const LineLoginHandler = async (e: any) => {
-    // getUser()
-
-    await window.location.assign(Line_LOGIN_URL);
-    // await window.open(Line_LOGIN_URL)
-
-    console.log("1");
-
-    const url = new URL(window.location.href);
-    console.log("2");
-    const authorizationCode = url.searchParams.get("code");
-    console.log("3");
-    console.log(authorizationCode);
-    console.log("4");
-    getToken(authorizationCode);
-  };
-
-  const getToken = async (authorizationCode: any) => {
-    console.log("5");
-    console.log("authorizationCode", authorizationCode);
-
-    // const data =  qs.stringify({
-    //   'grant_type': 'authorization_code',
-    //   'code': authorizationCode,
-    //   'client_secret': '898f2a141088ca6c6617c33245a06a7b',
-    //   'redirect_uri': 'http://localhost:3000/login',
-    //   'client_id': '1657847379'
-    // });
-    // const config = {
-    //   method: 'post',
-    //   url: 'https://api.line.me/oauth2/v2.1/token',
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded'
-    //   },
-    //   data : data
-    // };
-    // console.log("6")
-    //  axios(config)
-    // .then(function (response) {
-    //   console.log('token',JSON.stringify(response.data));
-    // })
-    // .catch(function (error) {
-    //   alert(error)
-    //   // console.log(error);
-    // });
-
-    return;
-
-    // const authorizationCode = AUTHORIZE_URI.searchParams.get("code");
-
-    // const handleGetAccessToken = async (authorizationCode) => {
-    //  await axios.post(
-    //     "http://localhost:80/sign/google", // 구글 소셜 로그인 엔드포인트
-    //     {
-    //       authorizationCode: authorizationCode,
-    //     },
-    //     {
-    //       headers: { accept: `application/json` },
-    //     },
-    //   );
-  };
-
-  const Linelogin = async (e: any) => {
-    e.preventDefault();
-
-    // const handleGetAccessToken = async (authorizationCode: any) => {
-    //  await axios.post(
-    //     "http://localhost:3000/login",
-    //     {
-    //       authorizationCode: authorizationCode,
-    //     },
-    //     {
-    //       headers: { accept: `application/json` },
-    //     },
-    //   );
-
-    // const access_token = await axios
-    // .post(AUTHORIZE_URI, {
-    // 	headers: { "content-type": "application/x-www-form-urlencoded" },
-    // })
-    // .then((el) => {
-    // 	return el.data.access_token
-    // })
-    // .catch((err) => {
-    // 	console.log("err=", err)
-    // })
-
-    // console.log(access_token);
-
-    // setIdToken(AUTHORIZE_URI.searchParams.code)
-
-    // const query = new URLSearchParams();
-
-    // const authorizationCode = AUTHORIZE_URI.query.get("code");
-
-    //   try {
-    //     axios.post(`https://api.line.me/oauth2/v2.1/token`, {
-    //       headers: {
-    //         "content-type": "application/x-www-form-urlencoded",
-    //         "grant_type" : "authorization_code",
-    //         "client_id" : "1657847379",
-    //         "client_secret" : '898f2a141088ca6c6617c33245a06a7b',
-    //         "redirect_uri" : "http://localhost:3000/login" ,
-    //         "code" : "bN2T4sbDs07p9VRPyeqL"
-
-    //       },
-    //     });
-    //   } catch (res : any) {
-
-    // console.log(res);
-
-    //   }
-
-    // liff.init({ liffId: "1657847379-PD7wYpD6" })
-    //   .then(() => {
-    //     if (liff.isLoggedIn()) {
-    //       runApp();
-    //     } else {
-    //       liff.login();
-    //     }
-    //   }).catch((err) => {
-    //     console.log(err.code, err.message);
-    //   });
-  };
 
   // const runApp = () => {
   //   const idToken = liff.getIDToken();
@@ -387,14 +167,15 @@ const Login = () => {
             </Title>
             <SocialLogin>
               <div>
+
                 <SosicalLoginButton className="g-signin2" data-onsuccess="GoogleLoginHandler" onClick={GoogleLoginHandler} social="google">구글 계정으로 로그인</SosicalLoginButton>
 
-                <SosicalLoginButton onClick={LineLoginHandler} social="line">
+                {/* <SosicalLoginButton onClick={LineLoginHandler} social="line">
                   라인 계정으로 로그인
-                </SosicalLoginButton>
+                </SosicalLoginButton> */}
               </div>
               <div>
-                <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton>
+                {/* <SosicalLoginButton social="apple">애플 계정으로 로그인</SosicalLoginButton> */}
                 <SosicalLoginButton onClick={kakaoLogin} social="kakao">
                   카카오 계정으로 로그인
                 </SosicalLoginButton>
@@ -402,26 +183,80 @@ const Login = () => {
             </SocialLogin>
           </Top>
           <Or>또는</Or>
-          <LoginForm onSubmit={submit}>
-            <p>이메일</p>
-            <EmailForm>
-              <Email name="email" type="text" placeholder="abcd1234" autoComplete="off" value={email} onChange={onChangeValues} />
-              <span>@</span>
-              <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={emailSite} onChange={onChangeValues} />
-            </EmailForm>
-            <p>비밀번호</p>
-            <PasswordForm>
-              <Password name="password" type={passwordType.type} autoComplete="off" value={password} onChange={onChangeValues} />
-              <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
-            </PasswordForm>
-            <LoginButton type="submit">접속하기</LoginButton>
-            <Bottom>
-              <p className="mssing_user">아이디 / 비밀번호 찾기</p>
-              <Link href="/signup">
-                <p>계정이 없으신가요?</p>
-              </Link>
-            </Bottom>
-          </LoginForm>
+
+          <Formik
+            initialValues={{ email: "", password: "", emailSite: "" }}
+            onSubmit={async (values) => {
+
+              const fullEmail = values.email + "@" + values.emailSite;
+
+
+              const userData = {
+                userEmail: fullEmail,
+                userPassword: values.password,
+              };
+              console.log(userData);
+
+              try {
+                const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, userData);
+                data.responses === 200 && dispatch(setToken(data.jwt));
+                dispatch(setAdmin(data.admin));
+                Router.push("/");
+              } catch (e) {
+                // 서버에서 받은 에러 메시지 출력
+                console.log(e);
+                window.alert("로그인 에러");
+              }
+            }}
+            validationSchema={ValidationSchema}
+          >
+            {(props) => {
+              const {
+                values,
+                touched,
+                errors,
+                handleChange,
+                handleBlur,
+                handleSubmit
+              } = props;
+              return (
+                <LoginForm onSubmit={handleSubmit}>
+                  <EmailText>
+                    <p>이메일</p>
+                    {errors.email && touched.email && (
+                      <Inputfeedback className="input-feedback">{errors.email}</Inputfeedback>
+                    )}
+                  </EmailText>
+
+                  <EmailForm>
+                    <Email onBlur={handleBlur}
+                      className={errors.email && touched.email ? " error" : "none"} name="email" type="text" placeholder="abcd1234" autoComplete="off" value={values.email} onChange={handleChange} />
+                    <span>@</span>
+                    <EmailSite name="emailSite" placeholder="이메일 선택" autoComplete="off" value={values.emailSite} onChange={handleChange} />
+                  </EmailForm>
+
+                  <PasswordText>
+                    <p>비밀번호</p>
+                    {errors.password && touched.password && (
+                      <Inputfeedback className="input-feedback">{errors.password}</Inputfeedback>
+                    )}
+                  </PasswordText>
+                  <PasswordForm>
+                    <Password onBlur={handleBlur} className={errors.password && touched.password ? " error" : "none"} name="password" type={passwordType.type} autoComplete="off" value={values.password} onChange={handleChange} />
+                    <VisibleIcon onClick={handlePasswordType} type={passwordType.type} />
+                  </PasswordForm>
+                  <LoginButton type="submit">접속하기</LoginButton>
+                  <Bottom>
+                    {/* <p className="mssing_user">아이디 / 비밀번호 찾기</p> */}
+                    <Link href="/signup">
+                      <p>계정이 없으신가요?</p>
+                    </Link>
+                  </Bottom>
+                </LoginForm>
+              );
+            }}
+          </Formik>
+
         </Form>
       </Wrap>
     </Container>
@@ -431,7 +266,8 @@ const Login = () => {
 const Bottom = styled.div`
   margin-top: 12px;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
+  justify-content: flex-end;
   font-size: 1rem;
   color: #8692ff;
   > p {
@@ -477,6 +313,9 @@ const Password = styled.input`
     border: 2px solid #273dff;
     background: url("/images/login/password_white.svg") no-repeat 25px 50% #28282f;
   }
+  &.error {
+    border : 2px solid #FF2E2E;
+  }
 `;
 
 const EmailSite = styled.input`
@@ -503,6 +342,25 @@ const Email = styled.input`
     border: 2px solid #273dff;
     background: url("/images/login/email_white.svg") no-repeat 25px 50% #28282f;
   }
+
+  &.error {
+    border : 2px solid #FF2E2E;
+  }
+`;
+
+const EmailText = styled.div`
+  display : flex;
+`;
+
+const Inputfeedback = styled.div`
+  color: red;
+  margin-left : 0.5rem ;
+  font-size: 1rem;
+`;
+
+const PasswordText = styled.div`
+  display : flex;
+  margin-top: 35px;
 `;
 
 const EmailForm = styled.div`
@@ -556,7 +414,7 @@ const SosicalLoginButton = styled.button<{ social: string }>`
       case "google":
         return css`
           background: url("/images/login/google.svg") no-repeat 35px 50% #28282f;
-          margin-right: 24px;
+          
         `;
       case "line":
         return css`
