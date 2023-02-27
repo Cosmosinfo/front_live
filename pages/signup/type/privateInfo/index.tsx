@@ -138,8 +138,11 @@ const index = () => {
             </Menu>
           ))}
         </Top>
+
         <Main>
-          <Profile>프로필</Profile>
+          <Ex>
+            <Profile></Profile>
+          </Ex>
           <InputForm className="one">
             <Individual>
               <div>닉네임</div>
@@ -214,7 +217,18 @@ const index = () => {
 };
 
 const Profile = styled.div`
+display : flex;
+
   margin-bottom: 35px;
+  border-radius: 100px;
+  background-color :  #28282F;
+  width : 6.75rem;
+  height : 6.75rem;
+`;
+
+const Ex = styled.div`
+display : flex;
+
 `;
 
 const Selectt = styled.select`

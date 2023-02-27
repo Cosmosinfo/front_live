@@ -194,8 +194,8 @@ const Login = () => {
 
               const userData = {
                 userEmail: fullEmail,
-                userPassword: values.password,
-                // userPassword: SHA256(values.password),
+                // userPassword: values.password,
+                userPassword: SHA256(values.password),
 
               };
               console.log(userData);
