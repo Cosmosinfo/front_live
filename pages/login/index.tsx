@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState, ChangeEvent, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
+import SHA256 from "../../sha256";
 import { useDispatch } from "react-redux";
 import { setToken, setAdmin } from "../../store/_redcuers/authReducer";
 import Router, { useRouter } from "next/router";
@@ -194,9 +195,10 @@ const Login = () => {
               const userData = {
                 userEmail: fullEmail,
                 userPassword: values.password,
+                // userPassword: SHA256(values.password),
+
               };
               console.log(userData);
-
               try {
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/login`, userData);
                 data.responses === 200 && dispatch(setToken(data.jwt));

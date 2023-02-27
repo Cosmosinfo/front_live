@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import Router, { useRouter } from "next/router"
 import { CallingCodePicker } from '@digieggs/rn-country-code-picker';
+import axios from "axios";
+import countries from "../../../../components/countries.json"
 
 const menus = [
   {
@@ -26,10 +28,8 @@ const index = () => {
 
 
   const userInfo = {
-    email: sessionStorage.getItem('fullEmail'),
-    password: sessionStorage.getItem('password'),
-    Type: sessionStorage.getItem('type'),
-    // Type : type,
+    artistEmail: sessionStorage.getItem('fullEmail'),
+    artistPassword: sessionStorage.getItem('password'),
 
   }
 
@@ -57,6 +57,18 @@ const index = () => {
 
 
 
+  const [countryCode, setCountryCode] = useState("+82");
+
+  // 국가 번호 데이터
+  const countryOptions = countries.map((country) => (
+    <option value={country.code} key={country.code}>
+      {country.code}
+    </option>
+  ));
+
+  const handleCountryCodeChange = (event: any) => {
+    setCountryCode(event.target.value);
+  };
 
 
   const [selected, setSelected] = useState("")
@@ -93,24 +105,63 @@ const index = () => {
     window.location.href = '/signup/type/agreement';
   }
 
-  const nextUrl = () => {
+  const nextUrl = async () => {
     if (sessionStorage.getItem('password') === null) {
       alert("이메일 또는 비밀번호를 먼저 입력하세요")
       Router.push("/signup")
     } else {
       // sessionStorage.setItem('회원유형', )
 
-      sessionStorage.setItem('artistname', artistname)
-      sessionStorage.setItem('Gender', genderSelected)
-      sessionStorage.setItem('Name', name)
-      sessionStorage.setItem('genre', genre)
-      sessionStorage.setItem('debutdate', debutdate)
-      sessionStorage.setItem('agency', agency)
-      sessionStorage.setItem('member', member)
-      sessionStorage.setItem('Phone', phone)
-      sessionStorage.setItem('phoneCountry', phoneCountry)
+      // const formData = new FormData();
 
-      Router.push("/signup/type/artistComplete")
+      // formData.append("artistEmail", userInfo.email);
+      // formData.append("artistPassword", userInfo.password);
+      // formData.append("artistName", artistname);
+      // formData.append("artistGender", genderSelected);
+      // formData.append("artistPhone", phone);
+      // formData.append("artistBirth", debutdate);
+      // formData.append("artistCompany", agency);
+      // formData.append("artistCategory", genre);
+      // formData.append("artistMember", membername);
+
+      // sessionStorage.setItem('artistname', artistname)
+      // sessionStorage.setItem('Gender', genderSelected)
+      // sessionStorage.setItem('Name', name)
+      // sessionStorage.setItem('genre', genre)
+      // sessionStorage.setItem('debutdate', debutdate)
+      // sessionStorage.setItem('agency', agency)
+      // sessionStorage.setItem('member', member)
+      // sessionStorage.setItem('Phone', phone)
+      // sessionStorage.setItem('phoneCountry', phoneCountry)
+      // sessionStorage.setItem('membername', membername)
+
+
+      try {
+        const { data } = await axios({
+          method: 'post',
+          url: 'http://fulldive.live:8880/api/artist/join',
+          data: {
+            artistEmail: userInfo.artistEmail,
+            artistPassword: userInfo.artistPassword,
+            artistName: artistname,
+            artistGender: genderSelected,
+            artistPhone: phone,
+            artistBirth: debutdate,
+            artistCompany: agency,
+            artistCategory: genre,
+            artistMember: membername,
+          }
+        });
+        console.log(data.response);
+        data.response === 200 && window.alert("회원가입 성공");
+        Router.push("/signup/type/artistComplete")
+      } catch (e) {
+        // 서버에서 받은 에러 메시지 출력
+        console.log(e);
+        window.alert("회원가입 실패");
+      }
+
+
 
     }
   };
@@ -133,7 +184,7 @@ const index = () => {
             {/* 아티스트명 */}
             <Individual>
               <div>아티스트명</div>
-              <input name="nickname" type="text" className="nickname" placeholder="닉네임을 입력해주세요." value={artistname} onChange={onChangeValues} />
+              <input name="artistname" type="text" className="artistname" placeholder="아티스트 이름을 입력해주세요." value={artistname} onChange={onChangeValues} />
             </Individual>
 
             {/* 성별 */}
@@ -144,7 +195,7 @@ const index = () => {
                 <label>남자</label>
                 <input type="radio" name="여" value="여" checked={genderSelected === "여"} onChange={handleChange} />
                 <label>여자</label>
-                <input type="radio" name="혼성" value="혼성" checked={genderSelected === "혼성"} onChange={handleChange} />
+                <input type="radio" name="혼" value="혼" checked={genderSelected === "혼"} onChange={handleChange} />
                 <label>혼성</label>
               </Gender>
             </Individual>
@@ -155,13 +206,13 @@ const index = () => {
             {/* 장르 */}
             <Individual>
               <div>장르</div>
-              <input type="text" name="name" className="name" placeholder="이름을 입력해주세요." value={name} onChange={onChangeValues} />
+              <input type="text" name="genre" className="genre" placeholder="장르를 입력해주세요." value={genre} onChange={onChangeValues} />
             </Individual>
 
             {/* 데뷔일 */}
             <Individual>
               <div>데뷔일</div>
-              <input type="text" name="brith" className="date" placeholder="YYYY/MM/DD" value={debutdate} onChange={onChangeValues} />
+              <input type="text" name="debutdate" className="debutdate" placeholder="YYYY/MM/DD" value={debutdate} onChange={onChangeValues} />
             </Individual>
           </InputForm>
 
@@ -187,7 +238,7 @@ const index = () => {
               {/* 소속사 */}
 
               <Individual>
-                {AgencySelected === "유" && <input type="text" name="brith" className="date" placeholder="00소속사" value={agency} onChange={onChangeValues} />
+                {AgencySelected === "유" && <input type="text" name="agency" className="agency" placeholder="00소속사" value={agency} onChange={onChangeValues} />
                 }
               </Individual>
 
@@ -198,11 +249,14 @@ const index = () => {
 
             {/* 멥버수 */}
             <Individual>
-              <div>멥버수</div>
-              <input type="text" name="country" className="name" placeholder="4" value={member} onChange={onChangeValues} />
+              <div>맴버수</div>
+              <input type="text" name="member" className="member" placeholder="4" value={member} onChange={onChangeValues} />
             </Individual>
 
-
+            <Individual>
+              <div>멤버</div>
+              <input type="text" name="membername" className="name" placeholder="멤버 이름를 작성해주세요" value={membername} onChange={onChangeValues} />
+            </Individual>
 
           </InputForm>
 
@@ -217,12 +271,17 @@ const index = () => {
 
               {/* 국가코드 */}
               <Individual className="ex1">
-                <input type="text" name="phoneCountry" className="name" placeholder="대한민국" value={phoneCountry} onChange={onChangeValues} />
+                <Selectt
+                  value={countryCode}
+                  onChange={handleCountryCodeChange}
+                >
+                  {countryOptions}
+                </Selectt>
               </Individual>
 
               {/* 번호 */}
               <Individual className="ex2">
-                <input type="text" name="phone" className="date" placeholder="010-0000-0000" value={phone} onChange={onChangeValues} />
+                <input type="text" name="phone" className="phone" placeholder="010-0000-0000" value={phone} onChange={onChangeValues} />
               </Individual>
 
             </IndividualBox>
@@ -239,6 +298,25 @@ const index = () => {
     </Container>
   );
 };
+
+const Selectt = styled.select`
+width: 100%;
+text-align: left;
+
+  margin-top: 10px;
+  border: none;
+  background-color: #d9d9d91a;
+  border-radius: 100px;
+  color: #ffffff;
+  padding: 0 10px;
+  font-size: 1rem;
+  width: 100%;
+  height: 40px;
+  &.location {
+    width: 100%;
+  }
+
+`;
 
 const InputFormAgText = styled.div`
   display : flex;
@@ -315,7 +393,7 @@ const InputForm = styled.div`
   &.member{
     margin-top: 24px;
     gap : 24px;
-    max-width: 48%
+    
     
   }
 
@@ -387,7 +465,7 @@ const Menu = styled.div<{ imgUrl: string }>`
 
 const Top = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-top: 24px;
 `;
 

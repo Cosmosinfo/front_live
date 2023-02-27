@@ -5,6 +5,7 @@ import SHA256 from "../../sha256";
 import Router, { useRouter } from "next/router"
 import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
+import axios from "axios";
 
 const Login = () => {
   const [passwordType, setPasswordType] = useState({
@@ -23,10 +24,22 @@ const Login = () => {
     });
   };
 
+  const getEmail = () => {
+
+    axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/join`)
+      .then(function (res) {
+        // 성공 핸들링
+        console.log(res);
+      })
+  };
+
+
+
   // formik 
   const ValidationSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("중복된 이메일 입니다."),
+
+    // email: Yup.string()
+    //   .required("중복된 이메일 입니다."),
     password: Yup.string()
       .required("영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.")
       .min(8, '영어, 숫자, 기호를 사용하여 8자리 이상 입력해주세요.')
@@ -68,6 +81,8 @@ const Login = () => {
             initialValues={{ email: "", password: "", emailSite: "", confirm_password: "" }}
             onSubmit={async (values) => {
               await new Promise((resolve) => setTimeout(resolve, 500));
+
+
 
               const fullEmail = values.email + "@" + values.emailSite;
 

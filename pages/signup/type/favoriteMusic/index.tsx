@@ -225,7 +225,6 @@ const index = () => {
     } else if (numChecked < 3) {
       alert('You must check 3 checkboxes!');
     } else {
-      // sessionStorage.setItem('music', selectedGenres)
 
 
       try {
@@ -238,9 +237,6 @@ const index = () => {
         console.log(e);
         window.alert("회원가입 실패");
       }
-
-
-
     }
   };
 

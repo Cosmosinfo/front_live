@@ -2,6 +2,8 @@ import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Router, { useRouter } from "next/router"
+import countries from "../../../../components/countries.json"
+
 
 
 const menus = [
@@ -58,10 +60,18 @@ const index = () => {
 
   const { nickname, name, brith, country, city, address, phone, phoneCountry } = values;
 
+  const [countryCode, setCountryCode] = useState("+82");
 
+  // 국가 번호 데이터
+  const countryOptions = countries.map((country) => (
+    <option value={country.code} key={country.code}>
+      {country.code}
+    </option>
+  ));
 
-
-
+  const handleCountryCodeChange = (event: any) => {
+    setCountryCode(event.target.value);
+  };
 
 
   const [selected, setSelected] = useState("")
@@ -106,7 +116,7 @@ const index = () => {
       sessionStorage.setItem('City', city)
       sessionStorage.setItem('Address', address)
       sessionStorage.setItem('Phone', phone)
-      sessionStorage.setItem('phoneCountry', phoneCountry)
+      sessionStorage.setItem('phoneCountry', countryCode)
 
       Router.push("/signup/type/favoriteMusic")
 
@@ -176,7 +186,13 @@ const index = () => {
             <IndividualBox>
 
               <Individual className="ex1">
-                <input type="text" name="phoneCountry" className="name" placeholder="대한민국" value={phoneCountry} onChange={onChangeValues} />
+                {/* <input type="text" name="phoneCountry" className="name" placeholder="대한민국" value={phoneCountry} onChange={onChangeValues} /> */}
+                <Selectt
+                  value={countryCode}
+                  onChange={handleCountryCodeChange}
+                >
+                  {countryOptions}
+                </Selectt>
               </Individual>
 
               <Individual className="ex2">
@@ -199,6 +215,25 @@ const index = () => {
 
 const Profile = styled.div`
   margin-bottom: 35px;
+`;
+
+const Selectt = styled.select`
+width: 100%;
+text-align: left;
+
+  margin-top: 10px;
+  border: none;
+  background-color: #d9d9d91a;
+  border-radius: 100px;
+  color: #ffffff;
+  padding: 0 10px;
+  font-size: 1rem;
+  width: 100%;
+  height: 40px;
+  &.location {
+    width: 100%;
+  }
+
 `;
 
 const Gender = styled.div`
