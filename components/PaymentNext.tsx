@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import paypal from "paypal-rest-sdk";
 
 const data = {
   comet: 40,
   ticket: 30,
 };
+
+
 
 const PaymentNext = () => {
   return (

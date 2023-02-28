@@ -49,7 +49,7 @@ const menus = [
   },
 ];
 
-const setting_menus = [
+const company_setting_menus = [
   {
     id: 1,
     name: "프로필",
@@ -65,15 +65,77 @@ const setting_menus = [
   //   pathname: "/setting/analytics",
   // },
   {
-    id: 3,
+    id: 2,
     name: "스튜디오",
     imgUrl: "/images/setting/studio.svg",
     nowImgUrl: "/images/setting/studio_white.svg",
     pathname: "/setting/studio",
   },
   {
-    id: 1,
+    id: 3,
     name: "수익정산",
+    imgUrl: "/images/setting/coin.svg",
+    nowImgUrl: "/images/setting/coin_white.svg",
+    pathname: "/setting/coin",
+  },
+];
+
+const artist_setting_menus = [
+  {
+    id: 1,
+    name: "프로필",
+    imgUrl: "/images/setting/user.svg",
+    nowImgUrl: "/images/setting/user_white.svg",
+    pathname: "/setting/profile",
+  },
+  // {
+  //   id: 2,
+  //   name: "애널리틱스",
+  //   imgUrl: "/images/setting/analytics.svg",
+  //   nowImgUrl: "/images/setting/analytics_white.svg",
+  //   pathname: "/setting/analytics",
+  // },
+  {
+    id: 2,
+    name: "스튜디오",
+    imgUrl: "/images/setting/studio.svg",
+    nowImgUrl: "/images/setting/studio_white.svg",
+    pathname: "/setting/studio",
+  },
+  {
+    id: 3,
+    name: "수익정산",
+    imgUrl: "/images/setting/coin.svg",
+    nowImgUrl: "/images/setting/coin_white.svg",
+    pathname: "/setting/coin",
+  },
+];
+
+const user_setting_menus = [
+  {
+    id: 1,
+    name: "프로필",
+    imgUrl: "/images/setting/user.svg",
+    nowImgUrl: "/images/setting/user_white.svg",
+    pathname: "/setting/userProfile",
+  },
+  {
+    id: 2,
+    name: "보관함",
+    imgUrl: "/images/setting/studio.svg",
+    nowImgUrl: "/images/setting/studio_white.svg",
+    pathname: "/setting/package",
+  },
+  {
+    id: 3,
+    name: "팔로잉",
+    imgUrl: "/images/setting/following.svg",
+    nowImgUrl: "/images/setting/following_white.svg",
+    pathname: "/setting/following",
+  },
+  {
+    id: 4,
+    name: "결제",
     imgUrl: "/images/setting/coin.svg",
     nowImgUrl: "/images/setting/coin_white.svg",
     pathname: "/setting/coin",
@@ -86,24 +148,42 @@ const MainLeft = () => {
   const pathname_split = pathname.split("/")[1];
   const setting_pathname_split = pathname.split("/")[2];
   const token = useSelector((state: any) => state.Auth.token);
+  const admin = useSelector((state: any) => state.Auth.admin);
 
   return (
     <>
       {token === "Test" && pathname_split === "setting" ? (
-        <Nav>
-          {setting_menus.map((menu, index) => (
-            <Link href={menu.pathname} key={index} legacyBehavior passHref>
-              <NavInfo
-                key={index}
-                imgUrl={menu.imgUrl}
-                isHere={setting_pathname_split === menu.pathname.split("/")[2]}
-                nowImgUrl={menu.nowImgUrl}
-              >
-                {menu.name}
-              </NavInfo>
-            </Link>
-          ))}
-        </Nav>
+        admin === "2" ? (
+          <Nav>
+            {user_setting_menus.map((menu, index) => (
+              <Link href={menu.pathname} key={index} legacyBehavior passHref>
+                <NavInfo
+                  key={index}
+                  imgUrl={menu.imgUrl}
+                  isHere={setting_pathname_split === menu.pathname.split("/")[2]}
+                  nowImgUrl={menu.nowImgUrl}
+                >
+                  {menu.name}
+                </NavInfo>
+              </Link>
+            ))}
+          </Nav>
+        ) : (
+          <Nav>
+            {company_setting_menus.map((menu, index) => (
+              <Link href={menu.pathname} key={index} legacyBehavior passHref>
+                <NavInfo
+                  key={index}
+                  imgUrl={menu.imgUrl}
+                  isHere={setting_pathname_split === menu.pathname.split("/")[2]}
+                  nowImgUrl={menu.nowImgUrl}
+                >
+                  {menu.name}
+                </NavInfo>
+              </Link>
+            ))}
+          </Nav>
+        )
       ) : (
         <Nav>
           {menus.map((menu, index) => (
