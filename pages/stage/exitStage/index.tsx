@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 const index = () => {
   const router = useRouter();
@@ -25,116 +26,124 @@ const index = () => {
     },
   ];
 
-  const liveData = [
-    {
-      stageId: 1,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 2,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 3,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 4,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 5,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 6,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 7,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 8,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 9,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 10,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 11,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-    {
-      stageId: 12,
-      imgUrl: "/images/sample.png",
-      title: "공연제목",
-      artist: "공연 참여 아티스트",
-      ticket: "1장",
-      link: "/artist",
-      ticketImg: "/images/ticket.svg",
-    },
-  ];
+  // const liveData = [
+  //   {
+  //     stageId: 1,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 2,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 3,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 4,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 5,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 6,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 7,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 8,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 9,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 10,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 11,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  //   {
+  //     stageId: 12,
+  //     imgUrl: "/images/sample.png",
+  //     title: "공연제목",
+  //     artist: "공연 참여 아티스트",
+  //     ticket: "1장",
+  //     link: "/artist",
+  //     ticketImg: "/images/ticket.svg",
+  //   },
+  // ];
+
+  const [StageData, setStageData] = useState<any>(null);
+
+  useEffect(() => {
+    axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/main/mainInfo`).then((res) => setStageData(res.data.stageStartInfo));
+  }, []);
+
+  console.log(StageData);
 
   return (
     <Container>
@@ -148,19 +157,19 @@ const index = () => {
         ))}
       </MenuBar>
       <StageContainer>
-        {liveData &&
-          liveData.map((data: any, id: any) => (
+        {StageData &&
+          StageData.map((data: any, id: any) => (
             <>
               <StageBox>
-                <Figure href={data.imgUrl} artist="none">
-                  <ImageArea src={data.imgUrl} alt="live_stage" />
+                <Figure href={data.stageStreamKey} artist="none">
+                  <ImageArea src={data.stageThumbnailImage} alt="live_stage" />
                 </Figure>
                 <StageContentBox>
                   <div>
-                    <img src={data.imgUrl} />
+                    <img src={data.stageThumbnailImage} />
                     <div>
-                      <p>{data.title}</p>
-                      <span>{data.artist}</span>
+                      <p>{data.stageTitle}</p>
+                      <span>{data.artistId}</span>
                     </div>
                   </div>
                   <Ticket>
@@ -265,7 +274,7 @@ const MenuBar = styled.div`
 const Container = styled.main`
   width: calc(100vw - 250px);
   margin-left: 250px;
-  height: 100%;
+  height: 100vh;
   background: #14141c;
   color: #ffffff;
   padding: 30px;

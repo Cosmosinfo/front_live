@@ -16,6 +16,7 @@ const supporting_menus = [
 
 const index = () => {
   const [ableButton, setAbleButton] = useState(false);
+  const [inputs, setInputs] = useState({});
 
   const changeButton = () => {
     setAbleButton(!ableButton);
