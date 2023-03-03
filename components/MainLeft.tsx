@@ -26,13 +26,13 @@ const menus = [
     nowImgUrl: "/images/artist_white.svg",
     pathname: "/artist",
   },
-  {
-    id: 4,
-    name: "스토어",
-    imgUrl: "/images/shop.svg",
-    nowImgUrl: "/images/shop_white.svg",
-    pathname: "/store",
-  },
+  // {
+  //   id: 4,
+  //   name: "스토어",
+  //   imgUrl: "/images/shop.svg",
+  //   nowImgUrl: "/images/shop_white.svg",
+  //   pathname: "/store",
+  // },
   {
     id: 5,
     name: "설정",
