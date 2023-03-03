@@ -16,7 +16,21 @@ const supporting_menus = [
 
 const index = () => {
   const [ableButton, setAbleButton] = useState(false);
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({
+    type: "",
+    email: "",
+    description: "",
+  });
+
+  const { type, email, description } = inputs;
+
+  const onChange = (e: any) => {
+    const { value, name } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
 
   const changeButton = () => {
     setAbleButton(!ableButton);
@@ -36,15 +50,15 @@ const index = () => {
         <Main>
           <div>
             <p>문의 유형</p>
-            <Input className="type" placeholder="계정" />
+            <Input className="type" placeholder="계정" name="type" value={type} onChange={onChange} />
           </div>
           <div>
             <p>수신받을 이메일</p>
-            <Input placeholder="test@gmail.com" />
+            <Input placeholder="test@gmail.com" name="email" value={email} onChange={onChange} />
           </div>
           <div>
             <p>문의 내용</p>
-            <TextArea placeholder="문의 내용을 입력해 주세요" />
+            <TextArea placeholder="문의 내용을 입력해 주세요" name="description" value={description} onChange={onChange} />
           </div>
         </Main>
         <Button>보내기</Button>
